@@ -1,0 +1,17 @@
+#!/bin/sh
+filename="test"
+FTPLOG="test.txt"
+
+if grep -F "$filename" $FTPLOG; then
+	echo "File already exists! Renaming old file..."
+	oldmatch=$( grep -Ec "\.old[0-9]+$" )
+	let "oldmatch++"
+	while read -r line; do
+		oldname="$line"
+		newname=$( printf "$filename.old%02d" $oldmatch )
+		ACTION="$ACTION
+					 rename $oldname $newname" 
+		let "oldmatch--"
+	done < <(grep -Ec "\.old[0-9]+$" | sort -rn )
+fi
+

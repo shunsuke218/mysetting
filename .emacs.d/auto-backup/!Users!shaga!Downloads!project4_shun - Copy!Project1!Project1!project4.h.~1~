@@ -1,0 +1,67 @@
+#pragma once
+
+#ifndef __PROJECT_H__INCLUDED__
+#define __PROJECT_H__INCLUDED__
+// project4.h
+// Declares class 'item'
+
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+// Template
+#define FILLX(X) left << setw(X) << setfill(SEPARATOR)
+#define FILL left << setw(WIDTH) << setfill(SEPARATOR)
+
+// Constant used for FILL template
+const char SEPARATOR = ' ';
+const int WIDTH = 15;
+
+class item {
+private:
+	// Variables
+	static int total_items;
+	string description;
+	double cost;
+	int itemnum, quantity;
+
+public:
+	// Constructor
+	item() {
+		setitemnum(total_items);
+		description = "";
+		cost = 0.0;
+		quantity = 0;
+	}
+	/* Setter */
+	void setcost(double i) { this->cost = i; }
+	void setitemnum(int i) { this->itemnum = i; }
+	void setquantity(int i) { this->quantity = i; }
+	void setdescription(string i) { this->description = i; }
+	/* Getter */
+	double getcost() const { return cost; }
+	int getitemnum() const { return itemnum; }
+	int getquantity() const { return quantity; }
+	string getdescription() const { return description; }
+	/* Function */
+	void increaseitemnum() { total_items++; }
+	string getoutput() {
+		stringstream ss;
+		ss << this->getitemnum();
+		ss << '|';
+		ss << this->getdescription();
+		ss << '|';
+		ss << this->getcost();
+		ss << '|';
+		ss << this->getquantity();
+		return ss.str();
+	}
+};
+
+#endif
+#pragma once

@@ -1,0 +1,26 @@
+#ifndef INTLIST_H
+#define INTLIST_H
+
+class IntList {
+ private:	
+	struct ListNode
+	{
+		int value;
+		struct ListNode *next;
+	}
+
+	ListNode *head; // List head pointer
+
+ public:
+	// Constructor
+	IntList() { head = nullptr;	}
+
+	// Destructor
+	~IntList();
+
+	// Function
+	void appendNode(int);
+	void insertNode(int); // Insert a new node into the list, maintaining a sorted order.
+	void deleteNode(int); // remove a node from the list.
+	void print(); // output the contents of the list to the screen
+}

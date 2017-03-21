@@ -1,0 +1,44 @@
+//Peer Review Policy for SOC Technicians
+//This presents our Peer Review policy for SOC, example problem and solutions, how the Policy came about the problems it solves, and the current implemented policy.
+//Tags please put several keywords here
+// Video: https://globaledvideos.akamai.com/get_video.cgi?url=peer_review_for_soc_techs.html
+//please fix these example questions
+::Multiple Choice::When should I ask for a peer review?
+{
+=all change types including metadata, Edge Hostnames, Origin ACLs, etc. All other customer objects are included in the scope
+~change types including metadata, Edge Hostnames, Origin ACLs for the SOC only.
+~only for change types including metadata, Edge Hostnames, and Origin ACLs
+~never, hand it over to PS and let them deal with it
+}
+
+
+::True/False::The engineer making the change is responsible for getting a peer review.
+{
+=TRUE
+~FALSE
+}
+
+
+::True/False::Peer review is only required for WAF configuration changes.
+{
+~TRUE
+=FALSE
+}
+
+
+::True/False::Peer review does not have to be logged in the support ticket.
+{
+~TRUE
+=FALSE
+}
+
+
+::Multiple Choice::If I performed a peer review and it is not logged in the support ticket, what does it mean to management?
+{
+=the peer review never happened and you are in violation of change management policy
+~it means the person who helped review your changes will be responsible for making a note of the change
+~as long as you did not DOS the customer it’s all good
+~you win some and you lose some
+
+
+}

@@ -1,0 +1,230 @@
+// Date: 2016/11/03
+// Written by: Shunsuke Haga
+//
+// The program will convert
+// a "pipe-delimited" text file to a file in CSV format.
+// and vice versa.
+
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <regex>
+#include <sstream>
+#include <stack>
+#include <string>
+#include <vector>
+
+#include "split.cpp"
+#include "project4.h"
+using namespace std;
+
+
+// Template
+#define FILLX(X) left << setw(X) << setfill(SEPARATOR)
+#define FILL left << setw(WIDTH) << setfill(SEPARATOR)
+
+// delimiter
+const char PIPE = '|';
+
+// Prototype
+void openFile(fstream &, string );
+item split(const string &);
+
+// Main function
+int main() {
+	vector<item> item_vector;
+
+	while (true) {
+		char option;
+		fstream inFile, outFile;
+		vector<string> string_vector;
+		std::string temp;
+		std::stringstream ss;
+
+		item tempitem;
+
+		int import_count = 0;
+		int itemnum;
+		int partsnum;
+		
+		// User input
+		cout << "command: ";
+		cin >> option;
+
+		// Check input
+		switch (option) {
+		case 'p':
+			//////////////////////////////////////////////////
+			// PRINT CONTENTS
+			//////////////////////////////////////////////////
+			
+			// Print Header
+			cout <<
+				FILL << "Item Num" <<
+				FILLX(30) << "Description" <<
+				FILL << "Cost" <<
+				FILL << "Quantity" << endl;
+
+			cout <<
+				FILL << "________" <<
+				FILLX(30) << "__________" <<
+				FILL << "____" <<
+				FILL << "________" << endl;
+
+			// Print Contents
+			for(size_t i = 0; i < item_vector.size(); ++i) {
+				tempitem = item_vector[i];
+				cout <<
+					FILL << tempitem.getitemnum() <<
+					FILLX(30) << tempitem.getdescription() <<
+					FILL << tempitem.getcost() <<
+					FILL << tempitem.getquantity() << endl;
+			}
+			cout << endl << item_vector.size() << " records." << endl;
+			// Print Footer
+			continue;
+		case 'i':
+			//////////////////////////////////////////////////
+			// INPUT INVENTORY DATA FROM A FILE
+			//////////////////////////////////////////////////
+			// Open input file
+			cout << endl << "Please enter the input filename." << endl;
+			openFile(inFile, "input");
+			// For each line in the text file
+			while (getline(inFile, temp)) {
+				import_count++;
+				// Split a line using delimiter
+				tempitem = split (temp) ;
+				// Add 'item class' to a vector
+				item_vector.push_back(tempitem);
+			}
+			inFile.close();
+		
+			cout << import_count << " records loaded to array." << endl;
+			continue;
+		case 'o':
+																   
+			//////////////////////////////////////////////////
+			// OUTPUT INVENTORY DATA TO A FILE
+			//////////////////////////////////////////////////
+																   // Open output file
+            cout << endl << "Please enter the output filename." << endl;
+																   openFile(outFile, "output");
+																   
+
+																														  continue;
+																   
+		case 'd':
+			//////////////////////////////////////////////////
+			// DEBUG INPUT
+			//////////////////////////////////////////////////
+			// Check if File can be openned
+			inFile.open("debug.txt");
+			// For each line in the text file
+			while (getline(inFile, temp)) {
+				import_count++;
+				// Split a line using delimiter
+				tempitem = split (temp) ;
+
+				// Add 'item class' to a vector
+				item_vector.push_back(tempitem);
+			}
+			inFile.close();
+
+			cout << import_count << " records loaded to array." << endl;
+			continue;
+
+			
+		case 'a':
+			//////////////////////////////////////////////////
+			// ADD PARTS.
+			//////////////////////////////////////////////////
+			// Check if item exists.
+			if (item_vector.size() == 0) {
+				cout << "No item in the record!" << endl;
+				continue;
+			}
+			// Item number
+			cout << "Choose an Item Number: ";
+			
+			// Chose an index of number (< 30)
+			while (!(cin >> itemnum) || itemnum < 0 || itemnum >= 30 || itemnum > item_vector.size()) {
+				cin.clear();
+				cin.ignore(65536, '\n');
+				cout << "Please choose an item between 0 ~ " << item_vector.size() << endl;
+				cout << "Choose an Item Number: ";
+			} 
+			if (item_vector[itemnum].getquantity() >= 30) {
+				cout << "Quantity is bigger than 30!" << endl;
+				continue;
+			}
+			
+			// Input an quantity (between 0 ~ 30)
+			cout << "How many parts to add? ";
+			while (!(cin >> partsnum) || partsnum < 1 || partsnum >= 30 || item_vector[itemnum].getquantity() + partsnum > 30) {
+				cin.clear();
+				cin.ignore(65536, '\n');
+				cout << "Choose a quantity between 1 ~ " << 30 - item_vector[itemnum].getquantity() << endl;
+				cout << "How many parts to add? ";
+			} 
+
+			// Set an quantity (between 1 ~ 30)
+			partsnum = item_vector[itemnum].getquantity() + partsnum;
+			item_vector[itemnum].setquantity(partsnum);
+			cout << "Now item, " << item_vector[itemnum].getdescription() << ", has quantity of " << item_vector[itemnum].getquantity() << "." << endl;
+			continue;
+		case 'h':
+			//////////////////////////////////////////////////
+			// SHOW HELP
+			//////////////////////////////////////////////////
+
+			// Help
+			cout <<
+				"Supported commands:" << endl <<
+				FILL << right << "a" << FILL << " " << "Add parts." << endl <<
+				FILL << right << "h" << FILL << " " << "print Help text." << endl <<
+				FILL << right << "i" << FILL << " " << "Input inventory data from a file." << endl <<
+				FILL << right << "p" << FILL << " " << "Print inventory list." << endl <<
+				FILL << right << "n" << FILL << " " << "New inventory Item." << endl <<
+				FILL << right << "o" << FILL << " " << "Output inventory data to a file." << endl <<
+				FILL << right << "q" << FILL << " " << "quit (end the program)." << endl <<
+				FILL << right << "r" << FILL << " " << "Remove parts." << endl;
+			continue;
+		case 'q':
+			// Quit
+			cout << "Exiting..." << endl;
+			return 0;
+		default :
+			continue;
+		}
+	}
+}
+
+
+
+void openFile(fstream &File, string io) {
+	bool input = true;
+	string filename;
+	// Check if input or output
+	if (io.compare("output") == 0)
+		input = false;
+	do {
+		// User input
+		cout << "Enter " << io << " filename: ";
+		cin >> filename;
+		// Check if File can be openned
+		File.open(filename.c_str());
+		// If you can, input: return / output: create and return
+		if (!(File.good() ^ input)) {
+			if (!input)
+				File.open(filename.c_str(), fstream::out);
+			return;
+		}
+		// If you cannot, input: file does not exist / output: file already exists
+		cout << "Error opening the file " << filename << ".\n";
+		cout << "File " << (input ? "does not" : "already") << " exists!" << endl;
+	} while ((File.good() ^ input));
+}
+
+
+

@@ -1,0 +1,94 @@
+.inline-div {
+    display:inline-block;
+    overflow: hidden;
+    margin: 0 0 0 ;
+}
+.inline-txtarea {
+    resize: none;
+    border : 2px solid black;
+    height:500px;
+}
+.inline-txtarea-input {
+    resize: none;
+    border : 2px solid black;
+    height:400px;
+    width:200px;
+}
+.inline-txtarea-output {
+    resize: none;
+    border : 2px solid black;
+    height:400px;
+    width: 500px;
+}
+
+.text-narrow {
+    margin: 0 auto;
+    max-width: 500px;
+    .min-height: 1500px;
+}
+.centerlize {
+	text-align: center;
+	margin: 0 0 0;
+}
+
+body {
+	text-align: center;
+}
+
+h1 { 
+	color: #111; 
+	font-family: 'Open Sans Condensed', sans-serif; 
+	font-size: 48px; 
+	font-weight: 700; 
+	line-height: 64px; 
+	margin: 0 0 0; 
+	padding: 5px 10px; 
+	text-align: center; 
+	text-transform: uppercase; 
+	}
+h2 { 
+	color: #111; 
+	font-family: 'Open Sans Condensed', sans-serif; 
+	font-size: 48px; 
+	font-weight: 700; 
+	line-height: 48px; 
+	margin: 0 0 24px; 
+	padding: 0 30px; 
+	text-align: center; 
+	text-transform: uppercase; 
+	}
+
+
+p,input { 
+	color: #111; 
+	font-family: 'Open Sans', sans-serif; 
+	font-size: 16px; 
+	line-height: 28px; 
+	margin: 0 0 12px; 
+	}
+select, option, button { 
+	font-family: 'Open Sans', sans-serif; 
+	font-size: 16px; 
+	}
+
+
+a {
+	color: #990000; 
+	text-decoration: none;
+	}
+
+
+a:hover { 
+	text-decoration: underline 
+	}
+
+
+textarea {
+    .width: 500px;
+    .height: 1500px;
+    resize: none;
+    .overflow: hidden;
+    .word-wrap: normal;
+    white-space: normal;
+    margin: 0 auto;
+}

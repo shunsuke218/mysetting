@@ -1,0 +1,89 @@
+#!/usr/bin/expect -f
+
+# Set variables
+set hostname [lindex $argv 0]
+set username $env(USER)
+set password [lindex $argv 1]
+set tunnelip [lindex $argv 2]
+set ip [lindex $argv 5]
+set target ""
+set origin ""
+
+# Set timeout
+set timeout [lindex $argv 3]
+
+# Log results
+log_file -a /tmp/tunnellog_[lindex $argv 4]
+# Silent mode
+log_user 0
+
+# Announce which device we are working on and at what time
+send_user ">>>>>  Working on $hostname @ [exec date] <<<<<\n"
+
+# Don't check keys
+spawn ssh -o StrictHostKeyChecking=no $username\@$hostname
+
+# Allow this script to handle ssh connection issues
+expect {
+	timeout { send_user "\nTimeout Exceeded - Check Host\n"; exit 1 }
+	eof { send_user "\nSSH Connection To $hostname Failed\n"; exit 1 }
+	"*#" {}
+	"(yes/no)?" {
+        send "yes\n"
+        exp_continue
+	}
+	"*assword:" {
+		send -- "${password}\n"
+	}
+}
+
+# If BGP Flap
+if {
+	[regexp {^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$} $tunnelip]
+} {
+	global spawn_id
+	expect "*#"
+	send "sh bgp sum | i $tunnelip\n"
+	expect "*#"
+	send "sh log | i $tunnelip\n"
+	expect "*#"
+	send " exit\n"
+	expect "*$"
+	exit
+}
+
+# Commands to send
+expect "*#"
+send "sh int tunnel-ip$tunnelip des\n"
+expect "*#"
+send "sh log | i tunnel-ip$tunnelip\n"
+expect "*#"
+send "sh int tunnel-ip$tunnelip | i dest\n"
+expect "*#"
+# If source IP exists
+if {
+	[catch {
+		exec grep "Tunnel source" /tmp/tunnellog_[lindex $argv 4] | cut -f 1 -d {,} | grep -oE {[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+}
+	} results] == 0
+} {
+	set origin $results
+} else {
+	exit
+}
+
+# If target IP exists
+if {
+	[catch {
+		exec grep "Tunnel source" /tmp/tunnellog_[lindex $argv 4] | cut -f 2 -d {,} | grep -oE {[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+}
+	} results] == 0
+} {
+	set target $results
+} else {
+	exit
+}
+
+send "traceroute $target source $origin\n"
+expect "*#"
+send "exit\n"
+expect "*$"
+exit

@@ -1,0 +1,27 @@
+#!/usr/bin/expect
+
+log_file /var/log/expect.log
+
+set RemoteHost [lindex $argv 0]
+set PW [lindex $argv 1]
+set Prompt "\[#$%>\]"
+
+set timeout 5
+
+spawn env LANG=C /usr/bin/ssh ${RemoteHost}
+expect {
+    -glob "(yes/no)?" {
+        send "yes\n"
+        exp_continue
+    }
+    -glob "password:" {
+        send -- "${PW}\n"
+    }
+}
+
+expect {
+    -glob "${Prompt}" {
+        interact
+        exit 0
+    }
+}

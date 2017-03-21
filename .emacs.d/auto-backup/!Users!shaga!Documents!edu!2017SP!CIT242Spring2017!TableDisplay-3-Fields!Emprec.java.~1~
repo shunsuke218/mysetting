@@ -1,0 +1,41 @@
+import java.text.*;
+
+class Emprec {
+    String name;
+    String address;
+    String socsec;
+
+
+Emprec (String name,String address,String socsec)
+{
+    this.name=name;
+    this.address=address;
+    this.socsec=socsec;
+    
+}
+
+public String toString() 
+{ 
+    return
+        ("\n your name is "+ this.name+
+        "\n your address is "+ this.address+
+        "\n your social security is "+ this.socsec
+         );
+}
+
+public String getName()
+{
+    return this.name;
+}
+
+public String getAddress()
+{
+    return this.address;
+}
+
+public String getSocsec()
+{
+    return this.socsec;
+}
+
+}

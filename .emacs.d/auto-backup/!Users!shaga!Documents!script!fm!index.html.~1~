@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>IP Address List</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+
+
+<body>
+ <h1>Customer IP Address</h1>
+ <div class="incline-div">
+   <p align="center">Customer A</p>
+ </div>
+ <script>
+	 $(function() {
+	 $("#includedContent").load("customer.html");
+	 });
+ </script>
+ <div class="incline-div" id="includedContent"></div>
+ 
+<br />
+<p style="font-size: 12px"><a href="https://ac.akamai.com/message/24908" target="_blank">PLX Extractor</a> Created \
+by: Shunsuke Haga <a href="https://docs.google.com/a/akamai.com/document/d/10Y60jTzWEf7D_bO2lTLlz07NDLCDd16X9oh6Fic\
+dn8c/edit?usp=sharing" target="_blank">manual</a></p>
+
+
+</body>
+</html>

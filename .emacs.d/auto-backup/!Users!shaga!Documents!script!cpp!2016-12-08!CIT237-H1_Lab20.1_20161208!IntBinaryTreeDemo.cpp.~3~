@@ -1,0 +1,160 @@
+// This program demonstrates the insertNode member function.
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include "IntBinaryTree.h"
+
+#define CINCLEAR cin.clear(); cin.ignore(65536,'\n');
+#define FILL right << setw(WIDTH) << setfill(SEPARATOR)
+
+// Constant used for FILL template
+const char SEPARATOR = ' ';
+const int WIDTH = 5;
+
+using namespace std;
+
+int main() {
+	IntBinaryTree list;
+	
+	while (true) {
+		//char option;
+		string option;
+		int num;
+		cout << endl;
+
+		// User input
+		cout << "command: ";
+		cin >> option;
+		CINCLEAR
+
+	if (option == "C") {
+		list.userRemoveAllNodes();
+	} else if (option == "d") {
+		list.displayInOrder();
+		cout << endl;
+	} else if (option == "post") {
+		list.displayPostOrder();
+		cout << endl;
+	} else if (option == "pre") {
+		list.displayPreOrder();
+		cout << endl;
+	} else if (option == "D") {
+		list.enhancedTreeDisplay();
+	} else if (option == "H") {
+		list.displayTreeHeight();
+	} else if (option == "i") {
+		list.userInsertNode();
+	} else if (option == "n") {
+		list.displayNumberOfNodes();
+	} else if (option == "r") {
+		list.userRemoveAllNodes();
+		list.openInputFile();
+		list.readFile();
+	} else if (option == "R") {
+		list.userRemoveNode();
+	} else if (option == "s") {
+		list.userSearchNode();
+	} else if (option == "v") {
+		list.setVerboseMode(~list.getVerboseMode());
+		cout << "toggled verbose mode." << endl;
+		continue;
+	} else if (option == "h") {
+		// HELP
+		cout <<
+			"Supported commands:" << endl <<
+			FILL << right << "C" << FILL << " " << "(upper-case ‘C’) removes ALL nodes from the tree (“Clobber”)." << endl <<
+			FILL << right << "d" << FILL << " " << "(lower-case ‘d’) command displays the binary tree nodes by INorder traversal" << endl <<
+			FILL << right << "D" << FILL << " " << "(upper-case ‘D’) command implements an enhanced version of the tree display (lab exercise)" << endl <<
+			FILL << right << "h" << FILL << " " << "(lower-case ‘h’) command prints “help” text." << endl <<
+			FILL << right << "H" << FILL << " " << "(upper-case ‘H’) command displays the tree height (lab exercise)." << endl <<
+			FILL << right << "i" << FILL << " " << "allows the user to insert a node into the tree, with a user-specified value" << endl <<
+			FILL << right << "n" << FILL << " " << "displays the number of nodes in the tree." << endl <<
+			FILL << right << "post" << FILL << " " << "displays the binary tree nodes by POSTorder traversal." << endl <<
+			FILL << right << "pre" << FILL << " " << "displays the binary tree nodes by PREorder traversal." << endl <<
+			FILL << right << "q" << FILL << " " << "exits the program." << endl <<
+			FILL << right << "r" << FILL << " " << "(lower-case ‘r’) first deletes any tree which is already loaded, and then opens an input (text) file and reads the contents into the binary tree." << 
+			FILL << right << "R" << FILL << " " << "(upper-case ‘R’) removes a selected node from the tree." << endl <<
+			FILL << right << "s" << FILL << " " << "searches the tree for a user-specified value" << endl <<
+			FILL << right << "v" << FILL << " " << "sets or clears VERBOSE mode." << endl;
+	} else if (option == "q") {
+		// QUIT
+		cout << "Exiting..." << endl;
+		return 0;
+	} else {
+		continue;
+	}
+
+			
+			/*
+			switch (option) {
+		
+			case 'C':
+				list.userRemoveAllNodes();
+				continue;
+			case 'd':
+				list.displayInOrder();
+				cout << endl;
+				list.displayPreOrder();
+				cout << endl;
+				list.displayPostOrder();
+				cout << endl;
+				continue;
+			case 'D':
+				list.enhancedTreeDisplay();
+				continue;
+			case 'H':
+				list.displayTreeHeight();
+				continue;
+			case 'i':
+				list.userInsertNode();
+				continue;
+			case 'n':
+				list.displayNumberOfNodes();
+				continue;
+			case 'r':
+				destroySubTree(list->getRoot());
+				list.openInputFile();
+				continue;
+			case 'R':
+				list.userRemoveNode();
+				continue;
+			case 's':
+				list.userSearchNode();
+				continue;
+			case 'v':
+				list.setVerboseMode(~list.getVerboseMode());
+				cout << "toggled verbose mode." << endl;
+				continue;
+		
+			case 'h':
+				// HELP
+				cout <<
+					"Supported commands:" << endl <<
+					FILL << right << "C" << FILL << " " << "(upper-case ‘C’) removes ALL nodes from the tree (“Clobber”)." << endl <<
+					FILL << right << "d" << FILL << " " << "(lower-case ‘d’) command displays the binary tree nodes by INorder traversal" << endl <<
+					FILL << right << "D" << FILL << " " << "(upper-case ‘D’) command implements an enhanced version of the tree display (lab exercise)" << endl <<
+					FILL << right << "h" << FILL << " " << "(lower-case ‘h’) command prints “help” text." << endl <<
+					FILL << right << "H" << FILL << " " << "(upper-case ‘H’) command displays the tree height (lab exercise)." << endl <<
+					FILL << right << "i" << FILL << " " << "allows the user to insert a node into the tree, with a user-specified value" << endl <<
+					FILL << right << "n" << FILL << " " << "displays the number of nodes in the tree." << endl <<
+					FILL << right << "post" << FILL << " " << "displays the binary tree nodes by POSTorder traversal." << endl <<
+					FILL << right << "pre" << FILL << " " << "displays the binary tree nodes by PREorder traversal." << endl <<
+					FILL << right << "q" << FILL << " " << "exits the program." << endl <<
+					FILL << right << "r" << FILL << " " << "(lower-case ‘r’) first deletes any tree which is already loaded, and then opens an" << endl <<
+input (text) file and reads the contents into the binary tree.
+					FILL << right << "R" << FILL << " " << "(upper-case ‘R’) removes a selected node from the tree." << endl <<
+					FILL << right << "s" << FILL << " " << "searches the tree for a user-specified value" << endl <<
+						FILL << right << "v" << FILL << " " << "sets or clears VERBOSE mode." << endl;
+
+				
+				continue;
+			case 'q':
+				// QUIT
+				cout << "Exiting..." << endl;
+				return 0;
+			default:
+				continue;
+			}
+			*/
+	}
+}

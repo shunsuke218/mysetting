@@ -1,0 +1,39 @@
+vector<std::string> split(const string &string) {
+    vector<std::string> elems;
+	bool quote = false;
+	std::string item;
+
+	// For each character in string
+	for (std::string::size_type i = 0; i < string.size(); ++i) {
+		char ch = string[i];
+		// If the character is delimiter, put it in a vector
+		switch(ch) {
+		case '|':
+			// If '|', push it to vector.
+			if (quote) 
+				item = '\"' + item + '\"';
+			elems.push_back(item);
+			item.clear();
+			quote = false;
+			break;
+		case '"':
+			// If '"', make it double double-quotations
+			item += "\"\"";
+			break;
+		case ',':
+			// If ',', wrap the item with double-quotations
+			item += ',';
+			quote = true;
+			break;
+		default:
+			// Other case, continue to read until meets next delimiter or EOL.
+			item += ch;
+		}
+	}
+	// Last item should be stored too.
+	if (quote)
+		item = "\"" + item + "\"";
+    if (!item.empty())
+        elems.push_back(item);
+    return elems;
+}

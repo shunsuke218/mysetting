@@ -1,0 +1,46 @@
+// Video: 
+
+//Comment GS2 Using the Automated Kona Event Report Generator
+//Questions below. Try for two “T/F” and three “multiple choice” in one-of-four style
+
+//For multiple choice. ALWAYS list the correct answer FIRST for ease of edits
+//… and don’t worry as the answers will be randomized during quiz execution.
+
+::Multiple Choice::Which of the following is NOT the primary problems of Kona Attack Report Tool
+{
+=Scalability
+~ROI Leakage
+~Limited Quality
+~Slower Delivery
+}
+
+::Multiple Choice::What two solutions are suggested?
+{
+=Enhanced Efficiency, Automation
+~Enhanced Efficiency, Risk Reduction
+~Risk Reduction, Cost Reduction
+~Cost Reduction, Automation
+}
+
+::Multiple Choice::Which of the following data type is not supported?
+{
+=XML output
+~Security Monitor
+~CSI
+~JSON output for analytical processing
+}
+
+::Multiple Choice::Which of the following is not considered as a benefit by tool?
+{
+=High Scalability
+~High ROI
+~High Security
+~High Productivity
+}
+
+::True or False::
+{
+=
+~
+}
+

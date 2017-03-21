@@ -1,0 +1,9 @@
+Command,EMACS,VI
+
+The first line,M-<,Ggg
+The last line,M->,G
+
+Page up,M-v,C-b
+Page Down,M-v,C-f
+
+Move word,M-F,w

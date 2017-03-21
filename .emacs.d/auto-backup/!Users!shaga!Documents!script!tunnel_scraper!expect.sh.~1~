@@ -1,0 +1,12 @@
+#!/bin/sh
+
+PW="ng0QAZXC!@#"
+
+expect -c "
+set timeout 5
+spawn env LANG=C /usr/bin/ssh hoge@ServerName
+expect \"password:\"
+send \"${PW}\n\"
+expect \"$\"
+exit 0
+"

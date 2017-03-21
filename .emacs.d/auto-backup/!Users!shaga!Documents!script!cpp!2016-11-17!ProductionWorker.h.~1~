@@ -1,0 +1,32 @@
+// Specification file for the Employee class
+#ifndef PRODUCTIONWORKER_H
+#define PRODUCTIONWORKER_H
+#include <string>
+using namespace std;
+
+class ProductionWorker : public Employee
+{
+ private:
+	int shift;
+	double payrate;
+	
+ public:
+	// Constructors
+	ProductionWorker();
+ ProductionWorker(string aName, string aDate, int shift, double payrate) :  Employee(aName, aDate)	{
+		Employee(aName, aDate);
+		this->shift = shift;
+		this->payrate = payrate;
+	}
+	;
+	
+	// Mutators
+	void setShift(int shift);
+	void setPayrate(double payrate);
+
+	// Accessors
+	int getShift() const;
+	double getPayrate() const;
+};
+
+#endif

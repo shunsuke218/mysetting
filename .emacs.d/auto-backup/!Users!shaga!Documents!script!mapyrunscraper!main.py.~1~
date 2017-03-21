@@ -1,0 +1,982 @@
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+# coding: utf-8
+import sys
+import os
+stdin = sys.stdin
+stdout = sys.stdout
+sys.path.insert(0,'lib')
+reload(sys)
+sys.setdefaultencoding('utf-8')
+sys.stdin = stdin
+sys.stdout = stdout
+#sys.path.append(os.pardir)
+sys.path.append(os.pardir + '/lib/')
+#os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+ 
+ 
+import mechanize
+from BeautifulSoup3.BeautifulSoup import BeautifulSoup as BeautifulSoup
+import lxml
+ 
+import logging
+import logging.handlers
+import cookielib
+import urllib, urllib2
+ 
+import traceback
+import time
+import csv
+import re
+import datetime
+import wsgiref.handlers
+import string
+ 
+from google.appengine.ext import webapp
+from google.appengine.ext.webapp.util import run_wsgi_app
+from google.appengine.ext.webapp import template
+from google.appengine.ext import db
+from google.appengine.api import datastore
+from google.appengine.api.labs import taskqueue
+#from google.appengine.dist import use_library
+#use_library('django', '1.4')
+ 
+from graph import *
+ 
+charttype = "Pie"
+chartrange = "30"
+datas = u'ケモノ'
+  
+##################################################
+# Browser
+br = mechanize.Browser()
+# Browser options
+br.set_handle_equiv(True)
+br.set_handle_redirect(True)
+br.set_handle_referer(True)
+br.set_handle_robots(False)
+ 
+# Cookie
+#cj = mechanize.LWPCookieJar()
+#try: # Load cookie if there is any
+    #cj.load(cookie_file)
+#except:
+    #pass
+#cj = cookielib.CookieJar()
+#br.set_cookiejar(cj)
+ 
+# User-Agent (this is cheating, ok?)
+br.addheaders = [('User-agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.120 Safari/535.2')]
+##################################################
+ 
+##################################################
+class MainHTML(webapp.RequestHandler):
+  def get(self):
+    datas = MyData.all().order('-time').fetch(1000, 0)
+    params = {'datas':datas,}
+    fpath = os.path.join(os.path.dirname(__file__),'views','home.html')
+    html = template.render(fpath,params)
+    self.response.headers['Content-Type'] = 'text/html'
+    self.response.out.write(html)
+  def post(self):
+    tg = self.request.get('name')
+    pixivLogin()
+    tgnm = parser(tg)
+    obj = MyData(tag=tg,tagnum=tgnm,key_name=tg)
+    obj.save()
+    tg = u'ケモノ'
+    obj = MyRtagDataVertex(tag=tg,key_name=tg)
+    obj2 = MyRtagDataNodes(tag=tg,key_name=tg)
+    obj.save()
+    obj2.save()
+    self.redirect('/')
+ 
+class Graph(webapp.RequestHandler):
+  def get(self):
+    params = {}
+    fpath = os.path.join(os.path.dirname(__file__),'views','graph.html')
+    html = template.render(fpath,params)
+    self.response.headers['Content-Type'] = 'text/html'
+    self.response.out.write(html)
+  def post(self):
+    global charttype, chartrange, chartnumber
+    charttype = self.request.get("graphtype")
+    chartrange = self.request.get("range")
+    chartnumber = self.request.get("number")
+    params = {
+              "graphtype" : charttype,
+              "range" : chartrange,
+              "number": chartnumber
+              }
+    fpath = os.path.join(os.path.dirname(__file__),'views','graph.html')
+    html = template.render(fpath,params)
+    self.response.headers['Content-Type'] = 'text/html'
+    self.response.out.write(html)
+ 
+ 
+ 
+class JSHandler(webapp.RequestHandler):
+    def get(self):
+        global chartrange,chartnumber,charttype
+        arraylist = []
+        if chartrange is '':
+            chartrange = "tagnum"
+        if chartnumber is '':
+            chartnumber = int(1000)
+        queries = MyData.all().order(chartrange).fetch(int(chartnumber), 0)
+        for query in queries:
+            tag = "'"+str(query.tag)+"'"
+            tagnum = str(query.tagnum)
+            array = "          ["+tag+", "+tagnum+"]"
+            arraylist.append(str(array))
+        dataarray = ",\n".join(arraylist)
+ 
+        js_code = head+str(dataarray)+tail+charttype+tail2
+        global js_code
+        page= str(self.request.get("page"))
+        self.response.out.write(js_code)
+ 
+class MainXML(webapp.RequestHandler):
+  def get(self):
+    datas = MyData.all().order('tag').fetch(1000, 0)
+    params = {'datas':datas,}
+    xpath = os.path.join(os.path.dirname(__file__),'views','pixivtags.xml')
+    xml = template.render(xpath,params)
+    self.response.headers['Content-Type'] = 'application/xml'
+    self.response.out.write(xml)
+ 
+ 
+class RelatedTagXML(webapp.RequestHandler):
+  def get(self):
+    datas = MyRtagData.gql("ORDER BY pagenum, parenttag ASC")
+    #datas = MyRtagData.all().order('pagenum').fetch(1000, 0)
+    params = {'datas':datas,}
+    xpath = os.path.join(os.path.dirname(__file__),'views','rtag.xml')
+    xml = template.render(xpath,params)
+    self.response.headers['Content-Type'] = 'application/xml'
+    self.response.out.write(xml)
+ 
+class RelatedTagQueryXML(webapp.RequestHandler):
+  def get(self,page,tag):
+    pixivLogin()
+    params = {'datas':reltagparser(page,tag),}
+    xpath = os.path.join(os.path.dirname(__file__),'views','rtagquery.xml')
+    xml = template.render(xpath,params)
+    self.response.headers['Content-Type'] = 'application/xml'
+    self.response.out.write(xml)
+ 
+class RelatedTagXMLTest(webapp.RequestHandler):
+  def get(self):
+    datas = MyRtagData.gql("ORDER BY pagenum, parenttag ASC")
+    #datas = MyRtagData.gql("ORDER BY pagenum DESC, parenttag DESC")
+    params = {'datas':datas,}
+    xpath = os.path.join(os.path.dirname(__file__),'views','rtagtest.xml')
+    xml = template.render(xpath,params)
+    self.response.headers['Content-Type'] = 'application/xml'
+    self.response.out.write(xml)
+ 
+class XMLNum(webapp.RequestHandler):
+  def get(self):
+    datas = MyData.all().order('tagnum').fetch(100, 0)
+    params = {'datas':datas,}
+    xpath = os.path.join(os.path.dirname(__file__),'views','pixivtags.xml')
+    xml = template.render(xpath,params)
+    self.response.headers['Content-Type'] = 'application/xml'
+    self.response.out.write(xml)
+ 
+ 
+class CSVHandler(webapp.RequestHandler):
+  def get(self,datenumber):
+    encoding = 'Shift_JIS'
+    if not re.search('utf', datenumber) == None:
+      encoding = 'utf_8'
+    self.response.headers['Content-Type'] = "application/x-csv; charset=%s" % (encoding)
+    title = '"time","tag","tagnum"'
+    self.response.out.write(title + "\r\n")
+    query = MyData.gql("ORDER BY tag DESC")
+    for q in query:
+      tm = q.time
+      tg = q.tag.encode(encoding)
+      tgnm = q.tagnum.encode(encoding)
+      self.response.out.write('"%s","%s","%s"\r\n' % (tm, tg, tgnm))
+ 
+ 
+class Reload(webapp.RequestHandler):
+  def get(self):
+    size = 5
+    datas = MyData.all().fetch(100)
+    print len(datas)
+    for i in range(0, len(datas), size):
+      params = {}
+      for j in range(0, size):
+        if i+ j >= len(datas):
+          break
+        params["tag"+str(j)] = datas[i+j].tag
+        #print datas[i+j].tag
+        #print params["tag"+str(j)]
+        #print '-----------------------'
+      taskqueue.add(url='/reloadtask', params = params)
+ 
+class ReloadTask(webapp.RequestHandler):
+  def post(self):
+    pixivLogin()
+    for i in range(0, 5):
+      for tg in self.request.get_all(argument_name="tag"+str(i)):
+        print tg
+        tgnm = parser(tg)
+        obj = MyData(tag=tg,tagnum=tgnm,key_name=tg)
+        obj.put()
+        time.sleep(5)
+ 
+class RelatedTag(webapp.RequestHandler):
+  def get(self):
+    size = 10
+    obj = MyRtagData(tag=u'ケモノ',pagenum = int(1))
+    obj.save()
+ 
+    #Delete all tags in MyRtagData.
+    query = MyRtagData.all().fetch(1000)
+    db.delete(query)
+ 
+    #Find Relative tags of kemono x 5 pages
+    tg = u'ケモノ'
+    pixivLogin()
+    for i in range(1, 6):
+      tgnm = reltagparser(i,tg)
+      for j in range(1,9):
+        tg = tgnm[j]
+        obj = MyRtagData(tag=tg,pagenum = int(i))
+        obj.save()
+    #Request relative tags in RtagDataVertex
+    datas = MyRtagData.all().fetch(100)
+    for i in range(0, len(datas), size):
+      params = {}
+      for j in range(0, size):
+        if i+ j >= len(datas):
+          break
+        params["tag"+str(j)] = datas[i+j].tag
+        params["pagenum"+str(j)] = datas[i+j].pagenum
+      taskqueue.add(url='/rtagtask', params = params)
+ 
+'''
+        #Find Relative children tags of above.
+        tgchldrn = reltagparser(1,tg)
+        for l in range(1,9):
+          tgchld = tgchldrn[l]
+          print tgchld
+          obj = MyRtagData(tag=tgchld, pagenum = int(i),parenttag=tg)
+          obj.save()
+'''
+ 
+ 
+ 
+ 
+class RelatedTagTask(webapp.RequestHandler):
+  def post(self):
+    #Find Relative children tags of above.
+    pixivLogin()
+    for i in range(0, 10):
+      for k in self.request.get_all(argument_name="tag"+str(i)):
+        pgnm = self.request.get(argument_name="pagenum"+str(i))
+        tgchldrn = reltagparser(1,k)
+        for l in range(1,9):
+          tgchld = tgchldrn[l]
+          obj = MyRtagData(tag=tgchld, pagenum = int(pgnm),parenttag=k)
+          obj.save()
+ 
+'''
+class RelatedTagTask(webapp.RequestHandler):
+  def post(self):
+    pixivLogin()
+    for i in range(0, 10):
+      for tg in self.request.get_all(argument_name="tag"+str(i)):
+        rtags = reltagparser(1,tg)
+        for rtag in rtags:
+          entity = MyRtagDataVertex.get_by_key_name(rtag)
+          if entity is None:
+            countnum = 0
+          else:
+            countnum = int(entity.count)
+          countnum = countnum + 1
+          obj = MyRtagDataVertex(tag=rtag,count=countnum,key_name=rtag)
+          obj.put()
+          obj2 = MyRtagDataNodes(source=tg,target=rtag,type="directed")
+          obj2.put()
+           
+        time.sleep(5)
+'''
+class DataBackup(webapp.RequestHandler):
+  def get(self):
+    #size = 5
+    #datas = MyData.all().fetch(100)
+    query = MyData.gql("ORDER BY tag DESC")
+    for q in query:
+      tm = q.time
+      tg = q.tag
+      tgnm = q.tagnum
+      obj = MyEntireData(time=tm,tag=tg,tagnum=tgnm)
+      obj.put()
+      #taskqueue.add(url='/databackuptask', params = params)
+ 
+class DataBackupTask(webapp.RequestHandler):
+  def post(self):
+    for i in range(0, len(datas), size):
+      MyData.gql("ORDER BY tag DESC")
+      for q in self:
+        tm = q.time
+        tg = q.tag
+        tgnm = q.tagnum
+        obj = MyEntireData(time=tm,tag=tg,tagnum=tgnm)
+        obj.put()
+     
+app = webapp.WSGIApplication([
+  ('/', MainHTML),
+  ('/xml',MainXML),
+  ('/xmlrtag/',RelatedTagXML),
+  ('/xmlrtag/(.*)/(.*)',RelatedTagQueryXML),
+  ('/xmlrtagtest/',RelatedTagXMLTest),
+  ('/graph',Graph),
+  ('/code.js', JSHandler),
+  ('/reload',Reload),
+  ('/reloadtask',ReloadTask),
+  ('/rtag',RelatedTag),
+  ('/rtagtask',RelatedTagTask),
+  ('/xmlnum',XMLNum),
+  ('/download/(.*).csv',CSVHandler),
+  ('/databackup',DataBackup),
+  ('/databackuptask',DataBackupTask)
+], debug=True)
+ 
+################################################## 
+class MyData(db.Model):
+  time = db.DateTimeProperty(required=True,auto_now_add=True)
+  def get_jst(self):
+    return self.time + datetime.timedelta(hours=9)
+  def epoc2datetime(self):
+    sDt = time.gmtime(self)
+    return datetime.datetime(sDt[0],sDt[1],sDt[2],sDt[3],sDt[4],sDt[5],sDt[6])
+  tag = db.StringProperty(required=True,multiline=False)
+  tagnum = db.IntegerProperty(required=True)
+ 
+class MyEntireData(db.Model):
+  time = db.DateTimeProperty(required=True,auto_now_add=False)
+  tag = db.StringProperty(required=True,multiline=False)
+  tagnum = db.IntegerProperty(required=True)
+class MyRtagData(db.Model):
+  time = db.DateTimeProperty(required=True,auto_now_add=True)
+  tag = db.StringProperty(required=True,multiline=False)
+  pagenum = db.IntegerProperty(required=True)
+  parenttag = db.StringProperty(required=False,multiline=False)
+class MyRtagDataVertex(db.Model):
+  time = db.DateTimeProperty(required=True,auto_now_add=True)
+  tag = db.StringProperty(required=True,multiline=False)
+  count = db.IntegerProperty(required=False)
+class MyRtagDataNodes(db.Model):
+  time = db.DateTimeProperty(required=True,auto_now_add=True)
+  source = db.StringProperty(required=True,multiline=False)
+  target = db.StringProperty(required=True,multiline=False)
+  type = db.StringProperty(required=True,multiline=False)
+##################################################
+ 
+##################################################
+def pixivLogin():
+  '''Log in to Pixiv, return 0 if success'''
+  print 'attempting to login'
+ 
+  try:
+      req = 'http://www.pixiv.net/login.php'
+      br.open(req)
+      time.sleep(5)
+       
+      br._factory.is_html = True
+      print br.viewing_html()
+      if not br.viewing_html() == True:
+        print 'viewing_html() returned invalid response', br.viewing_html()
+        return
+      try:
+        form = br.select_form(nr=1)
+      except:
+        return
+      try:
+        br['pixiv_id'] = 'kemono-research'
+        pass
+      except:
+        return
+      br['pass'] = 'p3a6ragu'
+      br.find_control('skip').items[0].selected = True
+ 
+      response = br.submit()
+      if response.geturl().find('pixiv.net/login.php') == -1:
+          print 'login completed'
+          #cj.save("cookie_file")
+           
+      else :
+          print 'login failed'
+ 
+  except:
+      print 'Error at pixivLogin():',sys.exc_info()
+      print 'failed'
+      raise
+##################################################
+ 
+##################################################
+#Enter query and returns tag number
+def parser (tag):
+    pageurl = "http://www.pixiv.net/search.php?" + \
+              urllib.urlencode( {"s_mode":"s_tag","word":tag.encode("utf8")} )
+ 
+    #Switch to online scraping
+    page = br.open(pageurl)
+ 
+    print 'tag url opened!'
+    readpage = page.read()
+    soup = BeautifulSoup(readpage)
+ 
+    #Scrape Tag number with BeautifulSoup
+    for div in soup('div', {'class':'column-label'}):
+        for span in div('span', {'class':'count-badge'}):
+            tagnum = span.text
+            tagnum = re.sub(unicode(r'件$'),'', tagnum)
+            tagnum = int(tagnum)
+            return tagnum
+ 
+def r18parser (tag):
+    pageurl = "http://www.pixiv.net/search.php?" + \
+            urllib.urlencode( 
+              {"s_mode":"s_tag",
+               "word":tag.encode("utf8"),
+               "r18":"1"} 
+            )
+ 
+    #Switch to online scraping
+    page = br.open(pageurl)
+ 
+    print 'tag url opened!'
+    readpage = page.read()
+    soup = BeautifulSoup(readpage)
+ 
+    #Scrape Tag number with BeautifulSoup
+    for div in soup('div', {'class':'column-label'}):
+        for span in div('span', {'class':'count-badge'}):
+            tagnum = span.text
+            tagnum = re.sub(unicode(r'件$'),'', tagnum)
+            tagnum = int(tagnum)
+            return tagnum
+ 
+def reltagparser (page,tag):
+  rtaglist = []
+  pageurl = "http://www.pixiv.net/search.php?" + \
+            urllib.urlencode( 
+              {"s_mode":"s_tag",
+               "p": page,
+               "word":tag.encode("utf8"),
+               "r18":"1"} 
+            )
+ 
+  #Switch to online scraping
+  page = br.open(pageurl)
+   
+  print 'tag url opened!'
+  readpage = page.read()
+  soup = BeautifulSoup(readpage)
+   
+  #Scrape Tag number with BeautifulSoup
+  for dl in soup('dl', {'class':'column-related inline-list'}):
+    for a in dl('a', {'class':'text'}):
+      relatedtag = a.text
+      rtaglist.append(relatedtag)
+  return rtaglist
+##################################################
+     
+def main():
+    wsgiref.handlers.CGIHandler().run(app)
+    #run_wsgi_app(app)

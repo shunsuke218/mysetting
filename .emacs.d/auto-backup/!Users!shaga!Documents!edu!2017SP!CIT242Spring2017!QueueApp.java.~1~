@@ -1,0 +1,188 @@
+// HW  add a delete method to class MyNameQueue !!!!
+// demonstrate that it works !!!!
+//CIT242 Data Structures
+//BHCC
+
+
+public class QueueApp {
+
+    public static void main(String[] args) {
+        MyNameQueue myQueue = new MyNameQueue();
+
+        System.out.println("Welcome to my Queue.\n");
+        
+        //populating the queue
+        myQueue.push("Jack", "Haley");
+        myQueue.push("A", "A");
+        myQueue.push("John", "Smith");
+        myQueue.push("Winston", "Churchill");
+        myQueue.push("Nelson", "Mandela");
+        myQueue.push("Mary", "Jones");
+
+        System.out.println("before popping:");
+        myQueue.printQueue();
+        System.out.println("");
+
+        System.out.println("do a pop:");
+        myQueue.pop();
+        System.out.println("");
+
+        System.out.println("after popping:");
+        myQueue.printQueue();
+        System.out.println("");
+
+        System.out.println("count the queue:");
+        myQueue.countQueue();
+        System.out.println("");
+        System.out.println("");
+
+        System.out.println("after a listInsert (Walt Disney) :");
+        myQueue.listInsert("Walt", "Disney");
+        myQueue.printQueue();
+        System.out.println("");
+
+		System.out.println("after a listDelete (Nelson Mandela) :");
+        myQueue.listDelete("Nelson", "Mandela");
+        myQueue.printQueue();
+        System.out.println("");
+
+    }
+}
+
+class Entry {
+	/* Variables */
+    String first;
+    String last;
+
+    public Entry(String first, String last) {
+        this.first = first;
+        this.last = last;
+    }
+
+    public String toString() {
+        //return "Entry{" + "first=" + first + ", last=" + last + '}';
+        return first + " " + last;
+    }
+}
+
+class NODE {
+    Entry info;
+    NODE link;
+    public NODE(Entry info) {
+        this.info = info;
+    }
+    public NODE() {
+        info = new Entry("\0", "\0");
+    }
+}
+
+class MyNameQueue {
+	/* Variable Declaration */
+    NODE top;
+    NODE last;
+
+	/* Constructor */
+    public MyNameQueue() {
+        top = null;
+    }
+
+	/* Method */
+	// Push method. - Add to the queue
+    public void push(String firstName, String lastName) {
+        Entry newEntry = new Entry(firstName, lastName);
+        NODE newRecord = new NODE();
+        newRecord.info = newEntry;
+        newRecord.link = null;
+
+        if (top == null) {
+            top = last = newRecord;
+        } else {
+            last.link = newRecord; //why?
+            last = newRecord;
+        }
+    }
+	// Pop method
+    public NODE pop() {
+        if (top == null) {
+            System.out.println("the queue is empty.");
+            return new NODE(); //return null;
+        } else {
+            NODE p = top;
+            top = top.link;
+            System.out.println(p.info.toString());
+			//p.link = null;  //is this necessary????
+            return p;
+        }
+    }
+	// Print queue
+    public void printQueue() {
+        NODE newTop = top;
+        while (newTop != null) {
+            System.out.println(newTop.info.toString());
+            newTop = newTop.link;
+        }
+    }
+
+	// count Queue
+	public void countQueue() {
+        int i = 0;
+        NODE p = top;
+        while (p != null) {
+            i++;
+            p = p.link;
+        }
+        System.out.printf("Total items in queue: %d", i);
+    }
+
+
+	// Insert Queue
+    public void listInsert(String firstName, String lastName) {
+        Entry newEntry = new Entry(firstName, lastName);
+        NODE last, next;
+        next = top;
+        last = null; // is this necessary???? Yes, you might insert a new NODE before the top
+        while ((newEntry.last.compareTo(next.info.last) > 0) && (next.link != null)) {
+            last = next;
+            next = next.link;
+            System.out.println("here");
+        }
+        if (newEntry.last.compareTo(next.info.last) == 0) {
+            next.info = newEntry; //update
+        } 
+		else
+			if (newEntry.last.compareTo(next.info.last) < 0) {
+				if (last == null) { //if the new entry should be insert before the top
+					NODE p = new NODE(newEntry);
+					p.link = top;
+					top = p;
+				} else {
+					last.link = new NODE();
+					last.link.info = newEntry;
+					last.link.link = next;
+				}
+			} 
+			else {
+				//  NODE temp = next.link; //store the link after next node before insert the new node after the next node
+				next.link = new NODE();
+				next.link.info = newEntry;
+				// next.link.link = temp;
+				next.link.link = null;
+			}
+	}
+	// Delete
+	public void listDelete(String firstName, String lastName) {
+        NODE last, next;
+        next = top;
+        last = null;
+
+		while(next.link != null) {
+			// While able to travelse...
+			int lastmatch = lastName.compareTo(next.info.last);
+			int firstmatch = firstName.compareTo(next.info.first);
+			if (lastmatch == 0 && firstmatch == 0)
+				last.link = next.link;
+			last = next;
+			next = next.link;
+		}
+	}
+}

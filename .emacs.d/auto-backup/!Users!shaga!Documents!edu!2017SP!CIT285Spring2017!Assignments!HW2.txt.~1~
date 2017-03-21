@@ -1,0 +1,18 @@
+HW 2
+
+Take the Random File Series and do the following:
+
+1.)  Open the windows in the center of the screen.
+
+2.)  Add HotKeys to the buttons in the window.
+
+3.)  Make sure YOU control the cursor's focus !!!!
+
+4.) Enable the enter key to move thropugh the textfields as well as the buttons.
+
+5.) Update the Window Adapter !!!!
+
+***5.) Finally, write a separate program called UpdateRandomFile with full functionality (see above)  
+that will allow the user to update the random file.
+
+***6.) You can also create a program called DeleteRandomFile that will delete one or more records !!!

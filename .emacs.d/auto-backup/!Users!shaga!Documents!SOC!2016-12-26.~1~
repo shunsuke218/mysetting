@@ -1,0 +1,111 @@
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社KONAシステムにてWAFの アラート通知が上がりましたので連絡致します。
+只今イベントデータ解析中ですので、結果は後ほど報告いたします。
+
+解析結果が完了するまで、お客様にてお願いする対応はございません。
+
+本イベントが終息するまでに、新たなアラート通知が発生した場合には本件にて対応致します。
+アラートの詳細は以下の通りです。
+
+Notification: Alert Notification | P1 High Warned Rate Activity:P1 | nta_mk
+Start Time: 12/26/2016 20:04:00 UTC
+Domain : www.rosenka.nta.go.jp
+URL: akamai_masked
+Policy ID: qik1_21973
+Client IP : 219.96.58.141
+Edgescape Information (country, owner):
+Atsugi, Kanagawa, Japan
+TOKAI Communications Corporation
+
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+
+何卒宜しく御願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+
+
+--------------------------------------------------
+REQUESTED ACTION
+We are noticing high warned rate activity alert every now and then from IP 219.96.58.141. Please let us know if this is expected traffic. If yes, we will go ahead and add this IP to exclusion list such that this P1-high number of warned rate activity alert will not trigger for this IP.
+
+ANALYSIS SUMMARY
+We noticed around 248,647 warned triggers during the timeframe Dec 26, 19:58 - Dec 26, 20:04 GMT from a single source IP 219.96.58.141 which was targeting the multiple paths of hostname ‘www.rosenka.nta.go.jp’. These requests triggered the rate control “Page View Requests v2”, “Forward request v1 except www.nta and www.e-tax” and “Origin 404 error v1” and were warned at this time.  
+
+Request's method used was “GET” for these requests and a response of 200 was served to the user.
+
+Upon analyzing the requests, request header seems to be normal which can be found in the attached sheet. Kindly check the sample logs attached and let us know if any action is needed from our side.
+
+Sample Request:
+GET /main_h23/hirosima/simane/ratios/city_frm.htm HTTP/1.1
+Via: 1.0 ESX02-03
+User-Agent: Mozilla/4.0 (compatible; MSIE 5.5; Windows NT 5.0)
+Host: www.rosenka.nta.go.jp
+Accept: */*
+Cache-Control: max-age=0
+Connection: Keep-Alive
+
+Client IP or Countries:                219.96.58.141    -    shizuoka_computer_service._ltd    -    SHIZUOKA, 22 - JP
+Top Policy IDs:                        qik1_21973
+Top Rule IDs:                         Rate control - “Page View Requests v2”, “Forward request v1 except www.nta and www.e-tax” and “Origin 404 error v1”
+Top Hostname:                          www.rosenka.nta.go.jp
+--------------------------------------------------
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社 KONA システムからの WAF アラート通知に関するイベントデータ解析結果を
+以下にまとめましたので、ご確認ください。
+
+▪️お客様に実施をお願いする対応
+IPアドレス 219.96.58.141 から大量のアクセスを予期されていたかご確認の上
+同IPアドレスのブロックをご検討ください。
+
+▪️解析結果のまとめ
+12月26日の19:58 GMT(4:58 JST)から20:04 GMT(5:04 JST)の検知時間中
+単一IPアドレス 219.96.58.141 から「www.rosenka.nta.go.jp」以下多岐のURL宛に
+一分間に248,647回に及ぶGETリクエストが発生しました。
+
+
+詳細情報：
+検知時間：12月26日 19:58 GMT(4:58 JST)
+クライアント IP:  219.96.58.141
+ロケーション: SHIZUOKA, 22 - JP
+企業: shizuoka_computer_service._ltd
+
+
+Domain: www.rosenka.nta.go.jp
+Rule triggered: Rate control
+	 “Page View Requests v2”,
+	 “Forward request v1 except www.nta and www.e-tax”
+	 “Origin 404 error v1”
+Policy ID: qik1_21973
+HTTP Method: GET
+Status Code: 200
+
+
+
+サンプルリクエスト:
+GET /main_h23/hirosima/simane/ratios/city_frm.htm HTTP/1.1
+Via: 1.0 ESX02-03
+User-Agent: Mozilla/4.0 (compatible; MSIE 5.5; Windows NT 5.0)
+Host: www.rosenka.nta.go.jp
+Accept: */*
+Cache-Control: max-age=0
+Connection: Keep-Alive
+
+
+追加の処置をご希望の場合は、その旨をご連絡ください。
+弊社にてプロダクション環境の緊急変更などを実施するためには、お客様のメールによる事前承認が必要です。
+
+引き続き本件のイベントが終息するまでモニタリングし、定期的にアップデート致します。
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+ご確認、ご連絡のほどよろしくお願い致します。
+
+Haga, Shunsuke (芳賀 俊介)

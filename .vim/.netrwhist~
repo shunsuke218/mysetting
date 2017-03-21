@@ -1,0 +1,4 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_1='/Users/shaga/Documents/edu/advanced_java/com.javacodegeeks.advanced.java/advanced-java-part-1/src/main/java/com/javacodegeeks/advanced'
+let g:netrw_dirhist_2='/Users/shaga/Documents/script'

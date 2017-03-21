@@ -1,0 +1,156 @@
+class MyNameQueue {
+
+    NODE top;
+    NODE last;
+
+    public MyNameQueue() {
+        top = null;
+
+    }
+
+    public void push(String firstName, String lastName) {
+        Entry newEntry = new Entry(firstName, lastName);
+
+        NODE newRecord = new NODE();
+        newRecord.info = newEntry;
+        newRecord.link = null;
+
+      // This is for the QUEUE
+	  
+	  /*  if (top == null) {
+            top = last = newRecord;
+        } else {
+            last.link = newRecord; //why?
+            last = newRecord;
+        }
+*/
+
+// this is for the STACK
+newRecord.link=top;
+top=newRecord;
+
+
+
+    }
+
+    public void printQueue() {
+        NODE newTop = top;
+
+        while (newTop != null) {
+            System.out.println(newTop.info.toString());
+            newTop = newTop.link;
+
+        }
+
+    }
+
+    public NODE pop() {
+
+        if (top == null) {
+            System.out.println("the queue is empty.");
+            return new NODE(); //return null;
+        } else {
+            NODE p = top;
+            top = top.link;
+            System.out.println(p.info.toString());
+			//p.link = null;  //is this necessary????
+            return p;
+        }
+
+    }
+
+
+
+
+   public void countQueue() {
+        int i = 0;
+        NODE p = top;
+
+        while (p != null) {
+            i++;
+            p = p.link;
+        }
+
+        System.out.printf("Total items in queue: %d", i);
+    }
+
+    public void listInsert(String firstName, String lastName) {
+
+        Entry newEntry = new Entry(firstName, lastName);
+        NODE last, next;
+        next = top;
+        last = null; // is this necessary???? Yes, you might insert a new NODE before the top
+
+        while ((newEntry.last.compareTo(next.info.last) > 0) && (next.link != null)) {
+            last = next;
+            next = next.link;
+            System.out.println("here");
+        }
+
+        if (newEntry.last.compareTo(next.info.last) == 0) {
+            next.info = newEntry; //update
+			
+			
+        } 
+		else
+		if (newEntry.last.compareTo(next.info.last) < 0) {
+            if (last == null) { //if the new entry should be insert before the top
+                NODE p = new NODE(newEntry);
+                p.link = top;
+                top = p;
+
+            } else {
+                last.link = new NODE();
+                last.link.info = newEntry;
+                last.link.link = next;
+            }
+        } 
+else {
+          //  NODE temp = next.link; //store the link after next node before insert the new node after the next node
+            next.link = new NODE();
+            next.link.info = newEntry;
+           // next.link.link = temp;
+		   next.link.link = null;
+        }
+
+    }
+
+	/* HW1 */
+	// Delete
+	public void listDelete(String firstName, String lastName) {
+        NODE last, next;
+        next = top;
+        last = null;
+
+		while(next.link != null) {
+			// While able to travelse...
+			int lastmatch = lastName.compareTo(next.info.last);
+			int firstmatch = firstName.compareTo(next.info.first);
+			if (lastmatch == 0 && firstmatch == 0)
+				last.link = next.link;
+			last = next;
+			next = next.link;
+		}
+	}
+	/* HW2 */
+	// Insert Queue (Override)
+	public void listInsert(int num, String firstName, String lastName) {
+		Entry newEntry = new Entry(firstName, lastName);
+		NODE p = new NODE(newEntry);
+		NODE last, next;
+		next = top;
+		last = null;
+		
+		while(next.link != null) {
+			if (num <= 0) {
+				p.link = last.link;
+				last.link = p;
+				break;
+			}
+			last = next;
+			next = next.link;
+			num -= 1;
+		}
+	}
+
+}

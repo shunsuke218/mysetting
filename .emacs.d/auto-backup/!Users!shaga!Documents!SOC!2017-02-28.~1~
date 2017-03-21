@@ -1,0 +1,430 @@
+[shaga]
+
+++++ Ticket ++++
+
+Issue/Task:
+[shaga Feb.28th] KONA | Alert Notification | P3 - KDD - Overall denied triggers:P3
+
+Action Taken:
+[shaga Feb.28th] Sent/Called initial alert notification. Escalated to Specialist and pushed for 1 hour.
+
+Next Action:
+[shaga Feb.28th] Need Specilaist Analysis.
+
+++++ Runbook ++++
+
+Ignore Conditions:
+[shaga Feb.28th] None
+
+Special Instructions:
+[shaga Feb.28th] <Japanese speaking SOC should handle case prior to English speaking only SOC when available.>
+
+--------------------------------------------------
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社KONAシステムにてWAFの アラート通知が上がりましたので連絡致します。
+只今イベントデータ解析中ですので、結果は後ほど報告いたします。
+
+解析結果が完了するまで、お客様にてお願いする対応はございません。
+
+本イベントが終息するまでに、新たなアラート通知が発生した場合には本件にて対応致します。
+アラートの詳細は以下の通りです。
+
+Notification: Alert Notification | KDD - Overall denied triggers:P3 | mnex_kdd
+Start Time: 02/28/2017 13:48:00 GMT
+Domain : mst.monex.co.jp
+URL: 
+mst.monex.co.jp/pc/ITS/login/LoginIDPassword.jsp
+mst.monex.co.jp/pc/ITS/login/LoginIDPassword.jsp?ERROR_MESSAGE=���O�C���G���[�F���O�C��ID+�܂���+�p�X���[�h�����o�^�ƈقȂ�܂��B��͓��e�����m�F���������B(9000,-89)&MESSAGE_ID=0&MESSAGE_CATEGORY=0&url1=&url2=&lapt=1
+
+Policy ID: qqik1_2278
+Client IP : 
+222.12.120.195
+220.213.22.141
+124.18.37.5
+
+Edgescape Information (country, owner):
+Chofugaoka, Tokyo, Japan
+KDDI CORPORATION
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+
+何卒宜しく御願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+---------------------------------------------------
+
+ご担当者様、
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀と申します。
+
+本件に関しまして、前回の連絡から７２時間のモニタリングが経過しましたが、
+アラートの再発がないこと及び、特にご質問などがないようでしたのでケースを
+クローズと致します。
+
+以上、宜しくお願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+-
+---------------------------------------------------
+ANALYSIS SUMMARY
+It was observed that the client IPs 222.12.120.195 and 124.18.37.5 has breached the rate controls intermittent within the timeframe Feb 28, 13:44 GMT - Feb 28, 13:59 GMT. All the requests are GET requests for the resources at 'mst.monex.co.jp/pc/ITS/login/LoginIDPassword.jsp' and this seems to be brute force attempt at login page. All the requests have been successfully mitigated as the rate controls are set to deny mode.
+
+Sample Request from 222.12.120.195
+GET /pc/ITS/login/LoginIDPassword.jsp HTTP/1.1 
+Host: mst.monex.co.jp
+Accept: text/html, application/xhtml+xml, image/jxr, */*
+Accept-Language: ja-JP
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Cookie: _ga=GA1.3.1811821139.1460678880; _gat_UA-36648855-10=1; cntntsId=014; CRM=CRM; gamnId=CRMTOP; hyjiEndnitiji=201007200000; hyjiStnitiji=199901010000; IBMID=rPabhQ-zPHXnGGPrwnV-lfn:1; krt.vis=1569588333_1474668299275_455494069; mnxset=MenuColor%3D0%2C80%26hyoukahyoji%3D0%26loginmode%3Dnml%26mrgac%3Dr%26ac1%3D9%26moflg%3Dm%26imgvm%3D0%2C%26mypage%3Dl%3Ainfo%2Ckabu%2Cbond%2Cservice%2Clearn%2Br%3Ainvest%2Cseminar%2Cfund%2Clab-tools%2Cnotes%26minimize%3D%26Z01%3D1%26Z03%3D0%26Z04%3D0%26Z05%3D0%26Z06%3D0%26Z07%3D0; monex_ikan_kbn=1; PMData=""; valSegzk=000
+
+Sample Request from 124.18.37.5
+
+Accept: text/html, application/xhtml+xml, */*
+Accept-Language: ja-JP
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: mst.monex.co.jp
+Connection: Keep-Alive
+Cookie: _ga=GA1.3.1574898036.1461074224; cntntsId=001; CRM=CRM; gamnId=CRMTOP; hyjiEndnitiji=199901021400; hyjiStnitiji=199901011400; IBMID=CV08-lycjoRXtYcT4zoUrxz:1; krt.vis=561281468_1473261857501_638470607; mnxset=MenuColor%3D0%2C80%26hyoukahyoji%3D0%26deqId%3DhC-grT8cz80H3gx4wZ1ouff%26mypNews%3D1%26loginmode%3Dnml%26mrgac%3Dr%26ac1%3D8%26moflg%3Dm%26imgvm%3D0%2C%26mypage%3Dl%3Ainfo%2Ckabu%2Cbond%2Cservice%2Clearn%2Br%3Ainvest%2Cseminar%2Cfund%2Clab-tools%2Cnotes%26minimize%3D%26Z01%3D3%26Z03%3D0%26Z04%3D21%26Z05%3D0%26Z06%3D0%26Z07%3D0%26Zsmile%3D1; PMData=""; valSegzk=300
+
+Client IP or Countries: 222.12.120.195 (TOKYO), 124.18.37.5 (SAKAE)
+Asnum: 2516 and 18126 respectively
+Top URL's: 'mst.monex.co.jp/pc/ITS/login/LoginIDPassword.jsp'
+Top Policy IDs: qik1_22789
+Top Rule IDs: HTML Base Page for Alert Monitoring v4 -> deny, Page view request rate policy_A_bypass_path v4 -> deny
+
+
+
+
+--------------------------------------------------
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社 KONA システムからの WAF アラート通知に関するイベントデータ解析結果を
+以下にまとめましたので、ご確認ください。
+
+▪️お客様に実施をお願いする対応
+IPアドレス  222.12.120.195 と 124.18.37.5 からのイベントは終息したと見られます。
+現時点でお願いする対応はありません。
+
+▪️解析結果のまとめ
+2月28日の 13:44 GMT (21:44 JST) から13:59 GMT (21:59 JST)の検知時間中
+IPアドレス 222.12.120.195 と 124.18.37.5 からmst.monex.co.jp/pc/ITS/login/LoginIDPassword.jsp'ドメイン宛に
+多数のGETリクエストが発生しました。
+攻撃者はブルートフォース攻撃によりログインを試みたとみられます。
+これらの攻撃はレートコントロールがDenyに設定されていたため、安全にブロックされました。
+
+詳細情報：
+検知時間：2月28日 13:44 GMT (21:44 JST)
+クライアント IP:  222.12.120.195, 124.18.37.5
+ロケーション: TOKYO, SAKAE
+ASNUM: 2516, 18126
+Top URL's: 'mst.monex.co.jp/pc/ITS/login/LoginIDPassword.jsp'
+Top Policy IDs: qik1_22789
+Top Rule IDs: HTML Base Page for Alert Monitoring v4 -> deny, Page view request rate policy_A_bypass_path v4 -> deny
+
+サンプルリクエスト:
+<222.12.120.195>
+GET /pc/ITS/login/LoginIDPassword.jsp HTTP/1.1 
+Host: mst.monex.co.jp
+Accept: text/html, application/xhtml+xml, image/jxr, */*
+Accept-Language: ja-JP
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Cookie: _ga=GA1.3.1811821139.1460678880; _gat_UA-36648855-10=1; cntntsId=014; CRM=CRM; gamnId=CRMTOP; hyjiEndnitiji=201007200000; hyjiStnitiji=199901010000; IBMID=rPabhQ-zPHXnGGPrwnV-lfn:1; krt.vis=1569588333_1474668299275_455494069; mnxset=MenuColor%3D0%2C80%26hyoukahyoji%3D0%26loginmode%3Dnml%26mrgac%3Dr%26ac1%3D9%26moflg%3Dm%26imgvm%3D0%2C%26mypage%3Dl%3Ainfo%2Ckabu%2Cbond%2Cservice%2Clearn%2Br%3Ainvest%2Cseminar%2Cfund%2Clab-tools%2Cnotes%26minimize%3D%26Z01%3D1%26Z03%3D0%26Z04%3D0%26Z05%3D0%26Z06%3D0%26Z07%3D0; monex_ikan_kbn=1; PMData=""; valSegzk=000
+
+<124.18.37.5>
+GET /pc/ITS/login/LoginIDPassword.jsp HTTP/1.1 
+Accept: text/html, application/xhtml+xml, */*
+Accept-Language: ja-JP
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: mst.monex.co.jp
+Connection: Keep-Alive
+Cookie: _ga=GA1.3.1574898036.1461074224; cntntsId=001; CRM=CRM; gamnId=CRMTOP; hyjiEndnitiji=199901021400; hyjiStnitiji=199901011400; IBMID=CV08-lycjoRXtYcT4zoUrxz:1; krt.vis=561281468_1473261857501_638470607; mnxset=MenuColor%3D0%2C80%26hyoukahyoji%3D0%26deqId%3DhC-grT8cz80H3gx4wZ1ouff%26mypNews%3D1%26loginmode%3Dnml%26mrgac%3Dr%26ac1%3D8%26moflg%3Dm%26imgvm%3D0%2C%26mypage%3Dl%3Ainfo%2Ckabu%2Cbond%2Cservice%2Clearn%2Br%3Ainvest%2Cseminar%2Cfund%2Clab-tools%2Cnotes%26minimize%3D%26Z01%3D3%26Z03%3D0%26Z04%3D21%26Z05%3D0%26Z06%3D0%26Z07%3D0%26Zsmile%3D1; PMData=""; valSegzk=300
+
+
+追加の処置をご希望の場合は、その旨をご連絡ください。
+弊社にてプロダクション環境の緊急変更などを実施するためには、お客様のメールによる事前承認が必要です。
+
+引き続き本件のイベントが終息するまでモニタリングし、定期的にアップデート致します。
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+ご確認、ご連絡のほどよろしくお願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+
+--------------------------------------------------
+
+ご担当者様、
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀と申します。
+
+本件に関しまして、前回の連絡以降特にご質問などがないようでしたので
+ケースをクローズと致します。
+
+以上、宜しくお願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+-
+
+
+
+----------------------------------------------------------------------------------------------------
+[shaga]
+
+++++ Ticket ++++
+
+Issue/Task:
+[shaga Feb.28th] KONA | Alert Notification | P3 - KDD - Overall denied triggers:P3
+
+Action Taken:
+[shaga Feb.28th] Sent/Called initial alert notification. Escalated to Specialist and pushed for 1 hour.
+
+Next Action:
+[shaga Feb.28th] Need Specilaist Analysis.
+
+++++ Runbook ++++
+
+Ignore Conditions:
+[shaga Feb.28th] None
+
+Special Instructions:
+[shaga Feb.28th] <Japanese speaking SOC should handle case prior to English speaking only SOC when available.>
+
+-------------------------------------------------
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社KONAシステムにてWAFの アラート通知が上がりましたので連絡致します。
+只今イベントデータ解析中ですので、結果は後ほど報告いたします。
+
+解析結果が完了するまで、お客様にてお願いする対応はございません。
+
+本イベントが終息するまでに、新たなアラート通知が発生した場合には本件にて対応致します。
+アラートの詳細は以下の通りです。
+
+Notification: KONA | Alert Notification | P3 High Number of Denied Triggers:P3
+Start Time: 02/28/2017 19:52:00 GMT
+Domain : www.aeon.jp
+URL: N/A 
+Policy ID: qik1_19622
+Client IP : 
+103.4.10.73
+160.16.241.229
+
+Edgescape Information (country, owner):
+Tokyo, Japan
+Amazon.com, Inc.
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+
+何卒宜しく御願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+-
+
+
+-
+
+--------------------------------------------------
+Our Kona systems have detected a denied rate control activity from the below mentioned ip address. 
+
+160.16.241.229 & 103.4.10.73
+
+This has been observed for the time frame: Feb 28, 19:02 - Feb 28, 20:13 GMT
+
+There were about 22,803 GET requests received between the above mentioned time frame .The requests targeted host name was www.aeon.jp. All the requests were originated from the above mentioned ip addresses and they belong to the company SAKURA_Internet_Inc. & Amazon_Data_Services_Japan_KK.
+
+Sample request for the denied rate control :
+
+HTTP Request: GET /sc/nagoyadomemae/shop/store/fashion-009.html HTTP/1.1
+Request Headers
+    User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; dbot)
+    Pragma: no-cache
+    Accept: */*
+    Referer: http://www.aeon.jp/sc/nagoyadomemae/info/ggt/
+    Accept-Language: ja,en-us;q=0.7,en;q=0.3
+    Accept-Charset: Shift_JIS,EUC-JP;q=0.9,ISO-2022-JP;q=0.7,utf-8;q=0.7,*;q=0.7
+    Cookie: TS01e1e737=016f046bf6ca837f08cf26b85bb5ac04a4ccc469eaf37b2ca5545f42c8a28eae3d9ed8eb35
+    Host: www.aeon.jp
+    Cache-Control: max-age=86400
+    Connection: keep-alive
+    Origin: http://www.aeon.jp/sc/nagoyadomemae/info/ggt/
+
+Action : 
+
+No action is needed since the traffic was mitigated by the rate control. 
+
+The high rate of request from the ip address has breached the configured rate control threshold and alert got triggered. We dont see any application layer attack pattern in the traffic.
+
+================================================================  
+
+I have done the initial analysis for you, my research details as follows ;
+   
+Rule IDs : Page View Requests
+
+Action : Deny
+
+Snapshot Of IP Information
+
+IP/IP's: 160.16.241.229
+Country Code: TOKYO, JAPAN
+Company: SAKURA_Internet_Inc.
+Domain : marsflag.com
+AS # : 9370
+
+IP/IP's: 103.4.10.73
+Country Code: TOKYO, JAPAN
+Company: Amazon_Data_Services_Japan_KK
+Domain : amazonaws.com
+AS # : 16509
+
+Policy ID : qik1_19622
+
+Top HTTP Method : GET
+
+
+--------------------------------------------------
+
+
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社 KONA システムからの WAF アラート通知に関するイベントデータ解析結果を
+以下にまとめましたので、ご確認ください。
+
+▪️お客様に実施をお願いする対応
+IPアドレス  160.16.241.229 と 103.4.10.73 からのイベントは
+レートコントロールにより無事処理されたと見られます。
+現時点でお願いする対応はありません。
+
+▪️解析結果のまとめ
+2月28日の 19:02 GMT (4:02 JST) から20:13 GMT (5:13 JST)の検知時間中
+IPアドレス 160.16.241.229 と 103.4.10.7 からwww.aeon.jp ドメイン宛に
+22,803回に及ぶ多数のGETリクエストが発生しました。
+発信元は上記2つのIPアドレスからのみでそれぞれ
+SAKURA_Internet_Inc. と Amazon_Data_Services_Japan_KK に属するIPと思われます。
+
+
+詳細情報：
+検知時間：2月28日 19:02 GMT (4:02 JST)
+クライアント IP:  2160.16.241.229, 103.4.10.73
+
+Rule IDs : Page View Requests
+Action : Deny
+
+IP: 160.16.241.229
+国コード: TOKYO, JAPAN
+企業: SAKURA_Internet_Inc.
+ドメイン: marsflag.com
+AS # : 9370
+
+IP: 103.4.10.73
+国コード: TOKYO, JAPAN
+企業: Amazon_Data_Services_Japan_KK
+ドメイン: amazonaws.com
+AS # : 16509
+
+ポリシーID : qik1_19622
+Top HTTP Method : GET
+
+
+
+サンプルリクエスト:
+HTTP Request: GET /sc/nagoyadomemae/shop/store/fashion-009.html HTTP/1.1
+Request Headers
+    User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; dbot)
+    Pragma: no-cache
+    Accept: */*
+    Referer: http://www.aeon.jp/sc/nagoyadomemae/info/ggt/
+    Accept-Language: ja,en-us;q=0.7,en;q=0.3
+    Accept-Charset: Shift_JIS,EUC-JP;q=0.9,ISO-2022-JP;q=0.7,utf-8;q=0.7,*;q=0.7
+    Cookie: TS01e1e737=016f046bf6ca837f08cf26b85bb5ac04a4ccc469eaf37b2ca5545f42c8a28eae3d9ed8eb35
+    Host: www.aeon.jp
+    Cache-Control: max-age=86400
+    Connection: keep-alive
+    Origin: http://www.aeon.jp/sc/nagoyadomemae/info/ggt/
+
+追加の処置をご希望の場合は、その旨をご連絡ください。
+弊社にてプロダクション環境の緊急変更などを実施するためには、お客様のメールによる事前承認が必要です。
+
+引き続き本件のイベントが終息するまでモニタリングし、定期的にアップデート致します。
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+ご確認、ご連絡のほどよろしくお願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+
+--------------------------------------------------
+Our Kona systems have detected a denied rate control activity from the below mentioned ip address. 
+
+160.16.241.229 & 103.4.10.73
+
+This has been observed for the time frame: Feb 28, 19:02 - Feb 28, 20:13 GMT
+
+There were about 22,803 GET requests received between the above mentioned time frame .The requests targeted host name was www.aeon.jp. All the requests were originated from the above mentioned ip addresses and they belong to the company SAKURA_Internet_Inc. & Amazon_Data_Services_Japan_KK.
+
+Sample request for the denied rate control :
+
+HTTP Request: GET /sc/nagoyadomemae/shop/store/fashion-009.html HTTP/1.1
+Request Headers
+    User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; dbot)
+    Pragma: no-cache
+    Accept: */*
+    Referer: http://www.aeon.jp/sc/nagoyadomemae/info/ggt/
+    Accept-Language: ja,en-us;q=0.7,en;q=0.3
+    Accept-Charset: Shift_JIS,EUC-JP;q=0.9,ISO-2022-JP;q=0.7,utf-8;q=0.7,*;q=0.7
+    Cookie: TS01e1e737=016f046bf6ca837f08cf26b85bb5ac04a4ccc469eaf37b2ca5545f42c8a28eae3d9ed8eb35
+    Host: www.aeon.jp
+    Cache-Control: max-age=86400
+    Connection: keep-alive
+    Origin: http://www.aeon.jp/sc/nagoyadomemae/info/ggt/
+
+Action : 
+
+No action is needed since the traffic was mitigated by the rate control. 
+
+The high rate of request from the ip address has breached the configured rate control threshold and alert got triggered. We dont see any application layer attack pattern in the traffic.
+
+================================================================  
+
+I have done the initial analysis for you, my research details as follows ;
+   
+Rule IDs : Page View Requests
+Action : Deny
+
+
+IP/IP's: 160.16.241.229
+Country Code: TOKYO, JAPAN
+Company: SAKURA_Internet_Inc.
+Domain : marsflag.com
+AS # : 9370
+
+IP/IP's: 103.4.10.73
+Country Code: TOKYO, JAPAN
+Company: Amazon_Data_Services_Japan_KK
+Domain : amazonaws.com
+AS # : 16509
+
+Policy ID : qik1_19622
+
+Top HTTP Method : GET
+
+
+
+
+

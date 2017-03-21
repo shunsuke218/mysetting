@@ -1,0 +1,150 @@
+
+//Homework 1
+//CIT242
+
+public class LinkListApp {
+
+    public static void main(String[] args) {
+        LinkList myLinkList = new LinkList();
+
+        System.out.println("--------------------------");
+        //insert elements to the list
+        System.out.println("inserting elements...");
+
+        myLinkList.listInsert(new Entry("John","Smith"));
+        myLinkList.listInsert(new Entry("Winston","Churchill"));
+        myLinkList.listInsert(new Entry("Nelson","Mandela"));
+        myLinkList.listInsert(new Entry("Mary","Jones"));
+
+
+        System.out.println("now the list is:");
+
+        myLinkList.printList();
+
+        System.out.println("----------------------");
+
+        //delete an element
+        myLinkList.listDelete(new Entry("Nelson","Mandela"));
+
+        System.out.println("after deleting Nelson Mandela, the list is:");
+
+        myLinkList.printList();
+
+        System.out.println("----------------------");
+
+    }
+}
+
+class Entry {
+    String first;
+    String last;
+
+    public Entry(String first, String last) {
+        this.first = first;
+        this.last = last;
+    }
+
+
+    public String toString() {
+        //return "Entry{" + "first=" + first + ", last=" + last + '}';
+        return first + " " + last;
+    }
+    
+    
+    
+    
+}
+
+class NODE {
+
+    Entry info;
+    NODE link;
+
+    public NODE(Entry info) {
+        this.info = info;
+    }
+
+    public NODE() {
+        info = new Entry("\0","\0");
+    }
+    
+    
+    
+}
+
+class LinkList{
+
+    NODE listStart; //header node/dummy node
+
+    LinkList() {
+        //initialize listStart
+        listStart = new NODE();
+        listStart.link = null; //link to the next node
+    }
+
+    public void listInsert(Entry newEntry) {
+        NODE last, next;
+        next = listStart;
+        last = null;
+
+        while ((newEntry.last.compareTo(next.info.last) > 0) && (next.link != null)) {
+            last = next;
+            next = next.link;
+        }
+
+        if (newEntry.last.compareTo(next.info.last) == 0) {
+            next.info = newEntry;
+        } else if (newEntry.last.compareTo(next.info.last) < 0) {
+            last.link = new NODE();
+            last.link.info = newEntry;
+            last.link.link = next;
+        } else {
+            NODE temp = next.link; //store the link after next node before insert the new node after the next node
+            next.link = new NODE();
+            next.link.info = newEntry;
+            next.link.link = temp;
+        }
+
+    }
+
+    public NODE listDelete(Entry part) {
+        NODE last, next;
+        next = listStart;
+        last = null;
+
+        while (!part.last.equals(next.info.last) && next.link != null) {
+            last = next;
+            next = next.link;
+        }
+
+        if (part.last.equals(next.info.last)) {
+            last.link = next.link;
+            return next; //free the next node
+        }
+
+        return new NODE();
+
+    }
+
+    public void printList() {
+      
+	   NODE next = listStart;
+
+        int num = 1;
+        
+        while (next != null) {
+            
+            //skip printing the empty header node
+            if (next == listStart) {
+                next = next.link;
+                continue;
+            }
+            
+            System.out.println("["+num+"]"+next.info); //with numbering at the front of each record
+            num++;
+            next = next.link;
+        }
+
+    }
+
+}

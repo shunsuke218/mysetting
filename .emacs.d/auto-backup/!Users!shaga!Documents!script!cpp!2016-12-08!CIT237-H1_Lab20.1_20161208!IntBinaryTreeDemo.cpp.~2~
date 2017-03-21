@@ -1,0 +1,82 @@
+// This program demonstrates the insertNode member function.
+#include <iostream>
+#include <iomanip>
+#include "IntBinaryTree.h"
+
+#define CINCLEAR cin.clear(); cin.ignore(65536,'\n');
+#define FILL right << setw(WIDTH) << setfill(SEPARATOR)
+
+// Constant used for FILL template
+const char SEPARATOR = ' ';
+const int WIDTH = 5;
+
+using namespace std;
+
+int main() {
+	IntBinaryTree list;
+	
+	while (true) {
+		char option;
+		int num;
+		cout << endl;
+
+		// User input
+		cout << "command: ";
+		cin >> option;
+		CINCLEAR
+
+	
+			switch (option) {
+		
+			case 'C':
+				list.userRemoveAllNodes();
+				continue;
+			case 'd':
+				list.displayInOrder();
+				continue;
+			case 'D':
+				list.openInputFile();
+				continue;
+			case 'H':
+				list.displayTreeHeight();
+				continue;
+			case 'i':
+				list.userInsertNode();
+				continue;
+			case 'n':
+				list.displayNumberOfNodes();
+				continue;
+			case 'r':
+				//list.userRemoveAllNodes();
+				list.openInputFile();
+				continue;
+			case 'R':
+				list.userRemoveNode();
+				continue;
+			case 's':
+				list.userSearchNode();
+				continue;
+			case 'v':
+				list.setVerboseMode(~list.getVerboseMode());
+				continue;
+		
+			case 'h':
+				// HELP
+				cout <<
+					"Supported commands:" << endl <<
+					FILL << right << "a" << FILL << " " << "APPEND a new node at the end of the list" << endl <<
+					FILL << right << "d" << FILL << " " << "DELETE a node from the list" << endl <<
+					FILL << right << "i" << FILL << " " << "INSERT a node into the list, maintaining the sorted order." << endl <<
+					FILL << right << "p" << FILL << " " << "PRINT the contents of the list. Format the output as shown in the Sample Output below." << endl <<
+					FILL << right << "h" << FILL << " " << "HELP text" << endl <<
+					FILL << right << "q" << FILL << " " << "QUIT (end the program)" << endl;
+				continue;
+			case 'q':
+				// QUIT
+				cout << "Exiting..." << endl;
+				return 0;
+			default:
+				continue;
+			}
+	}
+}

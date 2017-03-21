@@ -1,0 +1,80 @@
+REQUESTED ACTION
+No further action required on this.
+
+ANALYSIS SUMMARY
+As per my analysis, we have received around 5K requests from few different IPs (majorly 3 of them) in a span of 30 minutes. It looks like a scrapping activity with fixed header pattern. Due to this, the client reputation got kicked in and all further requests were denied.
+
+SAMPLE REQUEST/RESPONSE DATA
+GET /air-hotel-sp/search/search.aspx HTTP/1.1 Host: e.his-j.com Connection: Keep-Alive User-Agent: GetIntent Crawler (http://getintent.com/bot.html) Accept-Encoding: gzip,deflate
+
+Analysis Period: 02/08/2017:11:28 AM to 02/08/2017:11:58 AM 
+
+SUPPORTING DATA
+[Inline image name : chart (1).png]
+Host NameDetectedMitigatedTotalwww.his-j.com022622262activities.his-j.com015441544e.his-j.com0786786air.his-j.com0535535hotels.his-j.com0188188tour.his-j.com0183183www.hisgo.nl55055smp.his-j.com18018www.hisgo.vn14014www.hisgo.co.uk13013www.hisgo.com808member.his-j.com505www.hisgo.ca404www.hisgo.com.hk303www.hisgo.ru202www.hisgo.fr202www.hisgo.es202www.hisgo.com.sg202www.his.co.jp202www.hisgo.la101
+ 
+URLDetectedMitigatedTotalwww.hisgo.nl/sp/Contents/index.aspx18018www.hisgo.nl/sp/Contents/OptionalTour/Calendar.aspx18018hotels.his-j.com/ct/close/index_cn.html01717www.his-j.com/rail/ct/world_rail/01616activities.his-j.com/ct/transfer/?lcid=tyo_top_d0801414
+
+Policy IDDetectedMitigatedTotalhis_18630054985498hisl_186321320132
+Rule IDDetectedMitigatedTotalREP_6557013254985630
+Status CodeDetectedMitigatedTotal403053235323302600602004804840413013301606
+MethodDetectedMitigatedTotalGET12753235450
+Client IPDetectedMitigatedTotal178.216.52.1111249514963220.181.125.1420178178194.187.170.11209999
+
+
+
+--------------------------------------------------
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社 KONA システムからの WAF アラート通知に関するイベントデータ解析結果を
+以下にまとめましたので、ご確認ください。
+
+▪️お客様に実施をお願いする対応
+お客様に実施をお願いする対応はありません。
+
+▪️解析結果のまとめ
+2月8日の11:28 GMT(20:28 JST)から11:58 GMT(20:28 JST)の検知時間中
+複数のIPアドレス(主に3つ)から5000回に及ぶGETリクエストが発生しました。
+ヘッダー情報によると、一連のアクセスはスクレイピングだと思われます。
+これによりクライアントレピュテーションがトリガーされ、全てのリクエストがDENYになりました。
+
+詳細情報：
+検知時間：2月8日 11:28 GMT(20:28 JST)
+[Inline image name : chart (1).png]
+Host NameDetectedMitigatedTotalwww.his-j.com022622262activities.his-j.com015441544e.his-j.com0786786air.his-j.com0535535hotels.his-j.com0188188tour.his-j.com0183183www.hisgo.nl55055smp.his-j.com18018www.hisgo.vn14014www.hisgo.co.uk13013www.hisgo.com808member.his-j.com505www.hisgo.ca404www.hisgo.com.hk303www.hisgo.ru202www.hisgo.fr202www.hisgo.es202www.hisgo.com.sg202www.his.co.jp202www.hisgo.la101
+ 
+URLDetectedMitigatedTotalwww.hisgo.nl/sp/Contents/index.aspx18018www.hisgo.nl/sp/Contents/OptionalTour/Calendar.aspx18018hotels.his-j.com/ct/close/index_cn.html01717www.his-j.com/rail/ct/world_rail/01616activities.his-j.com/ct/transfer/?lcid=tyo_top_d0801414
+
+Policy IDDetectedMitigatedTotalhis_18630054985498hisl_186321320132
+Rule IDDetectedMitigatedTotalREP_6557013254985630
+Status CodeDetectedMitigatedTotal403053235323302600602004804840413013301606
+MethodDetectedMitigatedTotalGET12753235450
+Client IPDetectedMitigatedTotal178.216.52.1111249514963220.181.125.1420178178194.187.170.11209999
+
+追加の処置をご希望の場合は、その旨をご連絡ください。
+弊社にてプロダクション環境の緊急変更などを実施するためには、お客様のメールによる事前承認が必要です。
+
+引き続き本件のイベントが終息するまでモニタリングし、定期的にアップデート致します。
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+ご確認、ご連絡のほどよろしくお願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+----------------------------------------------------------------------------------------------------
+
+ご担当者様
+
+お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+本件につきまして、その後のWAF トリガー状況も落ち着いているため、一旦クローズとさせて頂きます。
+もし本件の対応内容に関するご質問やご不明な点がありましたら、本メールへの返信にてその旨ご連絡ください。
+
+再度アラートが上がった場合には、新規チケットにて連絡致します。
+
+何卒宜しくお願いいたします。
+
+Haga, Shunsuke (芳賀 俊介)

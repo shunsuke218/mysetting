@@ -1,0 +1,39 @@
+#!/bin/sh
+
+if [ "$1" == "-h" ] ; then
+    echo "Usage: `basename $0` [file.mp4]"
+    exit 0
+fi
+
+function execute {
+	basename="${filename%.*}"
+
+	cp -a Blackbird-Anti-spoof_dual_512 2 $basename
+	cd $basename
+	for tempfile in *
+	do
+		extension="${tempfile##*.}"
+		sed -i '.bak' "s/Blackbird-Anti-spoof_dual_512 2/$basename/g" $tempfile
+		mv $tempfile $basename.$extension
+		#mv $tempfile $filename
+	done
+	rm *.bak
+	cd ../
+	mv $filename $basename/
+}
+
+if [ "$1" == "" ] ; then
+	echo "No input!"
+	for file in *.mp4
+	do
+		echo $file
+		filename="$file"
+		execute 
+	done
+	exit 0
+fi
+
+# If there is parameter
+filename="$1"
+execute
+exit 0

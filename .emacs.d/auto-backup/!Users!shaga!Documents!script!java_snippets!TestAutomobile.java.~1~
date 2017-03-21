@@ -1,0 +1,121 @@
+class TestAutomobiles
+{
+ 
+public static void main (String[] args)
+throws java.lang.Exception
+{
+
+class objects;
+Automobile obj1=new;
+Automobile(11,2016,201511,50,0,"FERRARI","ENZO","Red");
+ 
+Automobile obj2=new;
+Automobile(3,2015,201503,50,0,"LAMBORGHINI","AVENTADOR","Black");
+ 
+Automobile obj3=new;
+Automobile(5,2014,201305,30,0,"ASTON MARTIN","VULCAN","White");
+
+System.out.println("\n-------------AUTOMOBILE
+1-------------");
+ 
+System.out.println("AUTOMOBILE NAME -
+"+obj1.getMake()+" "+obj1.getModel());
+
+System.out.println("AUTOMOBILE MAKE YEAR- 
+"+obj1.getYear());
+ 
+System.out.println("AUTOMOBILE COLOR -
+"+obj1.getColor());
+
+System.out.println("AUTOMOBILE Miles
+per Galon - "+obj1.getMiles_p_gallon());
+
+System.out.println("AUTOMOBILE ID -
+"+obj1.getID());
+ 
+System.out.println("AUTOMOBILE Vin Number
+- "+obj1.getVin_number());
+
+
+System.out.println("AUTOMOBILE Current
+Speed - "+obj1.getSpeed());
+obj1.Accelerate();
+
+System.out.println("AUTOMOBILE
+Accelerated Speed - "+obj1.getSpeed());
+ obj1.Brake();
+
+System.out.println("AUTOMOBILE Speed
+after Brake - "+obj1.getSpeed());
+
+//call the methods through the object
+and //print the values
+ 
+System.out.println("\n-------------AUTOMOBILE
+2----- --------");
+ 
+System.out.println("AUTOMOBILE NAME -
+"+obj2.getMake()+" "+obj2.getModel());
+
+System.out.println("AUTOMOBILE MAKE
+YEAR - "+obj2.getYear());
+ 
+System.out.println("AUTOMOBILE COLOR -
+"+obj2.getColor());
+
+System.out.println("AUTOMOBILE Miles per
+Galon - "+obj2.getMiles_p_gallon());
+
+System.out.println("AUTOMOBILE ID -
+"+obj2.getID());
+ 
+System.out.println("AUTOMOBILE Vin Number
+- "+obj2.getVin_number());
+ 
+ 
+System.out.println("AUTOMOBILE Current
+Speed - "+obj2.getSpeed());
+
+ obj2.Accelarate(20);
+//overloaded function call
+System.out.println("AUTOMOBILE
+Accelerated Speed - "+obj2.getSpeed());
+ obj2.Brake(10);
+//overloaded function call
+
+System.out.println("AUTOMOBILE Speed
+after Brake - "+obj2.getSpeed());
+
+
+System.out.println("\n-------------AUTOMOBILE
+3-------------");
+System.out.println("AUTOMOBILE NAME -
+"+obj3.getMake()+" "+obj3.getModel());
+System.out.println("AUTOMOBILE COLOR
+- "+obj3.getColor());
+
+System.out.println("AUTOMOBILE ID -
+"+obj3.getID());
+
+System.out.println("AUTOMOBILE MAKE YEAR
+- "+obj3.getYear());
+ 
+System.out.println("AUTOMOBILE Vin Number
+- "+obj3.getVin_number());
+ 
+System.out.println("AUTOMOBILE Miles per
+Galon - "+obj3.getMiles_p_gallon());
+ 
+System.out.println("AUTOMOBILE Current
+Speed - "+obj3.getSpeed());
+ obj3.Accelarate(30);
+//overloaded function call
+System.out.println("AUTOMOBILE
+Accelerated Speed - "+obj3.getSpeed());
+ obj3.Brake(10);
+//overloaded function call
+
+System.out.println("AUTOMOBILE Speed
+after Brake - "+obj3.getSpeed());
+ }
+}

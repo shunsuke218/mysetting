@@ -1,0 +1,5 @@
+
+int* temp = new int[6];
+std::copy(p, p + 5, temp); // Suggested by comments from Nick and Bojan
+delete [] p;
+p = temp;

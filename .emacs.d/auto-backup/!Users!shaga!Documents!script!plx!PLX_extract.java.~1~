@@ -1,0 +1,452 @@
+// Written by: Shunsuke Haga (shaga@akamai.com)
+// Date: 2016/06/27
+//
+// This Java console extract PLX information
+
+import java.io.File;
+import java.io.FileWriter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.Set;
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.CheckBox;
+import javafx.scene.Group;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.Scene;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import java.util.*;
+
+public class PLX_extract extends Application {
+	public static String br = System.getProperty("line.separator");
+	public static String summary = "";
+	public static Hyperlink hplkCcUrl = new Hyperlink();
+	public static Hyperlink hplkRunbkUrl = new Hyperlink();
+	public static Hyperlink hplkLndetectorUrl = new Hyperlink();
+
+	public static FileChooser chooser = new FileChooser();
+	public static File retrival = null;
+	public static Long duration = null;
+
+	public static void main(String[] args) {
+	chooser.setInitialDirectory(new File(System.getProperty("user.dir")).getParentFile().getParentFile().getParentFile());
+	launch(args);
+	}
+
+
+	public String parseTable(String rawtable) throws Exception{
+		String result = null;
+		rawtable = rawtable.replaceAll("<BR>", "\n");
+
+		// Pattern for Table
+		Pattern ptnTable = Pattern.compile("<TABLE.+?/TABLE[^>]*>");
+		Pattern ptnTR = Pattern.compile("<TR.+?/TR[^>]*>");
+		Pattern ptnTD = Pattern.compile("<TD.+?/TD[^>]*>");
+		Matcher mchTable = ptnTable.matcher(rawtable);
+
+		// Pattern for Json
+		Pattern ptnJson = Pattern.compile("\\{[^\\}]*");
+		Matcher mchJson = ptnJson.matcher(rawtable);
+
+		result = "\n------------------------------\n" + (rawtable.replaceAll("<TABLE.+?/TABLE[^>]*>", "\n").replaceAll("\\{[^\\}]*\\}","\n"));
+		try {
+			while (mchTable.find()) {
+				result += "\n";
+				Matcher mchTR = ptnTR.matcher(mchTable.group(0).replaceAll("</*TABLE[^>]*>",""));
+				while (mchTR.find()){
+					Matcher mchTD = ptnTD.matcher(mchTR.group(0).replaceAll("</*TR[^>]*>",""));
+					int j = 0;
+					while (mchTD.find()){
+						String tdresult = mchTD.group(0).replaceAll("</*TD[^>]*>","");
+						if (j != 0)
+							tdresult = "	" + tdresult;
+						result += tdresult;
+						j++;
+					}
+					result += "\n";
+				}
+			}
+			while (mchJson.find()) {
+				result += "\n\nJSON:\n{\n";
+				TreeMap<String, String> treemap = new TreeMap<String, String>();
+				String[] arrayJson = mchJson.group(0).replaceAll("[\\{\\}]","").split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				String[] keys = null;
+				for (String bar : arrayJson) {
+					keys = bar.split(":");
+					treemap.put(keys[0],keys[1]);
+				}
+				Set set = treemap.entrySet();
+				Iterator iterator = set.iterator();
+				while(iterator.hasNext()) {
+					Map.Entry  me = (Map.Entry)iterator.next();
+					result += "	" + me.getKey() + " : " + me.getValue();
+					result += (!iterator.hasNext())? "" : ",\n";
+				}
+				result += "\n}";
+			}
+		} catch (Exception ex) {
+			System.out.println(ex);
+			result = rawtable;
+		}
+		result += "------------------------------\n";
+		return result;
+	}
+
+	@Override
+	public void start(Stage primaryStage) {
+		primaryStage.setTitle("PLX Extractor");
+		Group root = new Group();
+		Scene scene = new Scene(root, 600, 600);
+
+		GridPane gridpane = new GridPane();
+		gridpane.setPadding(new Insets(25));
+		gridpane.setHgap(10);
+		gridpane.setVgap(10);
+		gridpane.setAlignment(Pos.CENTER);
+
+		HBox topbox = new HBox();
+		topbox.setSpacing(1);
+		topbox.setPadding(new Insets(25));
+		topbox.setAlignment(Pos.CENTER);
+
+		HBox hbBtn = new HBox(10);
+		hbBtn.setSpacing(10);
+		hbBtn.setPadding(new Insets(25));
+		hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+
+		GridPane gridpaneUrl = new GridPane();
+		gridpaneUrl.setPadding(new Insets(10, 0, 0, 10));
+		gridpane.setHgap(2);
+		gridpane.setVgap(2);
+		gridpaneUrl.setAlignment(Pos.BOTTOM_LEFT);
+
+		// Text
+		final Text txtTitle = new Text("PLX extractor");
+		txtTitle.setFont(Font.font("Tahoma",FontWeight.NORMAL, 20));
+		gridpane.add(txtTitle, 0, 0, 2, 1);
+		topbox.getChildren().add(txtTitle);
+
+		// TextArea 1
+		final Label lblInput = new Label("Input: ");
+		gridpane.add(lblInput, 0, 0);
+
+		final TextArea txtField1 = new TextArea();
+		txtField1.setPrefRowCount(20);
+		txtField1.setPrefColumnCount(100);
+		txtField1.setWrapText(true);
+		txtField1.setPrefWidth(300);
+		txtField1.prefWidthProperty()
+			.bind(primaryStage.widthProperty().divide(4));
+		txtField1.prefHeightProperty()
+			.bind(primaryStage.heightProperty().divide(1.5));
+		GridPane.setHalignment(txtField1, HPos.CENTER);
+		gridpane.add(txtField1, 0, 1);
+
+
+		// TextArea 2
+		final Label lblOutput = new Label("Output: ");
+		gridpane.add(lblOutput, 1, 0);
+
+		final TextArea txtField2 = new TextArea();
+		txtField2.setPrefRowCount(20);
+		txtField2.setPrefColumnCount(100);
+		txtField2.setWrapText(true);
+		txtField2.setPrefWidth(300);
+		txtField2.prefWidthProperty()
+			.bind(primaryStage.widthProperty().divide(4).multiply(3));
+		txtField2.prefHeightProperty()
+			.bind(primaryStage.heightProperty().divide(1.5));
+		GridPane.setHalignment(txtField2, HPos.CENTER);
+		gridpane.add(txtField2, 1, 1);
+
+		// Url
+		final Label lblCCUrl = new Label("Cluster Commander: ");
+		lblCCUrl.setMinWidth(125);
+		lblCCUrl.setFont(Font.font("Tahoma",FontWeight.NORMAL, 12));
+		GridPane.setHalignment(lblCCUrl, HPos.LEFT);
+		GridPane.setConstraints(lblCCUrl, 0, 0);
+
+		final Label lblRunbkUrl = new Label("Runbook: ");
+		lblRunbkUrl.setFont(Font.font("Tahoma",FontWeight.NORMAL, 12));
+		GridPane.setHalignment(lblRunbkUrl, HPos.LEFT);
+		GridPane.setConstraints(lblRunbkUrl, 0, 1);
+
+		final Label lblLndetectorUrl = new Label("Lndetector: ");
+		lblRunbkUrl.setFont(Font.font("Tahoma",FontWeight.NORMAL, 12));
+		GridPane.setHalignment(lblLndetectorUrl, HPos.LEFT);
+		GridPane.setConstraints(lblLndetectorUrl, 0, 2);
+
+		// Hyper Link
+		GridPane.setHalignment(hplkCcUrl, HPos.LEFT);
+		GridPane.setConstraints(hplkCcUrl, 1, 0);
+		hplkCcUrl.setOnAction(t -> {
+			getHostServices().showDocument(hplkCcUrl.getText());
+		});
+
+		GridPane.setHalignment(hplkRunbkUrl, HPos.LEFT);
+		GridPane.setConstraints(hplkRunbkUrl, 1, 1);
+		hplkRunbkUrl.setOnAction(t -> {
+			getHostServices().showDocument(hplkRunbkUrl.getText());
+		});
+
+		GridPane.setHalignment(hplkLndetectorUrl, HPos.LEFT);
+		GridPane.setConstraints(hplkLndetectorUrl, 1, 2);
+		hplkLndetectorUrl.setOnAction(t -> {
+			getHostServices().showDocument(hplkLndetectorUrl.getText());
+		});
+
+		gridpaneUrl.getChildren().addAll(
+			lblCCUrl, lblRunbkUrl, lblLndetectorUrl,
+			hplkCcUrl, hplkRunbkUrl, hplkLndetectorUrl
+			);
+
+		GridPane.setHalignment(gridpaneUrl, HPos.LEFT);
+		GridPane.setColumnSpan(gridpaneUrl, 2);
+		gridpane.add(gridpaneUrl, 0, 3);		
+
+		// Combo Box
+		final ObservableList<String> options = 
+		FXCollections.observableArrayList(
+				"ABM/FBM",
+				"mkona",
+				"tunnel_down"
+			);
+		final ComboBox<String> comboBox = new ComboBox<>(options);
+		comboBox.setVisibleRowCount(3);
+		comboBox.setValue("ABM/FBM");
+
+		// Button
+		final Button btnclear = new Button ("clear");
+		final Button btnsave = new Button ("save");
+		final Button btn = new Button("extract");
+		final CheckBox cb = new CheckBox("Use original Description");
+		hbBtn.getChildren().addAll(cb, btnclear, btnsave, comboBox, btn);
+
+
+		// Lists of extraction
+		String[] MKONA = {
+			"Summary", "Customer", "Serial", "aka_account_id", "aka_account_name", 
+			"aka_acgid", "aka_contract_id", "aka_cpcode", "AggregationFirst", "FirstOccurrence", "LastOccurrence", "plx_customer_Id", "plx_ticket_number"
+		};
+		String[] ABM_FBM = {
+			"Summary", "Customer", "Serial", "aka_account_id", "NodeAlias", 
+			"plx_Description", "plx_customer_Id", "plx_IpAddress", "AggregationFirst", "FirstOccurrence", "LastOccurrence", "URL", "plx_ticket_number"
+		};
+		String[] TUNNEL_DOWN = {
+			"Summary", "Customer", "Serial", "aka_account_id", "NodeAlias", "Node", "plx_customer_Id", "plx_ticket_number"
+		};
+
+		String[] list = {
+			"Summary", "Node", "Severity", "Acknowledged", "LastOccurrence", "APJ_Display", 
+			"Ack_By", "Ack_Time", "Agent", "AggregationFirst", "AlertGroup", "AlertKey", 
+			"Amer_Display", "BSM_Identity", "Class", "CollectionFirst", "Customer", 
+			"Delete_By", "DisplayFirst", "Emea_Display", "EventId", "ExpireTime", 
+			"ExtendedAttr", "FirstOccurrence", "Flash", "Grade", "Identifier", 
+			"InternalLast", "LocalNodeAlias", "LocalPriObj", "LocalRootObj", "LocalSecObj", 
+			"Location", "Manager", "NmosCauseType", "NmosDomainName", "NmosEntityId", 
+			"NmosEventMap", "NmosManagedStatus", "NmosObjInst", "NmosSerial", "NodeAlias", 
+			"OldRow", "OwnerGID", "OwnerUID", "PhysicalCard", "PhysicalPort", "PhysicalSlot", 
+			"Poll", "ProbeSubSecondId", "ProcessReq", "RemoteNodeAlias", "RemotePriObj", 
+			"RemoteRootObj", "RemoteSecObj", "Serial", "ServerName", "ServerSerial", "Service", 
+			"StateChange", "SuppressEscl", "Tally", "TaskList", "Type", "URL", "X733CorrNotif", 
+			"X733EventType", "X733ProbableCause", "X733SpecificProb", "aka_account_id", 
+			"aka_account_name", "aka_acg_name", "aka_acgid", "aka_analyzer_id", "aka_client_ip", 
+			"aka_contract_id", "aka_contract_name", "aka_cpcode", "aka_cpname", "aka_customer", 
+			"aka_desc1", "aka_desc2", "aka_managed_kona", "aka_notification_description", 
+			"aka_notification_dimensions", "aka_notification_id", "aka_notification_metrics", 
+			"aka_notification_priority", "aka_notification_type", "aka_orig_ip", "aka_product_migrated", 
+			"aka_report_pack_name", "correlation_1", "correlation_2", "correlation_3", 
+			"impact_flag", "impact_flag1", "impact_flag2", "impact_flag3", "impact_flag4", 
+			"impact_flag5", "impact_flag6", "impact_flag7", "impact_flag8", "impact_flag9", 
+			"plx_Description", "plx_IpAddress", "plx_account_manager", "plx_acct_sales_engr", 
+			"plx_actor_group", "plx_attack_end", "plx_attack_id", "plx_attack_port", 
+			"plx_attack_score", "plx_attack_start", "plx_attack_transport", "plx_attack_type", 
+			"plx_attack_vector", "plx_attack_weight", "plx_classification", "plx_contract_number", 
+			"plx_cust_dst_current_bw", "plx_cust_dst_ip_current_bw", "plx_cust_dst_ip_current_pps", 
+			"plx_cust_dst_ip_peak_bw", "plx_cust_dst_ip_peak_pps", "plx_cust_dst_peak_bw", 
+			"plx_cust_tot_current_bw", "plx_cust_tot_current_pps", "plx_cust_tot_peak_bw", 
+			"plx_cust_tot_peak_pps", "plx_customer", "plx_customer_Id", "plx_customer_contract", 
+			"plx_customer_contract_name", "plx_customer_name", "plx_desc1", "plx_desc2", "plx_desc3", 
+			"plx_desc4", "plx_desc5", "plx_det_by", "plx_det_time", "plx_dst_ip", "plx_event_class", 
+			"plx_event_remLnder", "plx_exec_count", "plx_exec_total", "plx_fullCustomerName", 
+			"plx_industry", "plx_instance", "plx_malware", "plx_mit_by", "plx_mit_time", "plx_notes", 
+			"plx_operation", "plx_owner", "plx_product", "plx_recent_occur", "plx_reseller", 
+			"plx_risk_category", "plx_rt_queue", "plx_runbook", "plx_sales_region", "plx_source", 
+			"plx_state", "plx_target_asn", "plx_ticket_number", "plx_ticket_status", "plx_toolkit", 
+			"plx_view_event", 
+		};
+
+		btn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle (ActionEvent e) {
+				String input = txtField1.getText().toString();
+				String[] array = input.split("\\r?\\n");
+				String option = comboBox.getValue().toString();
+				String result = "";
+				String aka_account_id = "";
+				boolean origDesc = cb.isSelected();
+				SimpleDateFormat dateformat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss a");
+
+
+				String[] selected = 
+					(option.equals("ABM/FBM")) ? ABM_FBM:
+					(option.equals("mkona")) ? MKONA:
+					(option.equals("tunnel_down")) ? TUNNEL_DOWN : null;
+				String lblUrl = 
+					(option.equals("ABM/FBM")) ? "Lndetector" : "Luna Portal";
+				try {
+					if (input.equals("")) {
+						txtField2.clear();
+						hplkRunbkUrl.setText("");
+						hplkLndetectorUrl.setText("");
+						hplkCcUrl.setText("");
+						return;
+					}
+					for (String key : selected) {
+						String keyitem = array[Arrays.asList(list).indexOf(key)];
+						if (key.equals("Summary"))
+							summary = keyitem;
+						else if (key.equals("plx_Description")) {
+							keyitem = origDesc ? keyitem : parseTable(keyitem);
+						}
+
+
+						else if (key.equals("aka_account_id") && lblUrl.equals("Luna Portal")) {
+							aka_account_id = keyitem;
+							hplkLndetectorUrl.setText("https://control.akamai.com/portal/search/manage_account.jsp?accountid=" + aka_account_id);
+							lblLndetectorUrl.setText(lblUrl);
+						}
+						else if (key.equals("Customer")) {
+							String customerid = keyitem;
+							String url = (customerid.equals("")) ?
+								""  : "https://gsd.akamai.com/wiki/display/soc/" + keyitem;
+							if  (customerid.contains(" "))
+								url = "https://gsd.akamai.com/wiki/dosearchsite.action?queryString=" + customerid.replaceAll("\\W", "+");
+							hplkRunbkUrl.setText(url);
+						}
+						else if (key.equals("plx_customer_Id")) {
+							String url = (keyitem.equals("")) ?
+								""  : "https://clustercommander.prolexic.com/Contact/viewContacts.php?customerId=" + keyitem;
+							hplkCcUrl.setText(url);
+						}
+						else if (key.equals("URL")) {
+							String url = 
+								(lblUrl.equals("Lndetector") && !keyitem.equals("")) ? 
+									"http://" + keyitem : "";
+							hplkLndetectorUrl.setText(url);
+							lblLndetectorUrl.setText(lblUrl);
+						}
+
+
+
+
+						else if (key.equals("AggregationFirst")){
+							duration = Long.parseLong(keyitem);
+							Date time = new Date(Long.parseLong(keyitem) * 1000);
+							SimpleDateFormat dateformatsave = new SimpleDateFormat("MM-dd-yyyy_HH-mm-ss_a");
+							summary = dateformatsave.format(time).toString() + "_" + summary;
+							keyitem = dateformat.format(time).toString();
+						}
+						else if (key.equals("FirstOccurrence")) {
+							Date time = new Date(Long.parseLong(keyitem) * 1000);
+							keyitem = dateformat.format(time).toString();
+						}
+						else if (key.equals("LastOccurrence")) {
+							duration = Long.parseLong(keyitem) - duration;
+							Date time = new Date(Long.parseLong(keyitem) * 1000);
+							if (duration <= 0L)
+								duration = 0L;
+							keyitem = dateformat.format(time).toString() 
+								+ " (duration: " + String.format("%02d:%02d", duration/60, duration % 60) + ")";// duration/60 + ":" + duration % 60 + ")";
+						}
+ 						result += key + ": " + keyitem + br;
+					}
+				} catch (Exception ex) {
+					System.out.println("Error detected: " + ex);
+					ex.printStackTrace();
+					}
+				txtField2.setText(result);
+			}
+		});		
+
+		btnsave.setOnAction( new EventHandler<ActionEvent>() {
+			@Override
+			public void handle (ActionEvent e) {
+				String input = txtField2.getText().toString();
+				if ( input.equals("") )
+					return;
+				summary = summary.replaceAll("[^\\w-.()]+", "_");
+				chooser.setInitialFileName(summary+".txt");
+				chooser.setTitle("Save As txt file");
+				chooser.getExtensionFilters().add(
+					new ExtensionFilter("Text file", "*.txt")
+				);
+				if (retrival != null)
+					chooser.setInitialDirectory(retrival.getParentFile());
+				retrival = chooser.showSaveDialog(null);
+				if (retrival != null) {
+					try {
+						FileWriter fw = new FileWriter(retrival);
+						fw.write(input.toString());
+						fw.close();
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+		});
+
+		btnclear.setOnAction( new EventHandler<ActionEvent>() {
+			@Override
+			public void handle (ActionEvent e) {
+				txtField1.clear();
+				txtField2.clear();
+				hplkRunbkUrl.setText("");
+				hplkLndetectorUrl.setText("");
+				hplkCcUrl.setText("");
+			}
+		});
+
+		BorderPane borderpane = new BorderPane(gridpane);
+		borderpane.prefWidthProperty().bind(scene.widthProperty());
+		borderpane.prefHeightProperty().bind(scene.heightProperty());
+		borderpane.setTop(topbox);
+		borderpane.setBottom(hbBtn);
+
+		root.getChildren().add(borderpane);   
+
+		primaryStage.setScene(scene);
+		primaryStage.show();
+		}
+	}

@@ -1,0 +1,22 @@
+#!/bin/sh
+
+if [ "$1" == "-h" ] ; then
+    echo "Usage: `basename $0` [file.mp4]"
+    exit 0
+fi
+
+filename="$1"
+basename="${filename%.*}"
+
+cp -a template $basename
+cd $basename
+for tempfile in *
+do
+	extension="${tempfile##*.}"
+	gsed -i "s/template/$basename/g" $tempfile
+	mv $tempfile $basename.$extension
+	#mv $tempfile $filename
+done
+cd ../
+mv $filename $basename/
+exit 0

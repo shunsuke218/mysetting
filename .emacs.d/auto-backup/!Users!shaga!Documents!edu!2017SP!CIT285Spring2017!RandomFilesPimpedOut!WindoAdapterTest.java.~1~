@@ -1,0 +1,20 @@
+import java.awt.*;
+import java.awt.event.*;
+
+public class WindowAdapterTest extends Frame {
+    WindowAdapterTest() {
+        super("WindowAdapterTest");
+        this.addWindowListener(new MyWindowListener());
+        setSize(200, 100);
+        show();
+    }
+    public static void main(String [] args) {
+        new WindowAdapterTest();
+    }
+}
+
+class MyWindowListener extends WindowAdapter {
+    public void windowActivated(WindowEvent e) {
+        System.out.println("windowActivated");
+    }
+}

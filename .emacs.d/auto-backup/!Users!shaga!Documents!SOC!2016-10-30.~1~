@@ -1,0 +1,152 @@
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社KONAシステムにてWAFの アラート通知が上がりましたので連絡致します。
+只今イベントデータ解析中ですので、結果は後ほど報告いたします。
+
+解析結果が完了するまで、お客様にてお願いする対応はございません。
+
+本イベントが終息するまでに、新たなアラート通知が発生した場合には本件にて対応致します。
+アラートの詳細は以下の通りです。
+
+Notification: Alert Notification | P1 High Warned Rate Activity:P1 | nta_mk
+Start Time: 10/30/2016 15:56:00 GMT
+Domain : www.nta.go.jp
+URL: (NO DATA)
+Policy ID: qik1_21973
+Client IP : 118.67.70.13
+Edgescape Information (country, owner):
+Tokyo, Tokyo, Japan
+Bit-isle Co.,Ltd.
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+
+何卒宜しく御願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+
+
+--------------------------------------------------
+
+Our Kona Monitoring system fired an Alert for "High Warned Rate Activity" during  Oct 30, 15:48 - Oct 30, 16:04 GMT.
+During this event there was high number of GET requests from the IP address 118.67.70.13 . The IP address triggered the Rate Policy "Origin 404 Error v1)"  . These requests were targeting different URL's  and were getting the response code 200 from the Origin Server. I can also see the Header Order in all these requests is also the same. In addition to this I  checked the DNS blacklisters and I can see the IP is listed there as well.So please let us know how you may wish to proceed further.
+
+Client IP Details:
+
+IP :118.67.70.13
+Country :Japan
+City :       Tokyo
+Company : WELLSTONE_Inc.​
+
+Rate Policy:"Origin 404 Error v1)"
+Policy ID: qik1_21973
+Status Code: 200
+Method: GET
+
+Sample Packet
+GET /nagoya/kohyo/tokei/h17/pdf/8-1.pdf HTTP/1.1 
+Host: www.nta.go.jp
+Connection: Keep-Alive
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2
+
+Server: Apache
+X-FRAME-OPTIONS: SAMEORIGIN
+Last-Modified: Mon, 28 Apr 2008 04:09:09 GMT
+ETag: "9c05d5-28b7d-44be713d38340"
+Accept-Ranges: bytes
+Content-Length: 166781
+Content-Type: application/pdf
+Date: Sun, 30 Oct 2016 16:00:22 GMT
+Connection: keep-alive
+
+--------------------------------------------------
+
+
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社 KONA システムからの WAF アラート通知に関するイベントデータ解析結果を
+以下にまとめましたので、ご確認ください。
+
+▪️お客様に実施をお願いする対応
+IPアドレス 219.96.58.141 から大量のアクセスを予期されていたか、ご確認ください。
+特定のIPアドレスからのアクセスはいつでもブロックすることが出来ます。
+またアカマイで本IPを監視することも可能です。併せてご検討ください。
+
+▪️解析結果のまとめ
+10月30日の 15:48 GMT(0:48 JST) から 16:04 GMT(1:04 JST)の検知時間中
+単一IPアドレス 118.67.70.13 から「www.nta.go.jp」以下多岐のURL宛に
+過度なGETリクエストが発生しました。
+
+このリクエストにより、レート・コントロール・カテゴリー
+"Origin 404 Error v1)"がトリガーされたものと思われます。
+
+また、全てのリクエストヘッダーは同一で
+これらのリクエストに対し、レスポンスコード200が返答されました。
+また本IPはDNS Blacklistersに追加されています。
+
+詳細情報：
+検知時間：10月30日 15:48 GMT(0:48 JST)
+クライアント IP: 118.67.70.13
+ロケーション: Tokyo, Japan
+企業: WELLSTONE_Inc.​
+
+Rate Policy:"Origin 404 Error v1)"
+Policy ID: qik1_21973
+Status Code: 200
+Method: GET
+
+サンプルリクエスト:
+GET /nagoya/kohyo/tokei/h17/pdf/8-1.pdf HTTP/1.1 
+Host: www.nta.go.jp
+Connection: Keep-Alive
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2
+
+
+Server: Apache
+X-FRAME-OPTIONS: SAMEORIGIN
+Last-Modified: Mon, 28 Apr 2008 04:09:09 GMT
+ETag: "9c05d5-28b7d-44be713d38340"
+Accept-Ranges: bytes
+Content-Length: 166781
+Content-Type: application/pdf
+Date: Sun, 30 Oct 2016 16:00:22 GMT
+Connection: keep-alive
+
+
+追加の処置をご希望の場合は、その旨をご連絡ください。
+弊社にてプロダクション環境の緊急変更などを実施するためには、お客様のメールによる事前承認が必要です。
+
+引き続き本件のイベントが終息するまでモニタリングし、定期的にアップデート致します。
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+ご確認、ご連絡のほどよろしくお願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+--------------------------------------------------
+ご担当者様、
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+本件、Security Monitor のデータを確認しました結果、過去３時間以上 WAF トリガー状況が落ち着いており、状況確認の結果、本件のイベントが終息したと判断しております。
+もし本件の対応内容に関するご質問やご不明な点がありましたら、本メールへの返信にてその旨ご連絡ください。
+
+再度アラートが上がった場合には、新規チケットにて連絡致します。
+
+何卒宜しくお願いいたします。
+
+### English Summary:
+The WAF activity targeting your account has remained inactive for over 3 hours.
+We now consider this event to be over.
+Please let us know if you need any clarifications on the content of this ticket.
+
+Any new alert will be handled in a new ticket.
+##################
+
+
+Haga, Shunsuke(芳賀 俊介)

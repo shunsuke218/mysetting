@@ -1,0 +1,115 @@
+// Mortage.h
+#ifndef __MORTEGE_H__INCLUDED__
+#define __MORTAGE_H__INCLUDED__
+
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <cmath>
+
+using namespace std;
+
+// Constant used for FILL template
+const char SEPARATOR = ' ';
+const int WIDTH = 15;
+
+// Template
+#define FILL right << setw(WIDTH) << setfill(SEPARATOR)
+#define SETP(i) fixed << setprecision(i)
+
+// Class mortage
+class mortage {
+// --------------------------------------------------
+// Variable/function declaration
+// --------------------------------------------------
+// Private variables
+private:
+	double loanAmount, annualInterestRate, monthlyInterestRate, term, monthlyPayment;
+	int totalYearsToRepay, numberOfPayments;
+
+// Public functions
+public:
+	// Constructor
+	mortage();
+	// Setter
+	void setloanAmount(double);
+	void setannualInterestRate(double);
+	void setmonthlyInterestRate(double);
+	void settotalYearsToRepay(int);
+	void setnumberOfPayments(int);
+	// Getter
+	double getloanAmount();
+	double getannualInterestRate();
+	double getmonthlyInterestRate();
+	int gettotalYearsToRepay();
+	int getnumberOfPayments();
+	double getterm();
+	void calcterm();
+	double getTotalPayback();
+	double getmonthlyPayment();
+	};
+
+// --------------------------------------------------
+// Constructor
+// --------------------------------------------------
+mortage::mortage() {
+	loanAmount = 0, annualInterestRate = 0, monthlyInterestRate = 0, term = monthlyPayment = 0;
+	totalYearsToRepay = 0, numberOfPayments = 0;
+}
+void mortage::setloanAmount(double i) {
+	loanAmount = i;
+}
+void mortage::setannualInterestRate(double i) {
+	annualInterestRate = i;
+}
+void mortage::setmonthlyInterestRate(double i) {
+	monthlyInterestRate = i;
+}
+void mortage::settotalYearsToRepay(int i) {
+	totalYearsToRepay = i;
+}
+void mortage::setnumberOfPayments(int i) {
+	numberOfPayments = i;
+}
+// Getter
+double mortage::getloanAmount() {
+	return loanAmount;
+}
+double mortage::getannualInterestRate() {
+	return annualInterestRate;
+}
+double mortage::getmonthlyInterestRate() {
+	return monthlyInterestRate;
+}
+int mortage::gettotalYearsToRepay() {
+	return totalYearsToRepay;
+}
+int mortage::getnumberOfPayments() {
+	return numberOfPayments;
+}
+double mortage::getterm() {
+	return term;
+}
+double mortage::getmonthlyPayment() {
+	return monthlyPayment;
+}
+
+
+// --------------------------------------------------
+// Functions
+// --------------------------------------------------
+// Check if mortage is stopped
+void mortage::calcterm() {
+
+	monthlyInterestRate = annualInterestRate/12;
+	numberOfPayments = totalYearsToRepay * 12;
+	term = pow(( 1 + monthlyInterestRate ), numberOfPayments);
+	monthlyPayment = (loanAmount * monthlyInterestRate * term ) / (term - 1);
+}
+double mortage::getTotalPayback(){
+	return monthlyPayment * numberOfPayments;
+}
+
+#endif

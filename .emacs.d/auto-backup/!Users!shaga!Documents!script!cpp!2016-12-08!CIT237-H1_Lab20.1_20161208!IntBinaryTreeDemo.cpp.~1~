@@ -1,0 +1,79 @@
+// This program demonstrates the insertNode member function.
+#include <iostream>
+#include <iomanip>
+#include "IntList.h"
+
+#define CINCLEAR cin.clear(); cin.ignore(65536,'\n');
+
+using namespace std;
+
+int main() {
+	IntList list;
+	
+	while (true) {
+		char option;
+		int num;
+
+		// User input
+		cout << "command: ";
+		cin >> option;
+		CINCLEAR
+
+	
+			switch (option) {
+			case 'a':
+				// APPEND
+				cout << "Enter number to append to the list: ";
+				while (!(cin >> num) || num <= 0 || num > 1000000) {
+					CINCLEAR
+						cout << "Please enter the proper number: ";
+				}
+				list.appendNode(num);
+				continue;
+		
+			case 'd':
+				// DELETE
+				cout << "Enter number to delete to the list: ";
+				while (!(cin >> num) || num <= 0 || num > 1000000) {
+					CINCLEAR
+						cout << "Enter number to delete from the list: ";
+				}
+				list.deleteNode(num);
+				continue;
+		
+			case 'i':
+				// INSERT
+				cout << "Enter number to append to the list: ";
+				while (!(cin >> num) || num <= 0 || num > 1000000) {
+					CINCLEAR
+						cout << "Enter number to insert into the list: ";
+				}
+				list.insertNode(num);
+				continue;
+		
+			case 'p':
+				// PRINT
+				list.print();
+				continue;
+		
+			case 'h':
+				// HELP
+				cout <<
+					"Supported commands:" << endl <<
+					FILL << right << "a" << FILL << " " << "APPEND a new node at the end of the list" << endl <<
+					FILL << right << "d" << FILL << " " << "DELETE a node from the list" << endl <<
+					FILL << right << "i" << FILL << " " << "INSERT a node into the list, maintaining the sorted order." << endl <<
+					FILL << right << "p" << FILL << " " << "PRINT the contents of the list. Format the output as shown in the Sample Output below." << endl <<
+					FILL << right << "h" << FILL << " " << "HELP text" << endl <<
+					FILL << right << "q" << FILL << " " << "QUIT (end the program)" << endl;
+				continue;
+			case 'q':
+				// QUIT
+				cout << "Exiting..." << endl;
+				return 0;
+			default:
+				continue;
+			}
+		cout << endl;
+	}
+}

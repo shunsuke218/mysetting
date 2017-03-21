@@ -1,0 +1,29 @@
+::Multiple Choice:: What are the primary uses of tcpdump in the SOC? Select all that apply.
+{=DDoS signature detection.
+=Troubleshooting network issues.
+~Finding usernames and passwords sent in cleartext.
+~Capturing data streams for forensic analysis.}
+
+::Multiple Choice:: Specifically when using the -w flag with tcpdump, what should you always do?
+{=Use the -c flag.
+~Make sure the interface on which you're capturing is in promiscuous mode.
+~Make sure you're running as root or running the tcpdump with sudo.
+~Use the Smyck color theme for your terminal.}
+
+::Multiple Choice:: What flag is used to display more detailed information such as TTL, checksum integrity checks, and total length?
+{=-v
+~-d
+~-A
+~-X}
+
+::Multiple Choice:: Suppose you want to read a pcap file named foo.pcap, but you don't want to convert host addresses or port numbers to names. Which of the following tcpdump commands would accomplish this?
+{=tcpdump -nnr foo.pcap -A
+~tcpdump -nni foo.pcap
+~tcpdump -nr foo.pcap
+~tcpdump -vv foo.pcap -X}
+
+::Multiple Choice:: You took a packet capture with the command “tcpdump -nn dst host 10.0.0.1 -c1000” and notice that there are numerous SYN/ACKs with acknowledgement number 1 in the output. How would you verify whether the acknowledgement numbers are actually 1?
+{=Rerun the same command with -S appended.
+~There is no need to rerun the command, as the output already shows all acknowledgements to be 1.
+~Rerun the same command with -vvv appended.
+~Rerun the same command  with -A appended.}

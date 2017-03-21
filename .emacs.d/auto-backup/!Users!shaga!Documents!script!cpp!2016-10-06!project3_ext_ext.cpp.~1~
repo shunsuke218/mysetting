@@ -1,0 +1,233 @@
+// Date: 2016/10/27
+// Written by: Shunsuke Haga
+//
+// The program will  convert a "pipe-delimited" text file to a file in CSV format.
+
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <stack>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+// Constant used for FILL template
+const char SEPARATOR = ' ';
+const int WIDTH = 15;
+
+// Template
+#define FILL right << setw(WIDTH) << setfill(SEPARATOR)
+
+// delimiter
+const char PIPE = '|';
+const char COMMA = ',';
+
+// Prototype
+void openFile(fstream &, string );
+vector<std::string> split(const string &);
+vector<std::string> splitcsv(const string &);
+
+
+// Main function
+int main() {
+	// Variable Declaration
+	while (true) {
+		char delimiter;
+		char option;
+		fstream inFile, outFile;
+		vector<string> string_vector;
+		std::string temp;
+		std::stringstream ss;
+		
+		// User input
+		cout << "command: ";
+		cin >> option;
+
+		// Check input
+		switch (option) {
+		case 'c':
+		case 'p':
+			// Convert CSV/pipe-delimiter
+			cout <<
+				(option == 'c' ?
+				 "Convert CSV to pipe-delimiter" :
+				 "Convert pipe-delimiter to CSV")
+				 << endl;
+			
+			// Assign corresponding delimiter
+			delimiter = (option == 'c') ? PIPE : COMMA;
+
+			// Open input file
+			cout << endl << "Please enter the input filename." << endl;
+			openFile(inFile, "input");
+
+			// For each line in the text file
+			while (getline(inFile, temp)) {
+				// Split a line using delimiter
+				// (Calling different function depends on 'option')
+				string_vector = (option == 'c') ? splitcsv(temp) : split (temp) ;
+
+				// Merge string with corresponding delimiter
+				for(size_t i = 0; i < string_vector.size(); ++i) {
+					if(i != 0)
+						ss << delimiter;
+					ss << string_vector[i];
+				}
+				ss << "\r\n"; // Add Line break
+			}
+			inFile.close();
+
+			//cout << ss.str();
+			// Output output file
+			cout << endl << "Please enter the output filename." << endl;
+			openFile(outFile, "output");
+			outFile << ss.str();
+			outFile.close();
+
+			cout << "File exported." << endl << endl << endl;
+			continue;
+		case 'h':
+			// Help
+			cout <<
+				"Supported commands:" << endl <<
+				FILL << "c" << "\t\t\tconvert CSV to Pipe-delimited file." << endl <<
+				FILL << "p" << "\t\t\tconvert Pipe-delimited file to CSV." << endl <<
+				FILL << "h" << "\t\t\tprint this help text." << endl <<
+				FILL << "q" << "\t\t\tquit (end the program)." << endl;
+			continue;
+		case 'q':
+			// Quit
+			cout << "Exiting..." << endl;
+			return 0;
+		default :
+			continue;
+		}
+	}
+}
+
+
+
+
+void openFile(fstream &File, string io) {
+	bool input = true;
+	string filename;
+	// Check if input or output
+	if (io.compare("output") == 0)
+		input = false;
+	// Check if File is open-able.
+	do {
+		cout << "Enter " << io <<" filename: ";
+		cin >> filename;
+		File.open(filename.c_str());
+		// If open-able, input: return, output: create and return
+		if (!(File ^ input)) {
+			if (!input)
+				File.open(filename.c_str(), fstream::out);
+			return;
+		}
+		// If not, input: file does not exist, output: file already exists
+		cout << "Error opening the file " << filename << ".\n";
+		if (!input)
+			cout << "File exists!" << endl;
+	} while ((File ^ input));
+}
+
+
+vector<std::string> split(const string &string) {
+    vector<std::string> elems;
+	bool quote = false;
+	std::string item;
+
+	// For each character in string
+	for (std::string::size_type i = 0; i < string.size(); ++i) {
+		char ch = string[i];
+		// If the character is delimiter, put it in a vector
+		switch(ch) {
+		case '|':
+			// If '|', push it to vector.
+			if (quote) 
+				item = '\"' + item + '\"';
+			elems.push_back(item);
+			item.clear();
+			quote = false;
+			break;
+		case '"':
+			// If '"', make it double double-quotations
+			item += "\"\"";
+			break;
+		case ',':
+			// If ',', wrap the item with double-quotations
+			item += ',';
+			quote = true;
+			break;
+		default:
+			// Other case, continue to read until meets next delimiter or EOL.
+			item += ch;
+		}
+	}
+	// Last item should be stored too.
+	if (quote)
+		item = "\"" + item + "\"";
+    if (!item.empty())
+        elems.push_back(item);
+    return elems;
+}
+
+ vector<std::string> splitcsv(const string &string) {
+	char prev = '\0';
+	stack<char> stack;
+	std::string item;
+    vector<std::string> elems;
+
+	// For each character in string
+	for (std::string::size_type i = 0; i < string.size(); ++i) {
+		char ch = string[i];
+
+		switch(ch){
+		case ',':
+			// If encountered comma, check stack if it's between quotes
+			if (stack.empty()){
+				// If empty, that's the end of the item
+				if (!item.empty()) {
+					// Remove the quote prior to the comma
+					if (prev == '"')
+						item = item.substr(0, item.size()-1);
+					// Push it to vector
+					elems.push_back(item);
+				} else {
+					elems.push_back("");
+				}
+				item.clear();
+				prev = '\0';
+			} else {
+				// If not empty, continue until end of quote.
+				item += prev = ch;
+			}
+			break;
+
+		case '"':
+			// If encountered double-quote, check stack if it's beginning/ending
+			if (stack.empty()) {
+				// If stack is empty, it's beginning. Push.
+				stack.push('"');
+			} else {
+				// If stack is full, it's ending. Pop.
+				stack.pop();
+				item += prev = ch;
+			}
+		    break;
+
+		default:
+			// As for other characters, add to item
+			item += prev = ch;
+		}
+    }
+	// If the final character is not quote, append to item.
+	if (prev != '"')
+		item += prev;
+    if (!item.empty())
+        elems.push_back(item);
+    return elems;
+}

@@ -1,0 +1,177 @@
+// Date: 2016/11/06
+// Written by: Shunsuke Haga
+// 
+// Inventory Application Program
+// This project involves designing and creating a C++ program
+// which will utilize the InventoryItem class, which is
+// described in Section 13.10 (pages 762-765) of the Gaddis textbook.
+
+#include "project4_function.cpp"
+#include "project4.h"
+
+using namespace std;
+
+// Prototype
+void openFile(fstream &, string );
+item split(const string &);
+void addtovector(vector<item> &, item);
+	
+// Main function
+int main() {
+	vector<item> item_vector;
+
+	while (true) {
+		// Variable Declaration
+		char option;
+		fstream inFile, outFile;
+		std::stringstream ss;
+
+		std::string temp;
+		double doubletemp;
+		int inttemp = 0;
+		item tempitem;
+		
+		// User input
+		cout << "command: ";
+		cin >> option;
+
+		// Check input
+		switch (option) {
+		case 'a':
+			//////////////////////////////////////////////////
+			// ADD PARTS.
+			//////////////////////////////////////////////////
+			checkitem(item_vector, "add");
+			continue;
+		case 'h':
+			//////////////////////////////////////////////////
+			// SHOW HELP
+			//////////////////////////////////////////////////
+			cout <<
+				"Supported commands:" << endl <<
+				FILL << right << "a" << FILL << " " << "Add parts." << endl <<
+				FILL << right << "h" << FILL << " " << "print Help text." << endl <<
+				FILL << right << "i" << FILL << " " << "Input inventory data from a file." << endl <<
+				FILL << right << "p" << FILL << " " << "Print inventory list." << endl <<
+				FILL << right << "n" << FILL << " " << "New inventory Item." << endl <<
+				FILL << right << "o" << FILL << " " << "Output inventory data to a file." << endl <<
+				FILL << right << "q" << FILL << " " << "quit (end the program)." << endl <<
+				FILL << right << "r" << FILL << " " << "Remove parts." << endl;
+			continue;
+		case 'i':
+			//////////////////////////////////////////////////
+			// INPUT INVENTORY DATA FROM A FILE
+			//////////////////////////////////////////////////
+			// Open input file
+			cout << endl << "Please enter the input filename." << endl;
+			openFile(inFile, "input");
+			// For each line in the text file
+			while (getline(inFile, temp)) {
+				// Count import
+				inttemp++;
+				// Split a line using delimiter
+				tempitem = split (temp);
+				// Add 'item class' to a vector
+				addtovector(item_vector, tempitem);
+			}
+			inFile.close();
+			cout << inttemp << " records loaded to array." << endl;
+			continue;
+		case 'p':
+			//////////////////////////////////////////////////
+			// PRINT CONTENTS
+			//////////////////////////////////////////////////
+			printcontents(item_vector);
+			continue;
+		case 'n':
+			//////////////////////////////////////////////////
+			// NEW INVENTORY
+			//////////////////////////////////////////////////
+			// Empty cin
+			cin.clear();
+			cin.ignore(65536, '\n');
+			
+			// Set description
+			cout << "Enter description for new Item: ";
+			while  (!(getline(cin,temp))) {
+				cin.clear();
+				cin.ignore(65536, '\n');
+			}
+			tempitem.setdescription(temp);
+
+			// Set unit cost
+			cout << "Enter unit cost for new Item: ";
+			while(!(cin >> doubletemp) || doubletemp <= 0 || doubletemp > 4294967295){
+				cin.clear();
+				cin.ignore(65536, '\n');
+				cout << "Please enter the proper unit cost: ";
+			}
+			tempitem.setcost(doubletemp);
+
+			// Set quantity
+			cout << "Enter initial quantity for the new Item: ";
+			while(!(cin >> inttemp) || inttemp <= 0 || inttemp > 30){
+				cin.clear();
+				cin.ignore(65536, '\n');
+				cout << "Please enter the proper quantity (~30): ";
+			}
+			tempitem.setquantity(inttemp);
+
+			// Add item
+			addtovector(item_vector, tempitem);
+			cout << "Announcing a new inventory Items: " << tempitem.getdescription() << endl;
+			cout << "We now have " << item_vector.size() << " different inventory Items in stock!" << endl;
+			continue;
+		case 'o':
+			//////////////////////////////////////////////////
+			// OUTPUT INVENTORY DATA TO A FILE
+			//////////////////////////////////////////////////
+			// Open output file
+            cout << endl << "Please enter the output filename." << endl;
+			openFile(outFile, "output");
+
+			// For each contents, print num, description, cost, and quantity.
+			for (size_t i = 0; i < item_vector.size(); ++i) {
+				tempitem = item_vector[i];
+				outFile << tempitem.getoutput() << '\n';
+			}
+			cout << "Output file has been created." << endl;
+			outFile.close();
+			continue;
+		case 'q':
+			//////////////////////////////////////////////////
+			// QUIT
+			//////////////////////////////////////////////////
+			cout << "Exiting..." << endl;
+			return 0;
+		case 'r':
+			//////////////////////////////////////////////////
+			// REMOVE PARTS.
+			//////////////////////////////////////////////////
+			// Remove item from vector
+			checkitem(item_vector, "remove");
+			continue;
+		/*
+		  case 'd':
+			//////////////////////////////////////////////////
+			// DEBUG INPUT
+			//////////////////////////////////////////////////
+			inFile.open("debug.txt");
+			// For each line in the text file
+			while (getline(inFile, temp)) {
+				inttemp++;
+				// Split a line using delimiter
+				tempitem = split (temp);
+				// Add 'item class' to a vector
+				addtovector(item_vector, tempitem);
+			}
+			inFile.close();
+			cout << inttemp << " records loaded to array." << endl;
+			continue;
+		*/
+		default :
+			continue;
+		}
+	}
+}
+

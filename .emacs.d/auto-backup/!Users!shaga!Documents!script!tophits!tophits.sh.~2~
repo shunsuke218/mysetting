@@ -1,0 +1,61 @@
+##!/bin/bash
+# A script to ssh multiple servers over multiple tmux panes with
+# and execute tophits for each accessing server.
+#
+# Based on D.Kovalov work : https://gist.github.com/dmytro/3984680
+
+session="tophits"
+
+starttmux() {
+	local hosts=( $HOSTS )
+	local launchedtmux=0
+
+	local window="ssh-multi ${hosts[0]}"
+	window=${window//./-} # tmux uses dots internally to delimit windows and panes
+	
+	if [ -z "$TMUX" ]; then # if not in a tmux session create one
+		tmux has-session -t "${session}" 2> /dev/null
+		if [ "$?" -eq 0 ]; then # delete if session already exists
+			tmux kill-session -t "${session}"
+		fi
+		tmux -u new-session -d -s "${session}" -n "${window}" "ssh StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $user${hosts[0]}"
+		unset hosts[0];
+		launchedtmux=1
+	else # Get session name of current tmux session.
+		session="$(tmux display-message -p '#S')"
+		tmux new-window -t "${session}" -n "${window}" "ssh StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${hosts[0]}"
+		unset hosts[0];
+		launchedtmux=0
+	fi
+
+	for i in "${hosts[@]}"; do
+		tmux split-window -t "${session}:${window}" -h "ssh StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $i"
+	done
+	
+	tmux select-layout -t "${session}:${window}" even-horizontal
+	tmux select-pane -t "${session}:${window}"
+	tmux set-window-option -t "${session}:${window}"  synchronize-panes on
+	sleep 5
+	tmux send-keys -t "${session}:${window}" "$pass" Enter "$tophits" Enter
+
+	# Setup complete. If we were already inside a tmux session, then we should
+	# be on the newly created window with synchronized panes, otherwise, we
+	# need to connect to the new tmux session.
+
+	if [ "$launchedtmux" = 1 ]; then tmux a -dt ${session}; fi
+}
+
+
+
+if ! which tmux > /dev/null; then
+	echo "'tmux' not found. Do 'ruby -e \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\"; brew install tmux' or 'sudo apt-get install tmux' to install tmux."
+	exit 1
+fi
+
+printf '\e[8;25;200t' # Resize window
+tophits="/usr/local/soc/tophits.pl"
+echo -n "Password: "
+read -s pass
+HOSTS="lmon1.sjc2.plx lmon1.lon2.plx lmon1.fra2.plx lmon1.tyo2.plx lmon1.hkg2.plx lmon1.syd2.plx lmon1.dca2.plx"
+trap "echo exitting!!!; tmux kill-session -t ${session}; echo session ended " EXIT # Delete session when exit
+starttmux

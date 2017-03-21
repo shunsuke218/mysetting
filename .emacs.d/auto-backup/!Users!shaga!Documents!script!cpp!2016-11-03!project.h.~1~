@@ -1,0 +1,80 @@
+// Mortage.h
+#ifndef __PROJECT_H__INCLUDED__
+#define __PROJECT_H__INCLUDED__
+
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <cmath>
+
+using namespace std;
+
+// Function Prototype
+
+// Constant used for FILL template
+const char SEPARATOR = ' ';
+const int WIDTH = 15;
+
+// Template
+#define FILL right << setw(WIDTH) << setfill(SEPARATOR)
+#define SETP(i) fixed << setprecision(i)
+
+class item {
+ private:
+	double cost;
+	int itemnum, quantity;
+	string description;
+
+ public:
+	// Constructor
+	item();
+	// Function Prototype
+	/* Setter */
+	void setcost(double);
+	void setitemnum(int);
+	void setquantity(int);
+	void setdescription(string);
+	/* Getter */
+	double getcost();
+	int getitemnum();
+	int getquantity();
+	string getdescription();
+	/* Function */
+	void addparts(int, int);
+};
+
+item::item() {
+	
+}
+/* Setter */
+void item::setcost(double i) {	this.cost = i; }
+void item::setitemnum(int i) {	this.itemnum = i; }
+void item::setquantity(int i) {	this.quantity = i; }
+void item::setdescription(string i) {	this.description = i; }
+/* Setter */
+double item::setcost() {	return cost; }
+int item::setitemnum() {	return itemnum; }
+int item::setquantity() {	return quantity; }
+string item::setdescription() {	return description; }
+/* Function */
+void item::addparts(int item, int parts) {
+	int totalitem;
+	do {
+		cout << "Choose a Item Number: ";
+		cin.clear();
+		cin.ignore('\n', 65536);
+		totalitem = this.itemnum + item;
+		
+	} while (totalitem < 0 || totalitem >= 30)
+		
+	if ( totalitem < 0 || totalitem >= 30 ) {
+		cout << "ERROR: initial quantity must be >= 0 and <= 30." << endl;
+		return;
+	}
+	this.itemnum = totalitem;
+}
+
+
+#endif

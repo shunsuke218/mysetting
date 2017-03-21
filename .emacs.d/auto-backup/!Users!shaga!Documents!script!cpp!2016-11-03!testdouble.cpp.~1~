@@ -1,0 +1,16 @@
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
+#include <math.h>
+
+using namespace std;
+
+int main() {
+	double d = 2;
+	for (int i = 0; i < 100; i++) {
+		cout << pow(d,i) << endl;
+	}
+}

@@ -1,0 +1,81 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+import java.util.ListIterator;
+
+public class Solution {
+
+    public static void main(String[] args) {
+        /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution. */
+        Scanner input = new Scanner(System.in);
+        String a = input.nextLine();
+        String b = input.nextLine();
+        
+        char[] achar = a.toCharArray();
+        char[] bchar = b.toCharArray();
+
+        Arrays.sort(achar);
+        Arrays.sort(bchar);     
+        System.out.println(String.valueOf(achar) + "\n" + String.valueOf(bchar));
+        HashSet<Character> hash = new HashSet<Character>();
+        
+        
+        int counter = 0;//( achar[0] == bchar[0] ) ? 0 : 1;
+        boolean aflag = false;
+        boolean bflag = false;
+        outerloop:
+        for (int i = 0; i < achar.length;) {
+            for (int j = 0; j < bchar.length;) {
+                System.out.println(i + ": " + achar[i] + " (" + aflag + ") " + j + ": " + bchar[j] + " (" + bflag + ") ");
+                // Precondition
+                if (i + 1 >= achar.length)
+                    aflag = true;
+                if (j + 1 >= bchar.length)
+                    bflag = true;
+
+                if (achar[i] == bchar[j]) {
+                // Condition 1: If [A] and [B] are same
+                    if (!hash.contains(achar[i])){
+                        hash.add(achar[i]);
+                    }
+                    if (!aflag)
+                        i++;
+                    if (!bflag)
+                        j++;
+                    
+                } else {
+                // Condition 2: If [A] and [B] are not same
+                    char smaller;
+                    if (Character.getNumericValue(achar[i]) < Character.getNumericValue(bchar[j])) {
+                        // [A] is smaller
+                        smaller = (!aflag) ? achar[i] : bchar[j];
+                        if (!aflag)
+                            i++;
+                        else
+                            j++;
+                    } else {
+                        // [B] is smaller
+                        smaller = (!bflag) ? bchar[j] : achar[i];
+                        if (!bflag)
+                            j++;
+                        else
+                            i++;
+                    }
+                    counter++;
+                    // Add counter
+                    if (!hash.contains(smaller)) {
+                        hash.add(smaller);
+                    }
+                    System.out.print("smaller: " + smaller + " ");
+                }
+                System.out.println("counter: " + counter);
+                if (aflag && bflag)
+                    break outerloop;
+            }
+        }
+        System.out.println(counter);
+        
+    }
+}

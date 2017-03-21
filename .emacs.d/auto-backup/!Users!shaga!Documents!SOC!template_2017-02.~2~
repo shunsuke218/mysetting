@@ -1,0 +1,96 @@
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社KONAシステムにてWAFの アラート通知が上がりましたので連絡致します。
+只今イベントデータ解析中ですので、結果は後ほど報告いたします。
+
+解析結果が完了するまで、お客様にてお願いする対応はございません。
+
+本イベントが終息するまでに、新たなアラート通知が発生した場合には本件にて対応致します。
+アラートの詳細は以下の通りです。
+
+Notification: Alert Notification | P1 High Warned Rate Activity:P1 | nta_mk
+Start Time: 12/24/2016 13:49:00 UTC
+Domain : www.nta.go.jp
+URL: N/A
+Policy ID: qik1_21973
+Client IP : 210.237.183.134
+Edgescape Information (country, owner):
+Gotenba-shi, Shizuoka, Japan
+SoftBank Mobile Corp.
+
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+
+何卒宜しく御願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+--------------------------------------------------
+
+ご担当者様、
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀と申します。
+
+長らくお待たせしており大変申し訳ございません。
+
+本件引き続きイベントデータ解析中です。
+解析結果報告まで、今暫くお待ち下さい。
+
+解析結果が完了するまで、お客様にてお願いする対応はございません。
+
+何卒宜しくお願い致します。
+--------------------------------------------------
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀と申します。
+
+本件のアラートに関して、貴社アカウントのWAF設定におけるルールトリガー状況が落ち着いており、確認の結果、本件のイベントが終息したと判断致しました。
+もし本件の対応内容に関するご質問やご不明な点がありましたら、本メールへの返信にてその旨ご連絡ください。
+
+再度アラートが上がった場合には、新規チケットにて連絡致します。
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口
+電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+
+何卒宜しくお願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+--------------------------------------------------
+
+ご担当者様、
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀と申します。
+
+本件に関しまして、前回の連絡から７２時間のモニタリングが経過しましたが、
+アラートの再発がないこと及び、特にご質問などがないようでしたのでケースを
+クローズと致します。
+
+以上、宜しくお願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+--------------------------------------------------
+[shaga]
+
+++++ Ticket ++++
+
+Issue/Task:
+[shaga <date>]  <brief description of the issue, 1 to 2 lines. You can referer the reader to the description field for further details.>
+
+Action Taken:
+[shaga <date>] <What you did this time. E.g “Received and email with additional questions and replied to those”>
+
+Next Action:
+[shaga <date>]<Add clear instructions for the next engineer. What should they do with this case?>
+
+++++ Runbook ++++
+
+Ignore Conditions:
+[shaga <date>]  <does the runbook have ignore conditions? If not add something like None, N/A etc...If the runbook does have ignore conditions, add a 1 liner describing those ignore conditions>
+
+Special Instructions:
+[shaga <date>]<Add any instructions that apply to all customer communications in the ticket e.g requests that specialists need to follow when contacting the customer>

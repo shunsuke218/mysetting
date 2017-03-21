@@ -1,0 +1,120 @@
+// Date: 2016/09/22
+//
+// Written by: Shunsuke Haga
+// This program
+
+#include <iostream>
+#include <iomanip>
+#include <math.h>
+
+using namespace std;
+
+// Constant used for FILL template
+const char SEPARATOR = ' ';
+const int WIDTH = 15;
+
+// Template
+#define FILL right << setw(WIDTH) << setfill(SEPARATOR)
+
+// Prototype
+void populateIntegerArray(int*, int);
+void displayIntegerArray(int*, int);
+int findMaximumInteger(int*, int);
+char *hex(int);
+
+// Main function
+int main() {
+	// Declare variable
+	int arraySize = -1;
+
+	// Initial array size input
+	cout << "Enter desired array size: ";
+	while (!(cin >> arraySize) || arraySize <= 0 || arraySize > 16) {
+		cout << "Invalid number. Please submit number bigger than 0. :";
+		cin.clear();
+		cin.ignore(65536, '\n');
+	} 
+
+	// Declare array
+	int* arrayPtr = new int[arraySize];
+
+	// Print array ptr
+	cout << "arrayPtr = " << arrayPtr << endl;
+	// Array Input
+	populateIntegerArray(arrayPtr, arraySize);
+	// Output
+	displayIntegerArray(arrayPtr, arraySize);
+	// Print maximum
+	cout <<
+		"Maximum integer in array is:\t" <<
+		findMaximumInteger(arrayPtr, arraySize) << endl;
+
+	// Delete array
+	delete [] arrayPtr;
+	cout << "DELETING array at arrayPtr = " << arrayPtr << endl;
+	return 0;
+}
+
+// Input value
+void populateIntegerArray(int *arrayPtr, int arraySize) {
+	// Array Input
+	int temp;
+	for (int i = 0; i < arraySize; i++) {
+		cout << "Enter value for array element " << i << ": ";
+		// Error check
+		while  (!(cin >> temp) || temp > 2147483647 || temp < -2147483647) {
+			cout << "Please submit integer value: ";
+			cin.clear();
+			cin.ignore(65536, '\n');
+		}
+		*(arrayPtr + i) = temp;
+	}
+}
+
+void displayIntegerArray(int * arrayPtr, int arraySize) {
+	// Output
+	for (int i = 0; i < arraySize; i++){
+		cout <<
+			arrayPtr + i <<
+			":\t arrayPtr[" << i << "] = " <<
+			FILL <<*(arrayPtr + i) <<
+			"   (Hex " << hex(*(arrayPtr + i)) << ")" << endl;
+	}
+}
+
+int findMaximumInteger(int * arrayPtr, int arraySize) {
+	int temp = arrayPtr[0];
+	for (int i = 1; i < arraySize; i++){
+		temp = (temp < arrayPtr[i]) ? arrayPtr[i] : temp;
+	}
+	return temp;
+}
+
+char *hex(int dec) {
+	// Variable initialization
+	char *hexvalue;
+	hexvalue = new char [9];
+	// Check if the number is negative
+	bool negative = false;
+	if (dec < 0) {
+		negative = true;
+		dec *= -1;
+	};
+	// Fill array with 'F' or '0'
+	char fillchar = negative ? 'F' : '0';
+	fill(hexvalue, hexvalue + sizeof(hexvalue), fillchar);
+
+	// Find digit in hex
+	int digit = (int)(floor( log10(dec) / log10(16) ) + 1);
+
+	for (int i = digit; i >= 0; i--) {
+		int k = !negative ?
+			// Extract last 4 bits
+			(( dec >> (i * 4) ) & 15) :
+			// Extract XOR of last 4 bits
+			((( (dec - 1) >> (i * 4) ) & 15) ^ 15) ;
+		// Assign character for int
+		hexvalue[7 - i] = (k > 9) ? char(55 + k) : char(48 + k);
+	}
+	return hexvalue;
+}

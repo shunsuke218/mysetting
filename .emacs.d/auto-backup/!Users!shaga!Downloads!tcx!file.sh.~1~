@@ -1,0 +1,26 @@
+maxsize=20000000
+num=1
+output="output_$num.tcx"
+echo "<?xml version="1.0" ?>                                                                                                      
+<TrainingCenterDatabase xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd">
+<Activities>
+" > $output
+for file in *.tcx
+do
+	output="output_$num.tcx"
+	actualsize=$(wc -c < "$output")
+	if [ "$actualsize" -le "$maxsize" ]; then
+		sed -n '/<Activity/,/Activity>/p' "$file" >> $output
+	else
+		echo "</Activities>                                                                                                               
+</TrainingCenterDatabase>" >> $output
+		let "num++"
+		output="output_$num.tcx"
+		echo "<?xml version="1.0" ?>                                                                                                      
+<TrainingCenterDatabase xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd">
+<Activities>
+" > $output
+	fi
+done
+echo "</Activities>                                                                                                               
+</TrainingCenterDatabase>" >> $output

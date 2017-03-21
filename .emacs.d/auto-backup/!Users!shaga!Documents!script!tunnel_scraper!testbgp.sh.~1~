@@ -1,0 +1,25 @@
+for eachlog in /tmp/tunnellog_*; do
+	# Check if contents available
+	bgp_summary=$( sed -n "/sh bgp sum | i $tunnelip/,/sh log | i $tunnelip/p" $eachlog | sed '$ d' )
+	if [ -z "$tunnel_description" ]; then
+		continue
+	fi
+	
+	echo -ne "##################################################\n" >> $LOG
+	# Print LOCATION
+	echo "LOCATION: " $( grep -E "RP/0/RSP[0-9]/CPU0:" $eachlog | cut -f 2 -d ":" | cut -f 1 -d "#" | head -1 ) >> $LOG
+	# Print IP
+	echo -ne "\nIP: " >> $LOG
+	echo "$tunnelip" >> $LOG
+	
+	# BGP SUMMARY: sh bgp sum | i 1.1.1.1
+	echo -ne "\nBGP SUMMARY: \n" >> $LOG
+	echo "$bgp_summary" >> $LOG
+	
+	# BGP LOG: sh log | i 1.1.1.1
+	echo -ne "\nBGP LOG: \n" >> $LOG
+	sed -n "/sh log | i $tunnelip/,/exit/p" $eachlog | sed '$ d' | tail -n +2 >> $LOG
+	let "num++"
+done
+
+cat $LOG

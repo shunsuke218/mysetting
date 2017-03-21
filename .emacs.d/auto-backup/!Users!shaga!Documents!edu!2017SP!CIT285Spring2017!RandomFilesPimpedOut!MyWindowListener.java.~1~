@@ -1,0 +1,10 @@
+import java.awt.*;
+import java.awt.event.*;
+
+
+
+public class MyWindowListener extends WindowAdapter {
+		public void windowActivated(WindowEvent e) {
+			System.out.println("windowActivated");
+		}
+	}

@@ -1,0 +1,303 @@
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社KONAシステムにてWAFの アラート通知が上がりましたので連絡致します。
+只今イベントデータ解析中ですので、結果は後ほど報告いたします。
+
+解析結果が完了するまで、お客様にてお願いする対応はございません。
+
+本イベントが終息するまでに、新たなアラート通知が発生した場合には本件にて対応致します。
+アラートの詳細は以下の通りです。
+
+Notification: Alert Notification | P1 High Warned Rate Activity | his
+Start Time: 11/02/2016 12:40:00 GMT
+Domain : hotels.his-j.com
+URL: hotels.his-j.com/HotelReservationInput/Default.aspx?token=2
+Policy ID: his_18630
+Client IP : 60.145.72.166
+Edgescape Information (country, owner):
+Tokyo, Japan
+Softbank BB Corp.
+
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+
+何卒宜しく御願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+--------------------------------------------------
+One of our customer is asking regards yesterday's network event. Would you post a reponse if there is?
+
+>Regarding the network event on multiple scrubbing centers,
+>Our customer is asking following three questions. Is there any answer at the moment?
+>
+>We tagged you on case# F-CS-1896195.
+>Thanks in advance.
+>
+>(Q1): What is the cause of the network event?
+>(Q2): What operation was conducted in order to retrieve status?
+>(Q3): Would this network event may recur?
+
+--------------------------------------------------
+Our Kona system has detected a Web Application Firewall (WAF) event during Nov 02, 11:16 - Nov 02, 13:10 GMT. Therefore, the SOC is presently seeking your attention connected to said WAF event with details posted below.
+
+REQUESTED ACTION
+We recommend to block the IP 113.12.209.155 as attempts looks true positives and activity is ongoing as well.
+We also recommend to finetune thresholds and move Risk-Groups to deny inorder to deny such malicious attempts.
+Attached url list and raw samples for further reference.
+
+ANALYSIS SUMMARY
+We observe malicious attempts such as Directory traversal and SQL attempts from client IP 113.12.209.155 during the mentioned timeframe targeted to www.mizuhobank.co.jp. 
+Malicious vectors were sent in url ,using GET Method.The activity is ongoing.All the requests were alerted triggering various risk-groups SQL-INJECTION-ANOMALY,
+INBOUND-ANOMALY,RFI-ANOMALY,CMD-INJECTION-ANOMALY. Activity looks to be trying to access path /etc/passwd  using directory traversal attempts.
+Sample url:
+www.mizuhobank.co.jp/direct/help/demo/nyushukkin/n04010.html?Inquiry=ï¿½Æ‰ï¿½&btnBlue=1&btnGreen=1&btnMenuMvLeft=invalid../../../../../../../../../../etc/passwd/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././
+www.mizuhobank.co.jp/direct/help/demo/nyushukkin/n04010.html?Inquiry=ï¿½Æ‰ï¿½&btnBlue=1&btnGreen=1&btnMenuMvLeft=unexisting/../../../../../../../../../../windows/win.ini.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\
+www.mizuhobank.co.jp/direct/help/demo/nyushukkin/n04010.html?Inquiry=ï¿½Æ‰ï¿½&btnBlue=1&btnGreen=../../../../../../../../../../etc/passwd%00.jpg&btnMenuMvLeft=ï¿½ï¿½ï¿½Ö•\ï¿½ï¿½&btnMenuMvRight=ï¿½Eï¿½Ö•\ï¿½ï¿½&btnPurple=1&btnRed=1&hidColor=00&INQUIRY_MONTH_TYPE=BEFORE_LASTMONTH&INQUIRY_TYPE=RANGE&menuposition=0&REDISP=OFF&SelAcct=2&SFDay=3&SFMonth=4&SFYear=2010&STDay=1&STMonth=4&STYear=2010
+www.mizuhobank.co.jp/direct/help/demo/nyushukkin/n04010.html?Inquiry=ï¿½Õ»ï¿½&btnBlue=1&btnGreen=../../../../../../../../../../etc/passwd%00.jpg&btnMenuMvLeft=ï¿½ï¿½Ø±ï¿½Ê¾&btnMenuMvRight=ï¿½Ò¤Ø±ï¿½Ê¾&btnPurple=1&btnRed=1&hidColor=01&INQUIRY_MONTH_TYPE=BEFORE_LASTMONTH&INQUIRY_TYPE=RANGE&menuposition=1&REDISP=OFF&SelAcct=0&SFDay=1&SFMonth=4&SFYear=2010&STDay=1&STMonth=4&STYear=2010
+www.mizuhobank.co.jp/direct/help/demo/nyushukkin/n04010.html?Inquiry=ï¿½Æ‰ï¿½&btnBlue=(select convert(int,CHAR(65)))&btnGreen=1&btnMenuMvLeft=ï¿½ï¿½ï¿½Ö•\ï¿½ï¿½&btnMenuMvRight=ï¿½Eï¿½Ö•\ï¿½ï¿½&btnPurple=1&btnRed=1&hidColor=00&INQUIRY_MONTH_TYPE=BEFORE_LASTMONTH&INQUIRY_TYPE=RANGE&menuposition=0&REDISP=OFF&SelAcct=1&SFDay=2&SFMonth=4&SFYear=2010&STDay=1&STMonth=4&STYear=2010
+ 
+
+Client IP:113.12.209.155
+CHINANET_GUANGXI_PROVINCE_NETWORK,NANNING,China
+Policy ID:miza_25526
+Method:GET
+Rule ID's:SQL-INJECTION-ANOMALY,INBOUND-ANOMALY,RFI-ANOMALY,CMD-INJECTION-ANOMALY
+--------------------------------------------------
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社 KONA システムからの WAF アラート通知に関するイベントデータ解析結果を
+以下にまとめましたので、ご確認ください。
+
+▪️お客様に実施をお願いする対応
+IPアドレス 219.96.58.141 からのアクセスをブロックすることを推奨します。
+本IPからの攻撃は真陽性であると推測されます。攻撃は断続中です。
+しきい値を微調整すると共にRisk-Groupsをdenyに再設定し攻撃を拒否することをお勧めします。
+
+▪️解析結果のまとめ
+11月2日の11:16 GMT(20:16 JST)から13:10 GMT(22:16 JST)の検知時間中
+IPアドレス 113.12.209.155 から「www.mizuhobank.co.jp」以下、悪意のあるURL宛にGETリクエストが発生しました。
+このリクエストにより、
+"SQL-INJECTION-ANOMALY"、"INBOUND-ANOMALY"、"RFI-ANOMALY,CMD-INJECTION-ANOMALY"がトリガーされました。
+攻撃者はディレクトリトラバーサルを用い、/etc/passwdにアクセスしようとした模様です。
+
+
+詳細情報：
+検知時間：11月2日 11:16 GMT(20:16 JST)
+クライアント IP: 113.12.209.155
+ロケーション: NANNING, China
+企業: CHINANET_GUANGXI_PROVINCE_NETWORK,NANNING,China
+
+Policy ID:miza_25526
+Method:GET
+Rule ID's:SQL-INJECTION-ANOMALY,INBOUND-ANOMALY,RFI-ANOMALY,CMD-INJECTION-ANOMALY
+
+
+サンプルURL:
+www.mizuhobank.co.jp/direct/help/demo/nyushukkin/n04010.html?Inquiry=ï¿½Æ‰ï¿½&btnBlue=1&btnGreen=1&btnMenuMvLeft=invalid../../../../../../../../../../etc/passwd/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././
+www.mizuhobank.co.jp/direct/help/demo/nyushukkin/n04010.html?Inquiry=ï¿½Æ‰ï¿½&btnBlue=1&btnGreen=1&btnMenuMvLeft=unexisting/../../../../../../../../../../windows/win.ini.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\
+www.mizuhobank.co.jp/direct/help/demo/nyushukkin/n04010.html?Inquiry=ï¿½Æ‰ï¿½&btnBlue=1&btnGreen=../../../../../../../../../../etc/passwd%00.jpg&btnMenuMvLeft=ï¿½ï¿½ï¿½Ö•\ï¿½ï¿½&btnMenuMvRight=ï¿½Eï¿½Ö•\ï¿½ï¿½&btnPurple=1&btnRed=1&hidColor=00&INQUIRY_MONTH_TYPE=BEFORE_LASTMONTH&INQUIRY_TYPE=RANGE&menuposition=0&REDISP=OFF&SelAcct=2&SFDay=3&SFMonth=4&SFYear=2010&STDay=1&STMonth=4&STYear=2010
+www.mizuhobank.co.jp/direct/help/demo/nyushukkin/n04010.html?Inquiry=ï¿½Õ»ï¿½&btnBlue=1&btnGreen=../../../../../../../../../../etc/passwd%00.jpg&btnMenuMvLeft=ï¿½ï¿½Ø±ï¿½Ê¾&btnMenuMvRight=ï¿½Ò¤Ø±ï¿½Ê¾&btnPurple=1&btnRed=1&hidColor=01&INQUIRY_MONTH_TYPE=BEFORE_LASTMONTH&INQUIRY_TYPE=RANGE&menuposition=1&REDISP=OFF&SelAcct=0&SFDay=1&SFMonth=4&SFYear=2010&STDay=1&STMonth=4&STYear=2010
+www.mizuhobank.co.jp/direct/help/demo/nyushukkin/n04010.html?Inquiry=ï¿½Æ‰ï¿½&btnBlue=(select convert(int,CHAR(65)))&btnGreen=1&btnMenuMvLeft=ï¿½ï¿½ï¿½Ö•\ï¿½ï¿½&btnMenuMvRight=ï¿½Eï¿½Ö•\ï¿½ï¿½&btnPurple=1&btnRed=1&hidColor=00&INQUIRY_MONTH_TYPE=BEFORE_LASTMONTH&INQUIRY_TYPE=RANGE&menuposition=0&REDISP=OFF&SelAcct=1&SFDay=2&SFMonth=4&SFYear=2010&STDay=1&STMonth=4&STYear=2010
+
+
+追加の処置をご希望の場合は、その旨をご連絡ください。
+弊社にてプロダクション環境の緊急変更などを実施するためには、お客様のメールによる事前承認が必要です。
+
+引き続き本件のイベントが終息するまでモニタリングし、定期的にアップデート致します。
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+ご確認、ご連絡のほどよろしくお願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+--------------------------------------------------
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社KONAシステムにてWAFの アラート通知が上がりましたので連絡致します。
+只今イベントデータ解析中ですので、結果は後ほど報告いたします。
+
+解析結果が完了するまで、お客様にてお願いする対応はございません。
+
+本イベントが終息するまでに、新たなアラート通知が発生した場合には本件にて対応致します。
+アラートの詳細は以下の通りです。
+
+Notification: Alert Notification | P1 High Warned Rate Activity:P1 | nta_mk
+Start Time: 11/02/2016 15:55:00
+Domain : www.nta.go.jp
+URL: (NO DATA)
+Policy ID: qik1_21973
+Client IP : 118.67.70.13
+Edgescape Information (country, owner):
+Tokyo, Tokyo, Japan
+Bit-isle Co.,Ltd.
+
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+
+何卒宜しく御願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+--------------------------------------------------
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社 KONA システムからの WAF アラート通知に関するイベントデータ解析結果を
+以下にまとめましたので、ご確認ください。
+
+▪️お客様に実施をお願いする対応
+IPアドレス 219.96.58.141 から大量のアクセスを予期されていたか、ご確認ください。
+特定のIPアドレスからのアクセスはいつでもブロックすることが出来ます。
+またアカマイで本IPを監視することも可能です。併せてご検討ください。
+
+▪️解析結果のまとめ
+11月2日の19:59 GMT(4:59 JST)から20:04 GMT(5:04 JST)の検知時間中
+単一IPアドレス 219.96.58.141 から「www.rosenka.nta.go.jp」以下多岐のURL宛に
+約222,000回に及ぶGETリクエストが発生しました。
+
+このリクエストにより、レート・コントロール・カテゴリー
+"Forward Request v1 except for www.nta and www.e-tax, Page View Requests v2"トリガーされたものと思われます。
+
+また、全てのリクエストヘッダーは同一で
+これらのリクエストに対し、レスポンスコード200が返答されました。
+
+
+詳細情報：
+検知時間：11月2日 19:59 GMT(4:59 JST)
+クライアント IP: 219.96.58.141
+ロケーション: SHIZUOKA, Japan
+企業: shizuoka_computer_service._ltd
+
+Domain: shizugin.com
+ASNUM: 10010
+Rule triggered: Forward Request v1 except for www.nta and www.e-tax, Page View Requests v2
+HTTP Method: GET
+Status Code: 200
+Policy ID: qik1_21973
+
+
+サンプルリクエスト:
+GET /main_h27/sendai/miyagi/prices/b34103fr.htm HTTP/1.1 
+Via: 1.0 ESX02-03
+User-Agent: Mozilla/4.0 (compatible; MSIE 5.5; Windows NT 5.0) 
+Host: www.rosenka.nta.go.jp
+Accept: */*
+Cache-Control: max-age=0
+Connection: Keep-Alive
+
+
+追加の処置をご希望の場合は、その旨をご連絡ください。
+弊社にてプロダクション環境の緊急変更などを実施するためには、お客様のメールによる事前承認が必要です。
+
+引き続き本件のイベントが終息するまでモニタリングし、定期的にアップデート致します。
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+ご確認、ご連絡のほどよろしくお願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+--------------------------------------------------
+Our Kona system has detected high number of requests from IP 60.145.72.166 during Nov 02, 12:36 - Nov 02, 12:44 GMT time.
+
+Analysis: As per my analysis, we have observed around 14K GET requests from a single IP address based in Tokyo in a span of 8 minutes. All the requests had constant header order with same header values thought. And majority of the requests resulted in 503 and 504. Here is a sample. Since the rate at which requests were sent was too high, rate controls got breached and all further requests were alerted:
+
+GET /HotelReservationInput/Default.aspx?token=2 HTTP/1.1 
+Accept: text/html, application/xhtml+xml, image/jxr, */*
+Referer: https://member.his-j.com/pc/change_confirm.aspx?tabToken=8saulawbmn
+Accept-Language: ja-JP
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: hotels.his-j.com
+Connection: Keep-Alive
+Cookie: "cookie value removed"
+
+Recommendation: Considering the time and number of requests, it is on a higher side. Let us know if you have seen such pattern before and what do you think about this event. We can have this source blocked immediately if required.
+
+Connecting IP: 60.145.72.166
+Country: Japan
+City: Tokyo
+Company: Japan_Nation-wide_Network_of_Softbank_Corp
+Domain: bbtec.net
+ASNUM: 17676
+
+Requested URL: hotels.his-j.com/HotelReservationInput/Default.aspx?token=2 HTTP/1.1
+
+Rule triggered: Monitor origin error rate
+
+HTTP Method: GET
+
+Status Code: 503, 504
+
+Policy ID: his_18630
+--------------------------------------------------
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社 KONA システムからの WAF アラート通知に関するイベントデータ解析結果を
+以下にまとめましたので、ご確認ください。
+
+▪️お客様に実施をお願いする対応
+IPアドレス 60.145.72.166 から大量のアクセスを予期されていたか、ご確認ください。
+特定のIPアドレスからのアクセスはいつでもブロックすることが出来ます。
+またアカマイで本IPを監視することも可能です。併せてご検討ください。
+
+▪️解析結果のまとめ
+11月2日の12:36 GMT(21:36 JST)から12:44 GMT(21:44 JST)の8分間に及ぶ検知時間中
+単一IPアドレス 60.145.72.166 から多岐のURL宛に
+約14,000回に及ぶGETリクエストが発生しました。
+このリクエストにより、レート・コントロールがトリガーされたものと思われます。
+
+これらのリクエストに対し、レスポンスコード503と504が返答されました。
+
+
+詳細情報：
+検知時間：11月2日 12:36 GMT(21:36 JST)
+クライアント IP: 60.145.72.166
+ロケーション: Tokyo, Japan
+企業: Japan_Nation-wide_Network_of_Softbank_Corp
+
+Connecting IP: 60.145.72.166
+Country: Japan
+City: Tokyo
+Company: Japan_Nation-wide_Network_of_Softbank_Corp
+Domain: bbtec.net
+ASNUM: 17676
+
+Requested URL: hotels.his-j.com/HotelReservationInput/Default.aspx?token=2 HTTP/1.1
+Rule triggered: Monitor origin error rate
+HTTP Method: GET
+Status Code: 503, 504
+Policy ID: his_18630
+
+
+サンプルリクエスト:
+GET /HotelReservationInput/Default.aspx?token=2 HTTP/1.1 
+Accept: text/html, application/xhtml+xml, image/jxr, */*
+Referer: https://member.his-j.com/pc/change_confirm.aspx?tabToken=8saulawbmn
+Accept-Language: ja-JP
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: hotels.his-j.com
+Connection: Keep-Alive
+Cookie: "cookie value removed"
+
+
+追加の処置をご希望の場合は、その旨をご連絡ください。
+弊社にてプロダクション環境の緊急変更などを実施するためには、お客様のメールによる事前承認が必要です。
+
+引き続き本件のイベントが終息するまでモニタリングし、定期的にアップデート致します。
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+ご確認、ご連絡のほどよろしくお願い致します。
+
+Haga, Shunsuke (芳賀 俊介)

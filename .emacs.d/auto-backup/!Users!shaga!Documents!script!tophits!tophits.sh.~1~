@@ -1,0 +1,36 @@
+#!/bin/bash
+# ssh-multi
+# D.Kovalov
+# Based on http://linuxpixies.blogspot.jp/2011/06/tmux-copy-mode-and-how-to-control.html
+
+# a script to ssh multiple servers over multiple tmux panes
+
+
+starttmux() {
+    if [ -z "$HOSTS" ]; then
+       echo -n "Please provide of list of hosts separated by spaces [ENTER]: "
+       read HOSTS
+    fi
+
+    local hosts=( $HOSTS )
+
+
+    tmux new-window "ssh ${hosts[0]}"
+    unset hosts[0];
+    for i in "${hosts[@]}"; do
+        tmux split-window -h  "ssh $i"
+        tmux select-layout even-horizontal> /dev/null
+    done
+    tmux select-pane -t 0
+    tmux set-window-option synchronize-panes on > /dev/null
+    sleep 5
+    tmux send-keys "$pass" Enter "$tophits" Enter
+}
+
+
+tophits="/usr/local/soc/tophits.pl"
+pass="ng0QAZXC!@#"
+HOSTS="lmon1.sjc2.plx lmon1.lon2.plx lmon1.fra2.plx lmon1.tyo2.plx lmon1.hkg2.plx lmon1.syd2.plx"
+#HOSTS=${HOSTS:=$*}
+
+starttmux

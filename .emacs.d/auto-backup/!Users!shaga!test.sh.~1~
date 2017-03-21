@@ -1,0 +1,4 @@
+echo -e "Connecting hdakamai.upload.akamai.com\\nusername: "
+read ftp_username
+echo -e "password: "
+read ftp_secret

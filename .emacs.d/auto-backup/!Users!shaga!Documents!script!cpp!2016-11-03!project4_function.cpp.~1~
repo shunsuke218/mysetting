@@ -1,0 +1,209 @@
+#include "project4.h"
+void checkitem(vector<item> &item_vector, string addremove) {
+	//////////////////////////////////////////////////
+	// ADD/REMOVE PARTS
+	//////////////////////////////////////////////////
+	int itemnum, partsnum;
+	bool correctrange = false;
+
+	// Add = true/ Remove = false
+	bool action = false;
+	if (addremove == "add")
+		action = true;
+
+	// Check if item exists.
+	if (item_vector.size() == 0) {
+		cout << "No item in the record!" << endl;
+		return;
+	}
+
+	// Item number
+	cout << "Choose an Item Number: ";
+	// Chose an index of number (< 30)
+	while (!(cin >> itemnum) || itemnum < 0 || itemnum >= 30 || itemnum > item_vector.size() - 1) {
+		cin.clear();
+		cin.ignore(65536, '\n');
+		cout << "Please choose an item between 0 ~ " << item_vector.size() - 1 << endl;
+		cout << "Choose an Item Number: ";
+	} 
+
+	// If Add and quantity > 30
+	if (action && item_vector[itemnum].getquantity() >= 30) {
+			cout << "Quantity is greather than 30!" << endl;
+			return;
+	}
+	// If Remove and quantity < 1
+	if (!action && item_vector[itemnum].getquantity() < 1) {
+		cout << "Quantity is 0!" << endl;
+		return;
+	}
+
+
+	cout << "How many parts to " << (action ? "add? " : "remove? ");
+	do {
+		// User input
+		cin >> partsnum;
+		// Check if input is in correct range between 1 ~ 30
+		correctrange = (action ? (item_vector[itemnum].getquantity() + partsnum <= 30) : (item_vector[itemnum].getquantity() - partsnum > 0));
+		// If yes, exit loop
+		if (partsnum > 1 && partsnum <= 30 && correctrange)
+			break;
+		// If not, prompt the error message and continue.
+		cout << "Choose a quantity between 1 ~ " << (action ? 30 - item_vector[itemnum].getquantity() : item_vector[itemnum].getquantity()) << endl;
+		cout << "How many parts to " << (action ? "add? " : "remove? ");
+		cin.clear();
+		cin.ignore(65536, '\n');
+	} while(true);
+
+	// Set an quantity (between 1 ~ 30)
+	partsnum = action ? item_vector[itemnum].getquantity() + partsnum : item_vector[itemnum].getquantity() - partsnum;
+	item_vector[itemnum].setquantity(partsnum);
+	cout << "Now item, " << item_vector[itemnum].getdescription() << ", has quantity of " << item_vector[itemnum].getquantity() << "." << endl;	
+}
+
+void printcontents(vector<item> item_vector) {
+	//////////////////////////////////////////////////
+	// PRINT CONTENTS
+	//////////////////////////////////////////////////
+	item tempitem;
+	// Print Header
+	cout <<
+		FILL << "Item Num" <<
+		FILLX(30) << "Description" <<
+		FILL << "Cost" <<
+		FILL << "Quantity" << endl;
+
+	cout <<
+		FILL << "________" <<
+		FILLX(30) << "__________" <<
+		FILL << "____" <<
+		FILL << "________" << endl;
+
+	// Print Contents
+	for(size_t i = 0; i < item_vector.size(); ++i) {
+		tempitem = item_vector[i];
+		cout <<
+			FILL << tempitem.getitemnum() <<
+			FILLX(30) << tempitem.getdescription() <<
+			FILL << "$" + std::to_string(tempitem.getcost()).substr(0,4) <<
+			FILL << tempitem.getquantity() << endl;
+	}
+	// Print Footer
+	cout << endl << item_vector.size() << " records." << endl << endl;
+	return;
+}
+
+
+item split(const std::string &string) {
+	//////////////////////////////////////////////////
+	// SPLIT STRING TO 'item'
+	//////////////////////////////////////////////////
+	std::vector<std::string> elems;
+	bool quote = false;
+	std::string item;
+	class item myitem;
+	
+	// For each character in string
+	for (std::string::size_type i = 0; i < string.size(); ++i) {
+		char ch = string[i];
+		// If the character is delimiter, put it in a vector
+		switch(ch) {
+		case '|':
+			// If '|', push it to vector.
+			if (quote) 
+				item = '\"' + item + '\"';
+			elems.push_back(item);
+			item.clear();
+			quote = false;
+			break;
+		case '"':
+			// If '"', make it double double-quotations
+			item += "\"\"";
+			break;
+		case ',':
+			// If ',', wrap the item with double-quotations
+			item += ',';
+			quote = true;
+			break;
+		default:
+			// Other case, continue to read until meets next delimiter or EOL.
+			item += ch;
+		}
+	}
+	// Last item should be stored too.
+	if (quote)
+		item = "\"" + item + "\"";
+    if (!item.empty())
+        elems.push_back(item);
+
+	// Now convert element to item.
+	try {
+		myitem.setdescription(elems[1]);
+		myitem.setcost(stod(elems[2]));
+		myitem.setquantity(stoi(elems[3]));
+	} catch (int e) {
+		cout << "Error were detected: " << e;
+	}
+    return myitem;
+}
+
+void openFile(fstream &File, string io) {
+	bool input = true;
+	string filename;
+	// Check if input or output
+	if (io.compare("output") == 0)
+		input = false;
+
+	do {
+		// User input
+		cout << "Enter " << io << " filename: ";
+		cin.clear();
+		cin.ignore(65536, '\n');
+		cin >> filename;
+		// Check if File can be openned
+		File.open(filename.c_str());
+
+		// If you can, input: return / output: create and return
+		if (!(!File.fail() ^ input)) {
+			if (!input)
+				File.open(filename.c_str(), fstream::out);
+			return;
+		}
+
+		// If you cannot, input: file does not exist / output: file already exists
+		cout << "Error opening the file " << filename << ".\n";
+		cout << "File " << (input ? "does not" : "already") << " exists!" << endl;
+		File.close();
+	} while (true);
+}
+
+void addtovector(vector<item> &item_vector, item item) {
+	bool duplicate = false;
+	// For each content in the vector
+	for (size_t i = 0; i < item_vector.size(); ++i) {
+		// Check if same description exists
+		if (item_vector[i].getdescription() == item.getdescription()) {
+			// If quantity exceeds 30, just set it to 30. 
+			if (item_vector[i].getquantity() + item.getquantity() > 30 ) {
+				cout << item_vector[i].getdescription() << " already exists and the sum exceeds quantity of 30. Set it to 30." << endl;
+				item_vector[i].setquantity(30);
+				item_vector[i].setcost(item.getcost());
+			}
+			// If item exists, overwrite the cost.
+			else {
+				item_vector[i].setquantity(item_vector[i].getquantity() + item.getquantity());
+				cout << item_vector[i].getdescription() << " already exists. Overwrite the cost." << endl;
+				item_vector[i].setcost(item.getcost());
+			}
+			// Duplicate detected.
+			duplicate = true;	
+		}
+	}
+	// If no duplicate found, add to the end.
+	if (!duplicate) {
+		// Increase static member to count objects.
+		item.increaseitemnum();
+		item_vector.push_back(item);
+		}
+	return;
+}

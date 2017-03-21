@@ -1,0 +1,106 @@
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
+
+#include "Employee.cpp"
+#include "ProductionWorker.cpp"
+
+// Constant used for FILL template
+const char SEPARATOR = ' ';
+const int WIDTH = 15;
+
+
+#define CINCLEAR cin.clear(); cin.ignore(65536, '\n');
+#define FILL left << setw(WIDTH) << setfill(SEPARATOR)
+
+int main() {
+	ProductionWorker worker;
+	//ProductionWorker worker;
+	while (true) {
+		char option;
+
+		string stemp;
+		int itemp;
+		double dtemp;
+		
+		// User input
+		cout << "Enter command (or 'h' for help): ";
+		cin >> option;
+		CINCLEAR
+
+		// Check input
+		switch (option) {
+		case 'c':
+			do {
+				try {
+						
+					// Create a new ProductionWorker object.
+					cout << "Enter name of new employee: ";
+					while  (!(getline(cin,stemp))) {
+						CINCLEAR
+							}
+					worker.setEmployeeName(stemp);
+			
+					cout << "Enter hire date of new employee: ";
+					while  (!(getline(cin,stemp))) {
+						CINCLEAR
+							}
+			
+					cout << "Enter shift for new employee (1=day, 2=night): ";
+					while (!(cin >> itemp)) {
+						CINCLEAR
+							cout << "Enter shift for new employee (1=day, 2=night): ";
+					}
+			
+					cout << "Enter hourly pay rate for new employee: ";
+					while (!(cin >> dtemp)) {
+						CINCLEAR
+							cout << "Enter hourly pay rate for new employee: ";
+					}
+					worker.setHireDate(stemp);
+					worker.setShift(itemp);
+					worker.setPayrate(dtemp);
+					break;
+			
+				} catch (string err) {
+					CINCLEAR
+					cout << "Error: " << err << endl << endl;
+				}
+			} while (true);
+			cout << endl << "Worker added!" << endl << endl;
+			worker.setEmployeeNumber();
+			continue;
+
+		case 'h':
+			// //////////////////////////////////////////////////
+			// PRINT HELP
+			// //////////////////////////////////////////////////
+			// print help text.
+			cout <<
+				"Supported commands:" << endl <<
+				FILL << right << "c" << FILL << " " << "create a new ProductionWorker object." << endl <<
+				FILL << right << "h" << FILL << " " << "print Help text." << endl <<
+				FILL << right << "p" << FILL << " " << "Print ProductionWorker information." << endl <<
+				FILL << right << "q" << FILL << " " << "quit (end the program)." << endl << endl;
+
+			continue;
+		case 'p':
+			cout <<
+				"Name: " << worker.getEmployeeName() << endl <<
+				"Employee number: " << worker.getEmployeeNumber() << endl <<
+				"Hire date: : " << worker.getHireDate() << endl <<
+				"Shift: " << worker.getShift() << endl <<
+				"Shift number: " << worker.getPayrate() << endl << endl ;
+			continue;
+		case 'q':
+			return 0;
+			continue;
+		default:
+			continue;
+
+			}
+	}
+}

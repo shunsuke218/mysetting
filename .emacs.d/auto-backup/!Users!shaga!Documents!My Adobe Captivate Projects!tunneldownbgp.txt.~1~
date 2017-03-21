@@ -1,0 +1,38 @@
+::Multiple Choice::What does VLL stand for?
+{
+=Virtual Lease Line
+~Vertical Line Left
+~Virtual Linear Log
+~German shortcut for "VieLLeicht" (perhaps/maybe)
+}
+
+::Multiple Choice::What does ASN stand for?
+{
+=Autonomous System Number
+~Abstract Syntax Notation
+~Aviation Safety Network
+~Access Service Network
+}
+
+::Multiple Choice::What is the command to identify the ARP details?
+{
+=sh arp | i Bundle-Ether<Ether.ID>
+~sh arp | grep <Ether.ID>
+~sh arp | d <Ether.ID> -i Bundle-Ether
+~find . -name arp | grep <Ether.ID>
+}
+
+::Multiple Choice::When is the command to pull logs?
+{
+=sh bgp sum | I <ASN>
+~sh arp | i logs
+~cat arp.log | grep bgp
+~sh bgp i | sum <ASN>
+}
+
+::Multiple Choice::How do you identify the ASN?
+{
+=access router -> sh run prefix-set customername
+~border router -> sh run prefix-set customername
+~access router -> sh arp sum | I <ASN>
+~border router -> sh arp sum | I <ASN>

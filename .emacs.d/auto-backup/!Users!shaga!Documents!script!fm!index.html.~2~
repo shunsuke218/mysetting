@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Functional Master Search Tool</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+
+
+<body>
+ <h1>Functional Master Seach Tool</h1>
+ <div class="incline-div">
+   <form action="cgi-bin/post.py">
+	 <input type="text" id="search" placeholder="Search..">
+	 <button type="button" id="submit" type="submit">submit</button><br />
+   </form>
+   
+   <p align="center">Customer A</p>
+ </div>
+<!--
+ <script>
+	 $(function() {
+	 $("#includedContent").load("customer.html");
+	 });
+ </script>
+-->
+ <div class="incline-div" id="includedContent"></div>
+ 
+<br />
+<p style="font-size: 12px"><a href="https://ac.akamai.com/message/24908" target="_blank">PLX Extractor</a> Created \
+by: Shunsuke Haga <a href="https://docs.google.com/a/akamai.com/document/d/10Y60jTzWEf7D_bO2lTLlz07NDLCDd16X9oh6Fic\
+dn8c/edit?usp=sharing" target="_blank">manual</a></p>
+
+<script>
+
+  $( "form" ).submit(function( event ){
+  event.preventDefault();
+  $.ajax({
+  method: "POST",
+  url: "/cgi-bin/post.py",
+  data: $('#input').val(),
+  dataType: "html"
+  }).done(function (data) {
+  condole.log( data );
+  });
+  })
+
+  
+  
+</script>  
+  
+
+</body>
+</html>

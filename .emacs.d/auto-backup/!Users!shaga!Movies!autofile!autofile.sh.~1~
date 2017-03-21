@@ -1,0 +1,41 @@
+#!/bin/sh
+
+if [ "$1" == "-h" ] ; then
+    echo "Usage: `basename $0` [file.mp4]"
+    exit 0
+fi
+
+if [ ! -e "$1" ] ; then
+	echo "File not found!"
+	exit 1
+fi
+
+if [ ! -e "template" ] ; then
+	echo "No 'template' folder found! Please download it from https://goo.gl/AJL6gB."
+	exit 1
+fi
+
+filename="$1"
+basename="${filename%.*}"
+
+if [ "${filename##*.}" != "mp4" ]; then
+   echo "File must be in mp4 format!"
+   exit 1
+fi
+
+if [ -e "$basename" ]; then
+	echo "Folder already exists. Please remove/change name the directry and try again."
+	exit 1
+fi
+
+cp -a template $basename
+for tempfile in $basename/*
+do
+		extension="${tempfile##*.}"
+		sed -i '.bak' "s/template/$basename/g" $tempfile
+		mv $tempfile $basename/$basename.$extension
+done
+rm $basename/*.bak
+mv $filename $basename/
+exit 0
+

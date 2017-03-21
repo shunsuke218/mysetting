@@ -1,0 +1,31 @@
+// N3.C
+
+#include <stdio.h>
+FILE *stream;
+struct entry
+{
+char name[81];
+char address[81];
+
+//ADD MORE FIELDS !!!!
+
+} list[5],part;
+
+int numread;
+int numwritten;
+int i;
+
+void main()
+{
+clrscr();
+stream=fopen("data.bin","w+b");
+numwritten=fwrite(&part,sizeof(part),5,stream);
+printf("\n\t the number of blank records in the file is %d",numwritten);
+fclose(stream);
+}
+
+
+
+
+
+

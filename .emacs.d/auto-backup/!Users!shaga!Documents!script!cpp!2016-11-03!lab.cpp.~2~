@@ -1,0 +1,174 @@
+// Date: 2016/10/27
+// Written by: Shunsuke Haga
+
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <cmath>
+
+using namespace std;
+
+// Constant used for FILL template
+const char SEPARATOR = ' ';
+const int WIDTH = 15;
+
+// Template
+#define FILL right << setw(WIDTH) << setfill(SEPARATOR)
+#define SETP(i) fixed << setprecision(i)
+
+// Class mortage
+class mortage {
+// --------------------------------------------------
+// Variable/function declaration
+// --------------------------------------------------
+// Private variables
+private:
+	double loanAmount, annualInterestRate, monthlyInterestRate, term, monthlyPayment;
+	int totalYearsToRepay, numberOfPayments;
+
+// Public functions
+public:
+	// Constructor
+	mortage();
+	// Setter
+	void setloanAmount(double);
+	void setannualInterestRate(double);
+	void setmonthlyInterestRate(double);
+	void settotalYearsToRepay(int);
+	void setnumberOfPayments(int);
+	// Getter
+	double getloanAmount();
+	double getannualInterestRate();
+	double getmonthlyInterestRate();
+	int gettotalYearsToRepay();
+	int getnumberOfPayments();
+	double getterm();
+	void calcterm();
+	double getTotalPayback();
+	double getmonthlyPayment();
+	};
+
+// --------------------------------------------------
+// Constructor
+// --------------------------------------------------
+mortage::mortage() {
+	loanAmount = 0, annualInterestRate = 0, monthlyInterestRate = 0, term = monthlyPayment = 0;
+	totalYearsToRepay = 0, numberOfPayments = 0;
+}
+void mortage::setloanAmount(double i) {
+	loanAmount = i;
+}
+void mortage::setannualInterestRate(double i) {
+	annualInterestRate = i;
+}
+void mortage::setmonthlyInterestRate(double i) {
+	monthlyInterestRate = i;
+}
+void mortage::settotalYearsToRepay(int i) {
+	totalYearsToRepay = i;
+}
+void mortage::setnumberOfPayments(int i) {
+	numberOfPayments = i;
+}
+// Getter
+double mortage::getloanAmount() {
+	return loanAmount;
+}
+double mortage::getannualInterestRate() {
+	return annualInterestRate;
+}
+double mortage::getmonthlyInterestRate() {
+	return monthlyInterestRate;
+}
+int mortage::gettotalYearsToRepay() {
+	return totalYearsToRepay;
+}
+int mortage::getnumberOfPayments() {
+	return numberOfPayments;
+}
+double mortage::getterm() {
+	return term;
+}
+double mortage::getmonthlyPayment() {
+	return monthlyPayment;
+}
+
+
+// --------------------------------------------------
+// Functions
+// --------------------------------------------------
+// Check if mortage is stopped
+void mortage::calcterm() {
+
+	monthlyInterestRate = annualInterestRate/12;
+	numberOfPayments = totalYearsToRepay * 12;
+	term = pow(( 1 + monthlyInterestRate ), numberOfPayments);
+	monthlyPayment = (loanAmount * monthlyInterestRate * term ) / (term - 1);
+}
+double mortage::getTotalPayback(){
+	return monthlyPayment * numberOfPayments;
+}
+
+void openFile(fstream &File) {
+	string filename;
+	// Check if File is open-able.
+	do {
+		cout << "Enter name of input file: ";
+		cin >> filename;
+		File.open(filename.c_str());
+		// Open File
+		if (!File.good()) {
+				File.open(filename.c_str(), fstream::out);
+				return;
+		}
+		// If not, input: file does not exist, output: file already exists
+		cout << "Error opening the file " << filename << ".\n";
+	} while (File.good());
+}
+
+// --------------------------------------------------
+// Main Function
+// --------------------------------------------------
+int main() {
+	mortage testing;
+	int intTemp;
+	double doubleTemp;
+	fstream File;
+	
+	//openFile(fstream &File);
+
+	cout << "Enter the amount of the loan: ";
+	while (!(cin >> doubleTemp) || doubleTemp <= 0) {
+		cout << "Enter the amount of the loan: ";
+		cin.clear();
+		cin.ignore(65535, '\n');
+	}
+	testing.setloanAmount(doubleTemp);
+													  
+	do {
+		cout << "Enter annual interest rate in decimal form (example .075 means 7.5%) : ";
+		cin.clear();
+		cin.ignore(65535, '\n');
+	} while (!(cin >> doubleTemp) || doubleTemp <= 0);
+	testing.setannualInterestRate(doubleTemp);
+
+	do {
+		cout << "Enter the length of the loan in years: ";
+		cin.clear();
+		cin.ignore(65535, '\n');
+	} while (!(cin >> intTemp) || intTemp <= 0);
+	testing.settotalYearsToRepay(intTemp);
+
+	testing.calcterm();
+	
+	cout << endl << endl <<
+		"Loan Amount : $" << SETP(2) << testing.getloanAmount() << endl <<
+		"Annual Interest Rate: " << SETP(5) << testing.getannualInterestRate() << endl <<
+		"Monthly interest rate = " << testing.getmonthlyInterestRate() << endl <<
+		"term = " << testing.getterm() << endl <<
+		"Years to repay: " << testing.gettotalYearsToRepay() << endl <<
+		"Monthly Payment: $" << SETP(2) << testing.getmonthlyPayment() << endl <<
+		"Total Pay Back: $" << SETP(2) << testing.getTotalPayback() << endl;
+}

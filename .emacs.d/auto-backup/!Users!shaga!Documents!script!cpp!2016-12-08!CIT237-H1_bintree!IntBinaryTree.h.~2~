@@ -1,0 +1,632 @@
+// Specification file for the IntBinaryTree class
+// (Adapted from the IntBinaryTree class in Chapter 20 
+//  of the Gaddis textbook.)
+// Portions copyright 2012, Pearson Education, Inc.
+//
+#ifndef INTBINARYTREE_H
+#define INTBINARYTREE_H
+#include <cmath>
+#include <cstdlib>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <string>
+using namespace std;
+//  Global Constants:
+const int SUCCESS = 0;	// return code for SUCCESS
+const int FAILURE = 1;  // return code for FAILURE
+
+
+// Function Prototypes
+
+string inputStringWithDefault(string promptText, string defaultValue) {
+	string inputValue;
+	string returnVal = "";
+	
+	// input from user 
+	cout << promptText << " (default = " << defaultValue << "): ";
+	getline(cin, inputValue);
+
+	if(inputValue == "") {
+		returnVal = defaultValue;
+	}
+	else
+		{
+			returnVal = inputValue;
+		}
+
+	return returnVal;
+} // (end function 'inputStringWithDefault')
+
+string inputNonEmptyString(string promptText) {
+	string inputString;
+	int convertedInteger = 0;
+	int outputVal = 0;
+	bool inputIsOK = false;
+
+	do 
+		{
+			// input from user 
+			cout << promptText;
+			getline(cin, inputString);
+
+			if(inputString == "" || inputString == " " ) {
+				inputIsOK = false; 
+			}
+			else
+				{
+					inputIsOK = true; 
+				}
+		} while (inputIsOK == false);
+
+	return inputString;
+} // (end function 'inputNonEmptyString')
+
+int inputInteger(string promptText) {
+	string inputString;
+	int convertedInteger = 0;
+	int outputVal = 0;
+	bool inputIsOK = false;
+
+	do 
+		{
+			// input from user 
+			cout << promptText;
+			getline(cin, inputString);
+
+			if(inputString == "0" || inputString == "-0" 
+			   || inputString == "00"|| inputString == "-00" ) {
+				outputVal = 0;
+				inputIsOK = true; 
+			}
+			else
+				{
+					convertedInteger=atoi(inputString.c_str());
+					if(convertedInteger == 0) {
+						cout << "CIT237_Util::inputInteger(" << __LINE__ << "):  "
+							 << "invalid inputString \"" << inputString << "\"" << endl
+							 << "Please enter an integer value. " << endl ;
+					}
+					else
+						{
+							outputVal = convertedInteger;
+							inputIsOK = true; 
+						}
+				}
+		} while (inputIsOK == false);
+
+	return outputVal;
+} // (end function 'inputInteger')
+
+double inputDouble(string promptText) {
+	string inputString;
+	double convertedValue = 0;
+	double outputVal = 0.0;
+	bool inputIsOK = false;
+
+	do 
+		{
+			//		cout << "Entering CIT237_Util::inputDouble()" << endl;
+
+			cout << promptText;   	// Get input value from user
+			getline(cin, inputString);
+
+			if(inputString == "0"|| inputString == "-0"  
+			   || inputString == "0.0" || inputString == "-0.0" ) {
+				outputVal = 0.0;
+				inputIsOK = true; 
+			}
+			else
+				{
+					convertedValue=atof(inputString.c_str());
+					if(convertedValue == 0.0) {
+						cout << "CIT237_Util::inputDouble(" << __LINE__ << "):  "
+							 << "invalid inputString \"" << inputString << "\"" << endl
+							 << "Please enter a floating-point value. " << endl ;
+					}
+					else
+						{
+							outputVal = convertedValue;
+							inputIsOK = true; 
+						}
+				}
+		} while (inputIsOK == false);
+
+	// cout << "Leaving CIT237_Util::inputDouble(), return value = " << outputVal << endl;
+	return outputVal;
+} // (end function 'inputDouble')
+
+double convertStringToDouble(string inputString) {
+	double convertedValue = 0.0;
+	double outputVal = 0.0;
+
+	if(inputString == "0"|| inputString == "-0"  
+	   || inputString == "0.0" || inputString == "-0.0" ) {
+		outputVal = 0.0;
+	}
+	else
+		{
+			convertedValue=atof(inputString.c_str());
+			if(convertedValue == 0.0) {
+				cout << "CIT237_Util::convertStringToDouble(" << __LINE__ << "):  "
+					 << "invalid inputString \"" << inputString << "\"." << endl;
+			}
+			else
+				{
+					outputVal = convertedValue;
+				}
+		}
+	return outputVal;
+} // (end function 'convertStringToDouble')
+int convertStringToInteger(string inputString) {
+	int convertedValue = 0;
+	int outputVal = 0;
+	bool inputIsOK = false;
+
+	if(inputString == "0"|| inputString == "-0"  
+	   || inputString == "00" || inputString == "-00" ) {
+		outputVal = 0;
+		inputIsOK = true; 
+	}
+	else
+		{
+			convertedValue=atoi(inputString.c_str());
+			if(convertedValue == 0) {
+				cout << "CIT237_Util::convertStringToInteger(" << __LINE__ << "):  "
+					 << "invalid inputString \"" << inputString << "\"." << endl;
+			}
+			else
+				{
+					outputVal = convertedValue;
+					inputIsOK = true; 
+				}
+		}
+
+	return outputVal;
+} // (end function 'convertStringToInteger')
+int inputIntegerWithDefault(string promptText, int defaultValue) {
+	string inputValue;
+	int returnVal = 0;
+	
+	// input from user 
+	cout << promptText << " (default = " << defaultValue << "): ";
+	getline(cin, inputValue);
+
+	if(inputValue == "") {
+		returnVal = defaultValue;
+	}
+	else
+		{
+			returnVal = convertStringToInteger(inputValue);
+		}
+
+	return returnVal;
+} // (end function 'inputIntegerWithDefault')
+
+bool confirmYN(string promptText) {
+	string inputString;
+	bool confirmationValue = false;
+	bool inputIsOK = false;
+
+	do 
+		{
+			// input from user 
+			cout << promptText;
+			getline(cin, inputString);
+
+			if(inputString == "y" ||  inputString == "Y" ) {
+				confirmationValue = true; 
+				inputIsOK = true;
+			}
+			else if (inputString == "n" || inputString == "N" ) {
+				confirmationValue = false; 
+				inputIsOK = true;
+			}
+			else
+				{
+					cout << "Invalid input:  " << inputString << ".  Please input y or n." << endl;
+				}
+		} while (inputIsOK == false);
+	return confirmationValue;
+
+} // (end function 'confirmYN')
+
+//####################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################
+
+class IntBinaryTree
+{
+
+private:
+struct TreeNode
+{
+int value;                   // The value in the node
+TreeNode *left;              // Pointer to left child node
+TreeNode *right;             // Pointer to right child node
+};
+
+static bool verboseMode;
+
+TreeNode *root;       // Pointer to the root node
+string inputFileName;
+fstream inputFile;
+
+// Private member functions
+   
+void insert(TreeNode *&nodePtr, TreeNode *&newNode) {
+if (nodePtr == NULL)
+	nodePtr = newNode;                  // Insert the node.
+ else if (newNode->value < nodePtr->value)
+	 insert(nodePtr->left, newNode);     // Search the left branch
+ else
+	 insert(nodePtr->right, newNode);    // Search the right branch
+}
+void destroySubTree(TreeNode *&nodePtr) {
+if (nodePtr) {
+if (nodePtr->left)
+	destroySubTree(nodePtr->left);
+if (nodePtr->right)
+	destroySubTree(nodePtr->right);
+makeDeletion(nodePtr);
+nodePtr = NULL;
+}
+}
+
+void deleteNode(int num, TreeNode *&nodePtr) {
+if (num < nodePtr->value) {
+if (getVerboseMode()) {
+cout << "deleteNode(" << __LINE__ << "): searching LEFT subtree for num=" << num
+<< " (current nodePtr=" << nodePtr << ", value=" << nodePtr->value << ")" << endl;
+}
+deleteNode(num, nodePtr->left);
+}
+ else if (num > nodePtr->value) {
+if (getVerboseMode()) {
+cout << "deleteNode(" << __LINE__ << "): searching RIGHT subtree for num=" << num
+<< " (current nodePtr=" << nodePtr << ", value=" << nodePtr->value << ")" << endl;
+}
+deleteNode(num, nodePtr->right);
+}
+ else
+	 {
+cout << "FOUND ";
+displayNode(nodePtr);
+makeDeletion(nodePtr);
+
+cout << "AFTER makeDeletion, nodePtr=" << nodePtr;
+}
+}
+void makeDeletion(TreeNode *&nodePtr) {
+// Define a temporary pointer to use in reattaching
+// the left subtree.
+TreeNode *tempNodePtr = NULL;
+
+if (getVerboseMode()) {
+cout << "makeDeletion(" << __LINE__ << "): enter with nodePtr=" << nodePtr
+<< ", value=" << nodePtr->value << endl;
+}
+if (nodePtr == NULL) {
+cout << "Cannot delete empty node.\n";
+}
+ else if (nodePtr->right == NULL) {
+tempNodePtr = nodePtr;
+nodePtr = nodePtr->left;   // Reattach the left child
+cout << "DELETING ";
+displayNode(tempNodePtr);
+delete tempNodePtr;
+tempNodePtr = NULL;
+}
+ else if (nodePtr->left == NULL) {
+tempNodePtr = nodePtr;
+nodePtr = nodePtr->right;  // Reattach the right child
+cout << "DELETING ";
+displayNode(tempNodePtr);
+delete tempNodePtr;
+tempNodePtr = NULL;
+}
+// If the node has two children.
+ else
+	 {
+// Move one node the right.
+tempNodePtr = nodePtr->right;
+// Go to the end left node.
+while (tempNodePtr->left)
+	tempNodePtr = tempNodePtr->left;
+// Reattach the left subtree.
+tempNodePtr->left = nodePtr->left;
+tempNodePtr = nodePtr;
+// Reattach the right subtree.
+nodePtr = nodePtr->right;
+cout << "DELETING ";
+displayNode(tempNodePtr);
+delete tempNodePtr;
+tempNodePtr = NULL;
+}
+if (getVerboseMode()) {
+cout << "makeDeletion(" << __LINE__ << "): return with nodePtr=" << nodePtr
+<< ", tempNodePtr=" << tempNodePtr << endl;
+}
+}     // end function makeDeletion
+
+void displayInOrder(TreeNode *nodePtr) const
+{
+if (nodePtr) {
+displayInOrder(nodePtr->left);
+displayNode(nodePtr);
+displayInOrder(nodePtr->right);
+}
+}
+
+void displayPreOrder(TreeNode *nodePtr) const
+{
+if (nodePtr) {
+displayNode(nodePtr);
+displayPreOrder(nodePtr->left);
+displayPreOrder(nodePtr->right);
+}
+}
+
+void displayPostOrder(TreeNode *nodePtr) const {
+if (nodePtr) {
+displayPostOrder(nodePtr->left);
+displayPostOrder(nodePtr->right);
+displayNode(nodePtr);
+}
+}
+
+void displayNode(TreeNode *nodePtr) const {
+// Display the values in this node.
+cout << "node=" << nodePtr
+<< " value=" << setw(4) << nodePtr->value
+<< " left=" << setw(8);
+if (nodePtr->left)
+	cout << nodePtr->left;
+ else
+	 cout << "null    ";
+
+cout << " right=" << setw(8);
+if (nodePtr->right)
+	cout << nodePtr->right;
+ else
+	 cout << "null    ";
+cout << endl;
+}
+
+int calculateNumberOfNodes(TreeNode *nodePtr) const {
+if (nodePtr) {
+int leftSubTreePopulation;
+int rightSubTreePopulation;
+
+leftSubTreePopulation = calculateNumberOfNodes(nodePtr->left);
+rightSubTreePopulation = calculateNumberOfNodes(nodePtr->right);
+return (leftSubTreePopulation + rightSubTreePopulation + 1);
+} else{
+return 0;
+}
+}
+int calculateSubTreeHeight(TreeNode *nodePtr) const {
+// Lab exercise:   add implementation of this function.
+if (!nodePtr) return 0;
+return 1 + max(calculateSubTreeHeight(nodePtr->left), calculateSubTreeHeight(nodePtr->right));
+// Lab exercise:  add implementation of this function.
+}
+
+
+
+public:
+// Constructor
+IntBinaryTree()
+{ 
+	root = NULL; 
+}
+      
+// Destructor
+~IntBinaryTree()
+{ destroySubTree(root); }
+      
+// Binary tree operations
+TreeNode *getRoot()
+{   return root;   }
+void setRoot(TreeNode *newRoot)
+{   root = newRoot;   }
+void insertNode(int num) {
+	TreeNode *newNode;      // Pointer to a new node.
+
+	// Create a new node and store num in it.
+	newNode = new TreeNode;
+	newNode->value = num;
+	newNode->left = newNode->right = NULL;
+
+	// Insert the node.
+	insert(root, newNode);
+}
+
+bool searchNode(int num) {
+	TreeNode *nodePtr = root;
+
+	while (nodePtr) {
+		if (nodePtr->value == num)
+			return true;
+		else if (num < nodePtr->value)
+			nodePtr = nodePtr->left;
+		else
+			nodePtr = nodePtr->right;
+	}
+	return false;
+}
+
+void remove(int num) {
+	deleteNode(num, root);
+}
+
+void userInsertNode() {
+	int dataValue = 0;
+
+	dataValue = inputInteger("Enter value to insert into tree: ");
+	insertNode(dataValue);
+}
+void userSearchNode() {
+	int dataValue = 0;
+
+	dataValue = inputInteger("Enter value to search for in tree: ");
+	if (searchNode(dataValue))
+		cout << "node is present in tree" << endl;
+	else
+		cout << "node is NOT present in tree" << endl;
+
+}
+
+void userRemoveNode() {
+	int dataValue = 0;
+
+	dataValue = inputInteger("Enter value to remove from in tree: ");
+	remove(dataValue);
+}
+
+void userRemoveAllNodes() {
+	bool confirm = false;
+	TreeNode *treePtr;
+	confirm = confirmYN("Are you sure you want to delete the entire tree?");
+	if (confirm) {
+		treePtr = this->getRoot();
+		destroySubTree(treePtr);
+		this->setRoot(NULL);
+	}
+}
+
+   
+void displayInOrder() const
+{  displayInOrder(root); }
+      
+void displayPreOrder() const
+{  displayPreOrder(root); }
+      
+void displayPostOrder() const
+{  displayPostOrder(root); }
+
+   
+
+void displayTreeHeight() const {
+	int treeHeight = 0;
+	int leftSubtreeHeight = calculateSubTreeHeight(root->left);
+	int rightSubtreeHeight = calculateSubTreeHeight(root->right);
+
+	if (leftSubtreeHeight > rightSubtreeHeight) {
+		treeHeight = leftSubtreeHeight;
+	} else {
+		treeHeight = rightSubtreeHeight;
+	}
+	cout << "Height of tree = " << treeHeight;
+}
+
+
+static void setVerboseMode(bool param)
+{
+	verboseMode = param;
+}
+static bool getVerboseMode()
+{   return verboseMode; }
+
+string getInputFileName()
+{    return inputFileName;    }
+bool openInputFile() {
+	// Input file:  prompt for filename, open file for input.
+	cout << "Enter name of input file: ";
+	getline(cin, inputFileName);
+	inputFile.open(inputFileName, ios::in);
+
+	// Check for file open error.
+	if (inputFile.fail()) {
+		cout << "ERROR(IntBinaryTree.cpp, " << __LINE__ << ") Error opening file:  " << inputFileName << endl;
+		return false;
+	}else{
+		return true;
+	}
+}
+
+void displayNumberOfNodes() const {
+	int treePopulation = 0;
+	treePopulation = calculateNumberOfNodes(root);
+	cout << "Population of tree = " << treePopulation;
+}
+
+int searchDepthUtil(TreeNode *rootPtr, TreeNode *nodePtr, int level) const {
+	if(!rootPtr || !nodePtr) return 0;
+	if(nodePtr->value == rootPtr->value) {
+		return level;
+	}
+	return max(searchDepthUtil(rootPtr->left, nodePtr, level+1), searchDepthUtil(rootPtr->right, nodePtr, level+1));
+}
+
+int searchDepth(TreeNode *inputPtr) const {
+	return searchDepthUtil(root, inputPtr, 0);
+}
+	
+void enhancedTreeDisplay(TreeNode *nodePtr, int treeLevel) const {
+	// Lab exercise:  add implementation of this function.
+	cout << "root = " << nodePtr << endl;
+	displayEnhance(nodePtr);
+}
+
+void displayEnhance(TreeNode *nodePtr) const
+{
+	if (nodePtr) {
+		cout << "( " << setw(2) << searchDepth(nodePtr) << ") ";
+		displayNode(nodePtr);
+		if (nodePtr->left)
+			displayEnhance(nodePtr->left);
+		if (nodePtr->right)
+			displayEnhance(nodePtr->right);
+	}
+}
+	
+void enhancedTreeDisplay() const {
+	enhancedTreeDisplay(root, 0);
+}
+
+void closeInputFile() {
+	inputFile.close();
+}
+
+bool readDataLine(string &recordText) {
+	bool dataValid = false;
+
+	getline(inputFile, recordText);
+	if (inputFile) {
+		dataValid = true;
+	}
+	else
+		{
+			dataValid = false;
+			if (getVerboseMode()) {
+				cout << "End of file encountered. " << endl;
+			}
+		}
+	return dataValid;
+}  // end function readDataLine
+
+int readFile() {
+	int lineNum;
+
+	string inputText;
+	int dataValue;
+	lineNum = 0;
+
+	// Read from (already open) inputFile, until end-of-file
+	while (this->readDataLine(inputText)) {
+		lineNum++;          // read was successful
+		dataValue = convertStringToInteger(inputText);
+		insertNode(dataValue);
+	}
+	return lineNum;
+
+} // (end function readFileTextDocument)
+
+};
+
+//####################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################
+
+bool IntBinaryTree::verboseMode = false;
+
+
+
+#endif

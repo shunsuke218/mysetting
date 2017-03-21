@@ -1,0 +1,136 @@
+ [shaga]
+Issue/Task: 
+[shaga Feb.9th] P1 alert
+
+Ignore Conditions: 
+[shaga Feb.9th]
+www.daiwa.co.jp (0078_18034)	
+Ignore alert for HTTP Options method. Customer periodically test their origin with Excel tools. Never call and send email for HTTP Options method. 
+
+
+Action Taken:
+[shaga Feb.9th] Initial investigation/call/email is done. Escalated to specialist for analysis.
+
+Next Action:
+[shaga Feb.9th] Specialist to send analysis to customer and TYO SOC translate it.
+--------------------------------------------------
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社KONAシステムにてWAFの アラート通知が上がりましたので連絡致します。
+只今イベントデータ解析中ですので、結果は後ほど報告いたします。
+
+解析結果が完了するまで、お客様にてお願いする対応はございません。
+
+本イベントが終息するまでに、新たなアラート通知が発生した場合には本件にて対応致します。
+アラートの詳細は以下の通りです。
+
+Notification: Alert Notification | P1 High Warned Rate Activity | daiwa_mk
+Start Time: 02/09/2017 13:37:00 GMT
+Domain : www.daiwa.co.jp
+URL:
+www.daiwa.co.jp/PCC/HomeTrade/Account/m8301.html
+www.daiwa.co.jp/PCI/AP/OnlineTrade?aid=TMJShortcut01&MEIGARA_CODE=83090&TORIHIKI_KIND=J2111&cpy=00&sid=007628P4524RlGECUlMmI=0200096100@15Vo1zF6SO4=Q3SwAFEalI
+Policy ID: 0078_18034
+Client IP : 106.172.168.27
+Edgescape Information (country, owner):
+Takamatsu, Kagawa, Japan
+KDDI CORPORATION
+
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+
+何卒宜しく御願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+--------------------------------------------------
+EQUESTED ACTION
+The IP 106.172.168.27 breached the rate control and requests were warned at this time. Activity seems to be non-malicious but the rate is high. Let us know if we need to block the IP through network list.
+
+ANALYSIS SUMMARY
+We noticed about  2,554 warned triggers during the timeframe Feb 09, 13:28 - Feb 09, 13:39 GMT from a source IP 106.172.168.27 which was hitting a single html page ‘www.daiwa.co.jp/PCC/HomeTrade/Account/m8301.html’. These requests triggered the rate control  Base Pages_DOT v3 and were warned by the same.
+
+Request headers seems to be normal or non-malicious and it is just the rate at which the requests were coming in could impact the server processing.
+
+Please see the sample request below for your reference.
+
+Client IP:            106.172.168.27
+city    TOKYO
+company    
+continent    AS
+country_code    JP
+domain    dion.ne.jp
+
+Top URL's:                    www.daiwa.co.jp/PCC/HomeTrade/Account/m8301.html
+Top Policy IDs:                    0078_18034
+Top Rule IDs:                    Rate control- Base Pages_DOT v3
+
+Sample request:
+GET /PCC/HomeTrade/Account/m8301.html HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Accept-Language: ja-JP
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: www.daiwa.co.jp
+If-Modified-Since: Tue, 30 Aug 2016 18:00:00 GMT
+If-None-Match: "3a05e5-1993-53b4dbfcda800"
+Connection: Keep-Alive
+Cookie: MenuList=; popUp=popUp_dnb3; s_ppv=20; TS011c19b9=0164e130376c0faa75207e6fc51e19466521d2ff1af7408735ef20685824d51836b90b1b05
+--------------------------------------------------
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社 KONA システムからの WAF アラート通知に関するイベントデータ解析結果を
+以下にまとめましたので、ご確認ください。
+
+▪️お客様に実施をお願いする対応
+IPアドレス 106.172.168.27 から大量のアクセスを予期されていたかご確認の上
+同IPアドレスのブロックをご検討ください。
+
+▪️解析結果のまとめ
+2月9日の13:28 GMT(22:28 JST)から13:39 GMT(22:39 JST)の検知時間中
+単一IPアドレス 106.172.168.27 から
+「www.daiwa.co.jp/PCC/HomeTrade/Account/m8301.html」宛に
+2,554回に及ぶGETリクエストが発生しました。
+このリクエストにより、レート・コントロール
+“Base Pages_DOT v3”がトリガーされたものと思われます。
+
+ヘッダー情報によると、このリクエストに悪意は無いと思われますが
+リクエストの回数によってはサイトに障害が発生する可能性があります。
+
+詳細情報：
+検知時間：2月9日の13:28 GMT(22:28 JST)
+クライアント IP:  106.172.168.27
+Top Policy IDs: 0078_18034
+Top Rule IDs: Rate control- Base Pages_DOT v3
+ロケーション: TOKYO, JP
+企業: KDDI_CORPORATION
+ドメイン: dion.ne.jp
+Top URL's: www.daiwa.co.jp/PCC/HomeTrade/Account/m8301.html
+
+サンプルリクエスト:
+GET /PCC/HomeTrade/Account/m8301.html HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Accept-Language: ja-JP
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: www.daiwa.co.jp
+If-Modified-Since: Tue, 30 Aug 2016 18:00:00 GMT
+If-None-Match: "3a05e5-1993-53b4dbfcda800"
+Connection: Keep-Alive
+Cookie: MenuList=; popUp=popUp_dnb3; s_ppv=20; TS011c19b9=0164e130376c0faa75207e6fc51e19466521d2ff1af7408735ef20685824d51836b90b1b05
+
+
+追加の処置をご希望の場合は、その旨をご連絡ください。
+弊社にてプロダクション環境の緊急変更などを実施するためには、お客様のメールによる事前承認が必要です。
+
+引き続き本件のイベントが終息するまでモニタリングし、定期的にアップデート致します。
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+ご確認、ご連絡のほどよろしくお願い致します。
+
+Haga, Shunsuke (芳賀 俊介)

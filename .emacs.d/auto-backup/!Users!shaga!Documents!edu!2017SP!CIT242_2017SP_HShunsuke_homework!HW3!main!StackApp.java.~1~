@@ -1,0 +1,55 @@
+/* HW3 place Class Entry in a package as well as Class NODE */
+//CIT242 Data Structures
+//BHCC
+
+import nodepkg.*;
+import entrypkg.*;
+
+public class StackApp {
+
+    public static void main(String[] args) {
+        MyNameQueue myQueue = new MyNameQueue();
+
+        System.out.println("Welcome to my Queue.\n");
+        
+        //populating the queue
+        myQueue.push("Jack", "Haley");
+        myQueue.push("A", "A");
+        myQueue.push("John", "Smith");
+        myQueue.push("Winston", "Churchill");
+        myQueue.push("Nelson", "Mandela");
+        myQueue.push("Mary", "Jones");
+
+        System.out.println("before popping:");
+        myQueue.printQueue();
+        System.out.println("");
+
+        System.out.println("do a pop:");
+        myQueue.pop();
+        System.out.println("");
+
+        System.out.println("after popping:");
+        myQueue.printQueue();
+        System.out.println("");
+
+        System.out.println("count the queue:");
+        myQueue.countQueue();
+        System.out.println("");
+        System.out.println("");
+
+        System.out.println("after a listInsert (Walt Disney) :");
+        myQueue.listInsert("Walt", "Disney");
+        myQueue.printQueue();
+        System.out.println("");
+
+		System.out.println("after a listDelete (Nelson Mandela) :");
+        myQueue.listDelete("Nelson", "Mandela");
+        myQueue.printQueue();
+        System.out.println("");
+
+        System.out.println("after a listInsert (2, Shunsuke Haga) :");
+        myQueue.listInsert(2, "Shunsuke", "Haga");
+        myQueue.printQueue();
+        System.out.println("");
+    }
+}

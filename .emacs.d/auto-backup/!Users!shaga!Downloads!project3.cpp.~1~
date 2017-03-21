@@ -1,0 +1,114 @@
+// Date: 2016/09/23
+// Written by: Shunsuke Haga
+//
+// This interactive program simulates the speed of a car
+// and calculates the distance traveled over a period of time.
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <fstream>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+const char DELIMITER = '|';
+
+void openFile(fstream & File ) {
+  string filename;
+  do {
+	cout << "Enter the filename: ";
+	cin >> filename;
+	File.open(filename.c_str());
+	if (File)
+	  return;
+	//return File;
+	cout << "Error opening the file " << filename << ".\n";
+  } while (!File);
+}
+
+vector<string> split_naive(const string &s, char delim) {
+    vector<string> elems;
+    string item;
+    for (char ch: s) {
+        if (ch == delim) {
+            if (!item.empty())
+                elems.push_back(item);
+            item.clear();
+        } else {
+            item += ch;
+        }
+    }
+    if (!item.empty())
+        elems.push_back(item);
+    return elems;
+}
+
+// Main function
+int main() {
+	int number;
+	fstream inFile, outFile;
+	vector string;
+	stringstream ss;
+	
+	// Input
+	cout << endl << "Please enter the input filename." << endl;
+	openFile(inFile);
+
+	// Count lines in the file
+	int lines = 0;
+	string temp;
+	while (getline(inFile, temp))
+		string = split_naive(temp, DELIMITER);
+
+	for_each(string.begin(), string.end(), &dbl);
+
+	for(size_t i = 0; i < v.size(); ++i) {
+		if(i != 0)
+			ss << "|";
+		ss << v[i];
+	}
+	
+	for_each(string.begin(), string.end(), &)
+	inFile.clear();
+	inFile.seekg(0);
+	cout << lines << " numbers read from input file." << endl;
+	
+	// Put it in an array.
+	int* array = new int[lines];
+	int foo;
+	int i = 0;
+	while (inFile >> foo) {
+	  array[i] = foo;
+	  i++;
+	}
+
+	// Calculate min, max, sum, and avg
+	int min, max, sum;
+	double avg = 0.000;
+    max = min = sum = array[0];
+    for (i = 1; i < lines; i++) {
+        if (max < array[i]) {
+		  max = array[i];
+        }
+		if (min > array[i]) {
+		  min = array[i];
+		}
+		sum = sum + array[i];
+    }
+	avg = double(sum) /double (lines) ;
+
+	// Output
+	cout << "The highest value is " << max << endl <<
+	  "The loweset value is " << min << endl <<
+	  "The sum of the number is " << sum << endl <<
+	  "The average of the number is " << avg << endl;
+
+	cout << "Output of the array: ";
+	  for (int i = 0; i < lines; i++) {
+	  cout << array[i] << " ";
+	  };
+	cout << endl;
+	return 0;
+}
+

@@ -1,0 +1,6 @@
+grep "/home/shaga/.emacs.el" *
+find . | xargs grep "/home/shaga/.emacs.el"
+python 1shou.py 
+echo $LANG
+echo $LANG
+echo $LANG

@@ -1,0 +1,18 @@
+
+// Threading App3
+
+class Processor extends Thread {
+	@override
+	public void run() {
+		while (true) {
+			System.out.println("Hello");
+			thread.sleep(100);
+		}
+	}
+}
+
+public class App3 {
+	public static void main(String[] args) {
+		
+	}
+}

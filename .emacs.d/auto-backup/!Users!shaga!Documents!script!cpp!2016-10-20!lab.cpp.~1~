@@ -1,0 +1,126 @@
+// Date: 2016/09/23
+// Written by: Shunsuke Haga
+//
+// This interactive program simulates the speed of a car
+// and calculates the distance traveled over a period of time.
+
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <string>
+
+using namespace std;
+
+// Constant used for FILL template
+const char SEPARATOR = ' ';
+const int WIDTH = 15;
+
+// Template
+#define FILL right << setw(WIDTH) << setfill(SEPARATOR)
+
+// Prototype
+void populateIntegerArray(int*, int);
+void displayIntegerArray(int*, int);
+int findMaximumInteger(int*, int);
+char *hex(int);
+
+
+struct MovieData {
+	string title;
+    string director;
+	int yearReleased;
+	double runningTime;
+};
+
+main() {
+	// Declare variable
+	int arraySize = -1;
+
+	// Initial array size input
+	cout << "Enter desired array size: ";
+	while (!(cin >> arraySize) || arraySize <= 1 || arraySize > 16) {
+		cout << "Invalid number. Please submit number between 1 ~ 16. :";
+		cin.clear();
+		cin.ignore(65536, '\n');
+	} 
+
+	// Declare array
+	int* arrayPtr = new MovieData[arraySize];
+
+	//// Print array ptr
+	//cout << "arrayPtr = " << arrayPtr << endl;
+	
+	// Array Input
+	populateIntegerArray(arrayPtr, arraySize);
+	// Output
+	displayIntegerArray(arrayPtr, arraySize);
+	// Print maximum
+	cout <<
+		"Maximum integer in array is:\t" <<
+		findMaximumInteger(arrayPtr, arraySize) << endl;
+
+	// Delete array
+	delete [] arrayPtr;
+	cout << "DELETING array at arrayPtr = " << arrayPtr << endl;
+	
+}
+
+// Input value
+void populateIntegerArray(int *arrayPtr, int arraySize) {
+	/* Array Input */
+
+	// Variable Declaration
+	MovieData moviedata;
+	string stringtemp;
+	int inttemp;
+	double doubletemp;
+
+	for (int i = 0; i < arraySize; i++) {
+		// Input Title
+		cout << "Enter Title " << i << ": ";
+		while  (!(cin >> stringtemp)) {
+			cout << "Please enter proper value: ";
+			cin.clear();
+			cin.ignore(65536, '\n');
+		}
+		moviedata.title = stringtemp;
+
+		// Input Title
+		cout << "Enter Director " << i << ": ";
+		while  (!(cin >> stringtemp)) {
+			cout << "Please enter proper value: ";
+			cin.clear();
+			cin.ignore(65536, '\n');
+		}
+		moviedata.director = stringtemp;
+
+		// Input Year
+		while  (!(cin >> inttemp) || inttemp > 2020 || inttemp < 1) {
+			cout << "Please submit proper integer value: ";
+			cin.clear();
+			cin.ignore(65536, '\n');
+		}
+		moviedata.yearReleased = inttemp;
+
+		// Input Running time
+		while  (!(cin >> doubletemp) || doubletemp < 1) {
+			cout << "Please submit proper double value: ";
+			cin.clear();
+			cin.ignore(65536, '\n');
+		}
+		moviedata.runningTime = doubletemp;
+
+		*(arrayPtr + i) = moviedata;
+	}
+}
+
+void displayIntegerArray(int * arrayPtr, int arraySize) {
+	// Output
+	for (int i = 0; i < arraySize; i++){
+		cout <<
+			arrayPtr + i <<
+			":\t arrayPtr[" << i << "] = " <<
+			FILL <<*(arrayPtr + i) <<
+			"   (Hex " << hex(*(arrayPtr + i)) << ")" << endl;
+	}
+}

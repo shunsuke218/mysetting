@@ -1,0 +1,8 @@
+// This program demonstrates the insertNode member function.
+#include <iostream>
+#include "IntList.h"
+using namespace std;
+
+int main() {
+	IntList hoge;
+}

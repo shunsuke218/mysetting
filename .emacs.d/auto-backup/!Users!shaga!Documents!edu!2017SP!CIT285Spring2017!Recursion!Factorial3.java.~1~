@@ -1,0 +1,28 @@
+import java.math.BigInteger;
+
+
+/**
+ * This program computes the factorial of a number
+ */
+public class Factorial2 {                   // Define a class
+  public static void main(String[] args) { // The program starts here
+    BigInteger input = BigInteger.valueOf(Integer.parseInt(args[0])); // Get the user's input
+    BigInteger result = factorial(input);      // Compute the factorial
+    System.out.println(result);            // Print out the result
+  }                                        // The main() method ends here
+
+  public static BigInteger factorial(BigInteger x) {  // This method computes x!
+  
+  BigInteger result ; // this is in a new scope !!!!
+
+ if (x.intValue() < 0) return BigInteger.valueOf(0);
+  
+  if (x.intValue() == 0) result = BigInteger.valueOf(1);
+else
+  result =  (x.multiply( factorial(x.subtract(BigInteger.ONE))));   
+                                         
+   return result;                  
+
+
+  }                                         // factorial() ends here
+}        

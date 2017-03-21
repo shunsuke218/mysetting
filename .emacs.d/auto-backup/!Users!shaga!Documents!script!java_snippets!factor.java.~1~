@@ -1,0 +1,57 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+import java.util.Collections;
+import java.util.Arrays;
+
+public class Solution {
+
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt();
+        int m = in.nextInt();
+        int[] a = new int[n];
+        for(int a_i=0; a_i < n; a_i++){
+            a[a_i] = in.nextInt();
+        }
+        int[] b = new int[m];
+        for(int b_i=0 ; b_i < m; b_i++){
+            b[b_i] = in.nextInt();
+        }
+        //Arrays.sort(b, Collections.reverseOrder());        
+        Arrays.sort(b);
+        for (int i = 0; i < m/2; i++){
+            int temp = b[i];
+            b[i] = b[m-1-i];
+            b[m-1-i] = temp;
+        }
+        boolean debug = true;
+        HashSet result = new HashSet();
+        for (int i = 0; i < m; i++){
+            for (int j = 2; j <= b[i]; j++) {
+                int bnum = b[i];
+                while(bnum % j == 0) {
+                    if (debug) System.out.println("bnum: " + bnum + " [i]: " + i);
+                    boolean divflag = true;
+                    for (int k = 0; k < n; k++){
+                        if (debug) System.out.println("Is bnum " + bnum + " divisible by " + a[k] + "? -> " + (bnum % a[k] == 0));
+                        if( bnum % a[k] != 0)
+                            divflag = false;
+                    }
+                    for (int l = i; l < m; l++){
+                        if (debug) System.out.println("Is " + b[l] + " divisible by b[i]" + b[i] + "? -> " + (b[l] % b[i] == 0));
+                        if( b[l] % b[i] !=0)
+                            divflag = false;
+                    }
+                    if (divflag)
+                        result.add(bnum);
+                    bnum = bnum / j;
+                    if (debug)System.out.println("Hash contents: " + result.size());
+                }
+            }
+        }
+    System.out.println(result.size());
+    }
+}

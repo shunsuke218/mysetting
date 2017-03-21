@@ -1,0 +1,30 @@
+maxsize=20000000
+num=1
+for file in *.tcx
+do
+	output="output_$num.tcx"
+	actualsize=$(wc -c < "$output")
+	if [ $actualsize -le $maxsize ]; then
+		sed -n '/<Activity/,/Activity>/p' "$file" >> $output
+	else
+		echo "</Activities>                                                                                                               
+</TrainingCenterDatabase>" >> $output
+		let "num++"
+		echo "<?xml version="1.0" ?>                                                                                                      
+<TrainingCenterDatabase xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd">
+<Activities>
+" > $output
+	done
+	
+		
+			
+	
+
+file=file.txt
+minimumsize=90000
+actualsize=$(wc -c <"$file")
+if [ $actualsize -ge $minimumsize ]; then
+    echo size is over $minimumsize bytes
+else
+    echo size is under $minimumsize bytes
+fi

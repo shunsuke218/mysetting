@@ -1,0 +1,87 @@
+##########
+Summary: P1 High Number of Alerted Rate Activity:P1
+Customer: TOYOTA MEDIA SERVICE CORPORATION.
+Serial: 39260312
+aka_account_id: F-AC-1123105
+aka_account_name: TOYOTA MEDIA SERVICE CORPORATION.
+aka_acgid: C-192AHKR
+aka_contract_id: C-192AHKR
+aka_cpcode: 348405
+AggregationFirst: 02/07/17 14:47:04 PM
+FirstOccurrence: 02/07/17 14:47:04 PM
+LastOccurrence: 02/07/17 14:47:04 PM (duration: 00:00)
+plx_customer_Id: 
+plx_ticket_number: 
+##########
+Summary: P3 High Number of Denied Triggers:P3
+Customer: TOYOTA MEDIA SERVICE CORPORATION.
+Serial: 39260313
+aka_account_id: F-AC-1123105
+aka_account_name: TOYOTA MEDIA SERVICE CORPORATION.
+aka_acgid: C-192AHKR
+aka_contract_id: C-192AHKR
+aka_cpcode: 348405
+AggregationFirst: 02/07/17 14:47:04 PM
+FirstOccurrence: 02/07/17 14:47:04 PM
+LastOccurrence: 02/07/17 14:52:04 PM (duration: 05:00)
+plx_customer_Id: 
+plx_ticket_number: 
+##########
+
+
+
+[shaga]
+Issue/Task: 
+[shaga Feb. 7th] P1 High Number of Alerted Rate Activity:P1 alert
+
+Ignore Conditions: 
+[shaga Feb. 7th] NA
+
+Action Taken:
+[shaga Feb. 7th] Initial email/call is made. escalating to specialist.
+
+Next Action:
+[shaga Feb. 7th] specialist to send analysis.
+--------------------------------------------------
+
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社KONAシステムにてWAFの アラート通知が上がりましたので連絡致します。
+只今イベントデータ解析中ですので、結果は後ほど報告いたします。
+
+解析結果が完了するまで、お客様にてお願いする対応はございません。
+
+本イベントが終息するまでに、新たなアラート通知が発生した場合には本件にて対応致します。
+アラートの詳細は以下の通りです。
+
+Notification: Alert Notification | P1 High Number of Alerted Rate Activity:P1 | toymd_mk
+Start Time: 02/07/2017 14:44:00 GMT
+Domain : gazoo.com
+URL: gazoo.com/my/sites/0000058266/tomica/default.aspx?public=true
+Policy ID: gazp_20109
+Client IP : 220.158.26.110
+Edgescape Information (country, owner):
+Hamacho, Aichi, Japan
+ARTERIA Networks Corporation
+
+Notification: Alert Notification | P3 High Number of Denied Triggers:P3 | toymd_mk
+Start Time: 02/07/2017 14:44:00 GMT
+Domain : gazoo.com
+URL: gazoo.com/my/sites/0000058266/tomica/default.aspx?public=true
+Policy ID: gazp_20109
+Client IP : 220.158.26.110
+Edgescape Information (country, owner):
+Hamacho, Aichi, Japan
+ARTERIA Networks Corporation
+
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+
+何卒宜しく御願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+----------------------------------------------------------------------------------------------------
+

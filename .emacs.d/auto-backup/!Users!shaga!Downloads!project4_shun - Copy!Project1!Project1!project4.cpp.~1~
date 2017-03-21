@@ -1,0 +1,378 @@
+// Date: 2016/11/06
+// Written by: Shunsuke Haga
+// 
+// Inventory Application Program
+// This project involves designing and creating a C++ program
+// which will utilize the InventoryItem class, which is
+// described in Section 13.10 (pages 762-765) of the Gaddis textbook.
+
+#include "project4.h"
+
+// initialize static value to 0
+int item::total_items = 0;
+
+using namespace std;
+
+// Main function
+int main() {
+	vector<item> item_vector;
+
+	while (true) {
+		// Variable Declaration
+		char option;
+		fstream inFile, outFile;
+		std::stringstream ss;
+
+		std::string temp;
+		double doubletemp;
+		int inttemp = 0;
+		item tempitem;
+
+		// User input
+		cout << "command: ";
+		cin >> option;
+		cin.clear();
+		cin.ignore(65536, '\n');
+
+		// Check input
+		switch (option) {
+		case 'a':
+			//////////////////////////////////////////////////
+			// ADD PARTS.
+			//////////////////////////////////////////////////
+			checkitem(item_vector, "add");
+			continue;
+		case 'h':
+			//////////////////////////////////////////////////
+			// SHOW HELP
+			//////////////////////////////////////////////////
+			cout <<
+				"Supported commands:" << endl <<
+				FILL << right << "a" << FILL << " " << "Add parts." << endl <<
+				FILL << right << "h" << FILL << " " << "print Help text." << endl <<
+				FILL << right << "i" << FILL << " " << "Input inventory data from a file." << endl <<
+				FILL << right << "p" << FILL << " " << "Print inventory list." << endl <<
+				FILL << right << "n" << FILL << " " << "New inventory Item." << endl <<
+				FILL << right << "o" << FILL << " " << "Output inventory data to a file." << endl <<
+				FILL << right << "q" << FILL << " " << "quit (end the program)." << endl <<
+				FILL << right << "r" << FILL << " " << "Remove parts." << endl;
+			continue;
+		case 'i':
+			//////////////////////////////////////////////////
+			// INPUT INVENTORY DATA FROM A FILE
+			//////////////////////////////////////////////////
+			// Open input file
+			cout << endl << "Please enter the input filename." << endl;
+			openFile(inFile, "input");
+			// For each line in the text file
+			while (getline(inFile, temp)) {
+				// Count import
+				inttemp++;
+				// Split a line using delimiter
+				tempitem = split(temp);
+				// Add 'item class' to a vector
+				addtovector(item_vector, tempitem);
+			}
+			inFile.close();
+			cout << inttemp << " records loaded to array." << endl;
+			continue;
+		case 'p':
+			//////////////////////////////////////////////////
+			// PRINT CONTENTS
+			//////////////////////////////////////////////////
+			printcontents(item_vector);
+			continue;
+		case 'n':
+			//////////////////////////////////////////////////
+			// NEW INVENTORY
+			//////////////////////////////////////////////////
+
+			// Set description
+			cout << "Enter description for new Item: ";
+			while (!(getline(cin, temp))) {
+				cin.clear();
+				cin.ignore(65536, '\n');
+			}
+			tempitem.setdescription(temp);
+
+			// Set unit cost
+			cout << "Enter unit cost for new Item: ";
+			while (!(cin >> doubletemp) || doubletemp <= 0 || doubletemp > 1000000) {
+				cin.clear();
+				cin.ignore(65536, '\n');
+				cout << "Please enter the proper unit cost: ";
+			}
+			tempitem.setcost(doubletemp);
+
+			// Set quantity
+			cout << "Enter initial quantity for the new Item: ";
+			while (!(cin >> inttemp) || inttemp <= 0 || inttemp > 30) {
+				cin.clear();
+				cin.ignore(65536, '\n');
+				cout << "Please enter the proper quantity (~30): ";
+			}
+			tempitem.setquantity(inttemp);
+
+			// Add item
+			addtovector(item_vector, tempitem);
+			cout << "Announcing a new inventory Items: " << tempitem.getdescription() << endl;
+			cout << "We now have " << item_vector.size() << " different inventory Items in stock!" << endl;
+			continue;
+		case 'o':
+			//////////////////////////////////////////////////
+			// OUTPUT INVENTORY DATA TO A FILE
+			//////////////////////////////////////////////////
+			// Open output file
+			if (item_vector.size() == 0) {
+				cout << "No item to export!" << endl;
+				continue;
+			}
+
+			cout << endl << "Please enter the output filename." << endl;
+			openFile(outFile, "output");
+
+			// For each contents, print num, description, cost, and quantity.
+			for (size_t i = 0; i < item_vector.size(); ++i) {
+				tempitem = item_vector[i];
+				outFile << tempitem.getoutput() << '\n';
+			}
+			cout << "Output file has been created." << endl;
+			outFile.close();
+			continue;
+		case 'q':
+			//////////////////////////////////////////////////
+			// QUIT
+			//////////////////////////////////////////////////
+			cout << "Exiting..." << endl;
+			return 0;
+		case 'r':
+			//////////////////////////////////////////////////
+			// REMOVE PARTS.
+			//////////////////////////////////////////////////
+			// Remove item from vector
+			checkitem(item_vector, "remove");
+			continue;
+		default:
+			continue;
+		}
+	}
+}
+
+
+//////////////////////////////////////////////////
+//	FUNCTIONS
+//////////////////////////////////////////////////
+
+
+void checkitem(vector<item> &item_vector, string addremove) {
+	//////////////////////////////////////////////////
+	// ADD/REMOVE PARTS
+	//////////////////////////////////////////////////
+	/* Variable declaration */
+	int quantity, itemnum, partsnum;
+	bool correctrange = false;
+
+	// Add = true/ Remove = false
+	bool action = false;
+	if (addremove == "add")
+		action = true;
+
+	// Check if item exists.
+	if (item_vector.size() == 0) {
+		cout << "No item in the record!" << endl;
+		return;
+	}
+
+	/* Input/Check Item */
+	cout << "Choose an Item Number: ";
+	// Choose an index of number
+	while (!(cin >> itemnum) || itemnum < 0 || itemnum > int(item_vector.size()) - 1) {
+		cin.clear();
+		cin.ignore(65536, '\n');
+		cout <<
+			"Please choose an item between 0 ~ " << item_vector.size() - 1 << endl <<
+			"Choose an Item Number: ";
+	}
+
+	quantity = item_vector[itemnum].getquantity();
+	// If Add and quantity > 30
+	if (action && (quantity >= 30)) {
+		cout << "Quantity is greather than 30!" << endl;
+		return;
+	}
+	// If Remove and quantity < 1
+	else if (!action && (quantity < 1)) {
+		cout << "Quantity is less than 0!" << endl;
+		return;
+	}
+
+	/* Input/Check Quantity  */
+	cout << "How many parts to " << (action ? "add? " : "remove? ");
+	while (!(cin >> partsnum) || partsnum < 1 || partsnum > 30 || !correctrange) {
+		// Check if input is in correct range between 1 ~ 30
+		correctrange =
+			action ?
+			(quantity + partsnum <= 30 && quantity + partsnum >= 0) :
+			(quantity - partsnum <= 30 && quantity - partsnum >= 0);
+		// If range is correct, exit loop
+		if (correctrange)
+			break;
+		// If not, prompt the error message and continue.
+		cout << "Choose a quantity between 1 ~ " << (action ? (30 - quantity) : quantity) << endl;
+		cout << "How many parts to " << (action ? "add? " : "remove? ");
+		cin.clear();
+		cin.ignore(65536, '\n');
+	}
+
+	/* Apply Change */
+	// Calculate quantity after change
+	partsnum =
+		action ?
+		(quantity + partsnum) :
+		(quantity - partsnum);
+	// Set an quantity
+	item_vector[itemnum].setquantity(partsnum);
+	// User prompt
+	cout << "Now item, " << item_vector[itemnum].getdescription() << ", has quantity of " << item_vector[itemnum].getquantity() << "." << endl;
+}
+
+void printcontents(vector<item> item_vector) {
+	//////////////////////////////////////////////////
+	// PRINT CONTENTS
+	//////////////////////////////////////////////////
+	item tempitem;
+	// Print Header
+	cout << endl <<
+		FILL << "Item Num" <<
+		FILLX(50) << "Description" <<
+		FILL << right << "Cost" <<
+		FILL << right << "Quantity" << endl;
+
+	cout <<
+		FILL << "________" <<
+		FILLX(50) << "___________" <<
+		FILL << right << "____" <<
+		FILL << right << "________" << endl;
+
+	// Print Contents
+	for (size_t i = 0; i < item_vector.size(); ++i) {
+		tempitem = item_vector[i];
+		cout <<
+			FILL << "    " + std::to_string(tempitem.getitemnum()) <<
+			FILLX(50) << tempitem.getdescription() <<
+			FILL << right << "$" + to_string(tempitem.getcost())
+			.substr(0, to_string(tempitem.getcost()).find('.') + 3) <<
+			FILL << right << tempitem.getquantity() << endl;
+	}
+	// Print Footer
+	cout << endl << item_vector.size() << " records." << endl << endl;
+	return;
+}
+
+
+item split(const std::string &string) {
+	//////////////////////////////////////////////////
+	// SPLIT STRING TO 'item'
+	//////////////////////////////////////////////////
+	std::vector<std::string> elems;
+	std::string item;
+	class item myitem;
+
+	// For each character in string
+	for (std::string::size_type i = 0; i < string.size(); ++i) {
+		char ch = string[i];
+		// If the character is delimiter, put it in a vector
+		if (ch == '|') {
+			elems.push_back(item);
+			item.clear();
+		}
+		else {
+			item += ch;
+		}
+	}
+	// Last item should be stored too.
+	if (!item.empty())
+		elems.push_back(item);
+
+	// Now convert element to item.
+	try {
+		myitem.setdescription(elems[1]);
+		myitem.setcost(stod(elems[2]));
+		myitem.setquantity(stoi(elems[3]));
+	}
+	catch (const std::invalid_argument& e) {
+		cout <<
+			"Error was detected in the file: " << endl <<
+			e.what() << endl;
+		return myitem;
+	}
+	return myitem;
+}
+
+void openFile(fstream &File, string io) {
+	//////////////////////////////////////////////////
+	// OPEN FILE FOR INPUT/OUTPUT
+	//////////////////////////////////////////////////
+	string filename;
+	// Input: true/ Output: false
+	bool input = true;
+	// Check input or output
+	if (io.compare("output") == 0)
+		input = false;
+
+	do {
+		// User input
+		cout << "Enter " << io << " filename: ";
+		cin >> filename;
+		// Check if File can be openned
+		File.open(filename.c_str());
+		// If can, input: return / output: create and return
+		if (!(!File.fail() ^ input)) {
+			if (!input)
+				File.open(filename.c_str(), fstream::out);
+			return;
+		}
+
+		// If cannot, input: file does not exist / output: file already exists
+		cout << "Error opening the file " << filename << ".\n";
+		cout << "File " << (input ? "does not" : "already") << " exists!" << endl;
+		File.close();
+		cin.clear();
+		cin.ignore(65536, '\n');
+
+	} while (true);
+}
+
+void addtovector(vector<item> &item_vector, item item) {
+	//////////////////////////////////////////////////
+	// ADD ITEM TO VECTOR (AND AVOID DUPLICATE)
+	//////////////////////////////////////////////////
+	bool duplicate = false;
+	// For each content in the vector
+	for (size_t i = 0; i < item_vector.size(); ++i) {
+		// Check if same description exists
+		if (item_vector[i].getdescription() == item.getdescription()) {
+			// If quantity exceeds 30, just set it to 30. 
+			if (item_vector[i].getquantity() + item.getquantity() > 30) {
+				cout << item_vector[i].getdescription() << " already exists and the sum exceeds quantity of 30. Set it to 30." << endl;
+				item_vector[i].setquantity(30);
+				item_vector[i].setcost(item.getcost());
+			}
+			// If item exists, overwrite the cost.
+			else {
+				item_vector[i].setquantity(item_vector[i].getquantity() + item.getquantity());
+				cout << item_vector[i].getdescription() << " already exists. The cost has updated." << endl;
+				item_vector[i].setcost(item.getcost());
+			}
+			// Duplicate detected.
+			duplicate = true;
+		}
+	}
+	// If no duplicate found, add to the end.
+	if (!duplicate) {
+		// Increase static member to count objects.
+		item.increaseitemnum();
+		item_vector.push_back(item);
+	}
+	return;
+}

@@ -1,0 +1,18 @@
+package nodepkg;
+
+import entrypkg.*;
+
+public class NODE {
+
+    Entry info;
+    NODE link;
+
+    public NODE(Entry info) {
+        this.info = info;
+    }
+
+    public NODE() {
+        info = new Entry("\0", "\0");
+    }
+
+}

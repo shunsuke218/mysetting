@@ -1,0 +1,99 @@
+// Date: 2016/09/23
+// Written by: Shunsuke Haga
+//
+// This interactive program simulates the speed of a car
+// and calculates the distance traveled over a period of time.
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <fstream>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+const char DELIMITER = '|';
+
+void openFile(fstream & File ) {
+  string filename;
+  do {
+	cout << "Enter the filename: ";
+	cin >> filename;
+	File.open(filename.c_str());
+	if (File)
+	  return;
+	//return File;
+	cout << "Error opening the file " << filename << ".\n";
+  } while (!File);
+}
+
+vector<string> split(const string &s, char delim) {
+    vector<string> elems;
+    string item;
+    for (char ch: s) {
+        if (ch == delim) {
+            if (!item.empty())
+                elems.push_back(item);
+            item.clear();
+        } else {
+            item += ch;
+        }
+    }
+    if (!item.empty())
+        elems.push_back(item);
+    return elems;
+}
+
+string stringmanip(const string &s) {
+	string item;
+	bool quote = false;
+	
+	for (char ch: s) {
+		if (ch == '"') {
+			ch += '"';
+		} else if (ch = ',') {
+			quote = true;
+		}
+		item += ch;
+	}
+	if (quote)
+		item = "\"" + item = "\"";
+	return item
+}
+
+// Main function
+int main() {
+	fstream inFile, outFile;
+	vector<string> string;
+	int stringsize;
+	stringstream ss;
+	
+	// Input
+	cout << endl << "Please enter the input filename." << endl;
+	openFile(inFile);
+
+	// Convert line to string vector
+	string temp;
+	while (getline(inFile, temp))
+		string = split(temp, DELIMITER);
+
+	//stringsize = string.size();
+	
+	for (int i = 1; i < stringsize; i++ ) {
+		if string[i]
+	}
+	for_each(string.begin(), string.end(), &str);
+	
+	for(size_t i = 0; i < v.size(); ++i) {
+		if(i != 0)
+			ss << ",";
+		ss << v[i];
+	}
+	string s = ss.str();
+
+	inFile.clear();
+	inFile.seekg(0);
+
+	return 0;
+}
+

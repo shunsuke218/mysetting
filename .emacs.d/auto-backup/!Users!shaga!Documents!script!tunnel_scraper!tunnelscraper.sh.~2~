@@ -1,0 +1,85 @@
+#!/bin/sh
+
+####################################################################################################
+# Written by: Shunsuke Haga
+# Date: 2017/02/07
+# 
+# This script automatically check tunnel status
+# 
+# Link: 
+####################################################################################################
+
+tunnelip=
+verbose=0
+location=()
+locationflag=false
+usage="$(basename "$0") 1234 [-h] [-l tyo hkg] [-v] -- program to calculate the answer to life, the universe and everything\n
+\n
+where:\n
+	[mandatory]\n
+    -i/--tunnel:    Set tunnel id {1-9999}\n
+\n
+    [optional]\n
+    -h/--help/-?:   Show this help text\n
+    -l/--location:  Set location (dca, sjc, lon, fra, hkg, syd)\n
+	-v/--verbose:   Set verbose mode"
+
+##############################
+#Check arguments
+##############################
+while :; do
+	case $1 in
+		-h|-\?|--help)
+			echo $usage
+			exit 0
+			;;
+		-i|--tunnel)
+			locationflag=false
+			;;
+		-l|--location)
+			locationflag=true
+			;;
+		-v|--verbose)
+			locationflag=false
+			verbose=$((verbose + 1))
+			;;
+		-?*)
+			echo $usage
+			exit 0
+			;;
+		*)
+			if $locationflag; then
+				location+=("$1")
+			else
+				tunnelip="$1"
+			fi
+	esac
+	shift
+	if [ -z "$1" ];then
+	   break
+	fi
+done
+
+
+##############################
+#Check arguments
+##############################
+
+# Number validation
+re='^[1-9][0-9]{0,3}$'
+if ! [[ $tunnelip =~ $re ]] ; then
+	echo "error: No valid number was given {1-9999}" >&2
+	exit 1
+fi
+# Location validation
+location=($(echo "${location[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
+#diff <( printf "%s\n" "${DC[@]}" ) <( printf "%s\n" "${location[@]}" ) 
+location_print=$( printf "%s\n" "${DC[@]}" )
+location_print2=$( printf "%s\n" "${location[@]}" )
+diff <(echo "$location_print") <( echo "$location_print2") | grep ">"
+
+echo ${location[@]}
+echo $tunnelip
+echo $verbose
+ACCESS=( a1 a2 )
+DC=( dca2 sjc2 lon2 fra2 hkg2 syd2 )

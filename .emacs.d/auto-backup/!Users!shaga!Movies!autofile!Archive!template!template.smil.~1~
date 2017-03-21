@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE smil PUBLIC "-//W3C//DTD SMIL 2.0//EN" "http://www.w3.org/2001/SMIL20/SMIL20.dtd">
+<smil xmlns="http://www.w3.org/2001/SMIL20/Language">
+	<head>
+		<meta name="title" content="template" />
+		<meta name="httpBase" content="http://akamkickoff-f.akamaihd.net/" />
+		<meta name="vod" content="true" />
+	</head>
+	<body>
+
+		<switch id="Switch group title">
+			
+		  <video src="Videos/Webcasts/template.mp4" system-bitrate="300000"/>
+		</switch>
+	</body>
+</smil>

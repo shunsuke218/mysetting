@@ -1,0 +1,153 @@
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀と申します。
+
+本件のアラートに関して、貴社アカウントのWAF設定におけるルールトリガー状況が落ち着いており、確認の結果、本件のイベントが終息したと判断致しました。
+もし本件の対応内容に関するご質問やご不明な点がありましたら、本メールへの返信にてその旨ご連絡ください。
+
+再度アラートが上がった場合には、新規チケットにて連絡致します。
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口
+電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+
+何卒宜しくお願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+--------------------------------------------------
+
+[shaga]
+
+++++ Ticket ++++
+
+Issue/Task:
+[shaga Feb. 26th]  <brief description of the issue, 1 to 2 lines. You can referer the reader to the description field for further details.>
+
+Action Taken:
+[shaga Feb. 26th] <What you did this time. E.g “Received and email with additional questions and replied to those”>
+
+Next Action:
+[shaga Feb. 26th]<Add clear instructions for the next engineer. What should they do with this case?>
+
+++++ Runbook ++++
+
+Ignore Conditions:
+[shaga Feb. 26th]  <does the runbook have ignore conditions? If not add something like None, N/A etc...If the runbook does have ignore conditions, add a 1 liner describing those ignore conditions>
+
+Special Instructions:
+[shaga Feb. 26th]<Add any instructions that apply to all customer communications in the ticket e.g requests that specialists need to follow when contacting the customer>
+
+--------------------------------------------------
+
+[shaga]
+
+++++ Runbook ++++
+
+Ignore Conditions:
+[shaga Feb. 26th] N/A
+
+Special Instructions:
+[shaga Feb. 26th] <Customer prefer communication in Japanese. Japanese speaking SOC should handle case prior to English speaking only SOC when available.>
+
+++++ Ticket ++++
+
+Issue/Task:
+[shaga Feb. 26th] P3 - KDD - Overall denied triggers:P3 Serial: 40043270
+
+Action Taken:
+[shaga Feb. 26th] Prepped case, sent can, called client, posted discovery.
+
+Next Action:
+[shaga Feb. 26th] Specialist investigation required.
+
+--------------------------------------------------
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社KONAシステムにてWAFの アラート通知が上がりましたので連絡致します。
+只今イベントデータ解析中ですので、結果は後ほど報告いたします。
+
+解析結果が完了するまで、お客様にてお願いする対応はございません。
+
+本イベントが終息するまでに、新たなアラート通知が発生した場合には本件にて対応致します。
+アラートの詳細は以下の通りです。
+
+Notification: Alert Notification | KDD - Overall denied triggers:P3 | pana_kdd
+Start Time: 02/26/2017 18:25:00 GMT
+Domain : pclub.panasonic.jp
+URL: 
+club.panasonic.jp/AK_PM_VPATH0/
+club.panasonic.jp/coin/special/comparison/?loginBnr=
+club.panasonic.jp/coin/special/comparis
+
+Policy ID: qik1_23192
+Client IP : 45.32.8.218
+Edgescape Information (country, owner):
+Heiwajima, Tokyo, Japan
+Choopa, LLC
+
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+
+何卒宜しく御願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+---------------------------------------------------
+ANALYSIS SUMMARY
+It was observed that the client IP 45.32.8.218, has breached the rate thresholds defined in the rate category 'Page view request rate for club_panasonic' within the timeframe Feb 26, 19:19 GMT - Feb 26, 19:25 GMT and got mitigated as the rate controls were set to deny. All requests are GET request and majority of them are for *.mdb resources hosted at 'club.panasonic.jp'. The client IP was also repeatedly trying to access '/mypanasonic/database/%23newasp.mdb' and '/sec_login/database/newcloud6.mdb'. 
+
+Sample Request from 45.32.8.218
+GET /coin/fdnews.asp HTTP/1.1 
+Host: club.panasonic.jp
+Connection: Keep-Alive
+Accept: */*
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; .NET CLR 2.0.50727)
+
+Client IP or Countries: 45.32.8.218 (TOKYO)
+Asnum: 20473, Vultr_Holdings_LLC
+Top URL's: Multiple *.mdb resources at 'club.panasonic.jp/'
+Top Policy IDs: qik1_23192
+Top Rule IDs: Page view request rate for club_panasonic -> deny 
+-------------------------------------------------
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社 KONA システムからの WAF アラート通知に関するイベントデータ解析結果を
+以下にまとめましたので、ご確認ください。
+
+▪️お客様に実施をお願いする対応
+IPアドレス  45.32.8.218,からのイベントは終息したと見られます。
+現時点でお願いする対応はありません。
+
+▪️解析結果のまとめ
+2月26日の 19:19 GMT (04:19 JST)から19:25 GMT(04:19 JST)の検知時間中
+IPアドレス 45.32.8.218 から「/mypanasonic/database/%23newasp.mdb」宛に
+157,000回に及ぶGETリクエストが発生しました。
+リクエストはポリシー、'qik1_22789'の閾値を越えたため、安全にブロックされました。
+
+詳細情報：
+検知時間：2月23日 13:35 GMT (22:35 JST)
+クライアント IP:  202.229.230.5
+ロケーション: CHIBA, 12, Japan
+企業: NTT_PC_Communications_Inc.    
+
+Top URL's: mst.monex.co.jp/pc/ITS/login/LoginIDPassword.jsp
+Top Policy IDs: qik1_22789
+Top Rule IDs: IPBLOCK-SUMMARY8-7651459-1
+
+
+追加の処置をご希望の場合は、その旨をご連絡ください。
+弊社にてプロダクション環境の緊急変更などを実施するためには、お客様のメールによる事前承認が必要です。
+
+引き続き本件のイベントが終息するまでモニタリングし、定期的にアップデート致します。
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+ご確認、ご連絡のほどよろしくお願い致します。
+
+Haga, Shunsuke (芳賀 俊介)
+
+

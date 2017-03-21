@@ -1,0 +1,177 @@
+#!/bin/sh
+
+####################################################################################################
+# Written by: Shunsuke Haga
+# This script create template folder/files
+# based on mp4 file and upload it to the Netstorage server
+# Link: https://docs.google.com/document/d/1Ld9Lq3zKrLWHSzHGfBd3mvz2CqihC1RpCEXKY7ts-7s/edit#heading=h.vbtf7s1mqnxs
+####################################################################################################
+
+# Help Message
+if [ "$1" == "-h" ] ; then
+    echo "Usage: `basename $0` [file.mp4]"
+    exit 0
+fi
+
+#########################
+# Check inputs
+#########################
+# If file does not exist
+if [ ! -e "$1" ] ; then
+	echo "File not found!"
+	exit 1
+fi
+
+# If template not found
+if [ ! -e "template" ] ; then
+	echo "No 'template' folder found! Please download it from https://goo.gl/AJL6gB."
+	exit 1
+fi
+
+filename="$1"
+basename="${filename%.*}"
+
+# If the extension is not in mp4 format
+if [ "${filename##*.}" != "mp4" ]; then
+	echo "File must be in mp4 format!"
+	exit 1
+fi
+
+# If the file already exist
+if [ -e "$basename" ]; then
+	echo "Folder already exists. Please remove/change name the directry and try again."
+	exit 1
+fi
+
+
+#########################
+# Main process
+#########################
+cp -a template $basename
+for tempfile in $basename/*
+do
+	extension="${tempfile##*.}"
+	sed -i '.bak' "s/template/$basename/g" $tempfile
+	mv $tempfile $basename/$basename.$extension
+done
+rm $basename/*.bak
+mv $filename $basename/
+
+#########################
+# Upload it to the server
+#########################
+echo "Uploading video to the servers."
+cd $basename
+FTPLOG=/tmp/ftplogfile
+FTP_SUCCESS_MSG="226 Transfer complete"
+FTP_CREDENTIAL_ERROR="530 Login incorrect."
+FTP_DIRECTORY_ERROR="550 Failed to change directory."
+
+### Upload video to hdakamai.upload.akamai.com
+# /138785/Videos/GSS_Onboarding/2017
+YEAR=`date +%Y`
+echo "Connecting hdakamai.upload.akamai.com"
+for i in {1..3}; do
+	echo "fuga"
+	read -p "username: " ftp_username
+	read -p "password: " ftp_secret
+	
+	# Check if credential is valid and  directory/file exists
+	ftp -n <<EOF > $FTPLOG
+			 open hdakamai.upload.akamai.com
+			 user $ftp_user $ftp_secret
+			 lcd /138785/Videos/GSS_Onboarding/$YEAR/
+			 ls
+			 bye
+			 EOF
+	if fgrep "$FTP_CREDENTIAL_ERROR" $FTPLOG; then
+		echo "Invalid password."
+	elif fgrep "$FTP_DIRECTORY_ERROR" $FTPLOG; then
+		echo -e "The directory does not exists."
+		ftp -n <<EOF > $FTPLOG
+				 	open hdakamai.upload.akamai.com
+					user $ftp_user $ftp_secret
+					lcd /138785/Videos/GSS_Onboarding/
+					mkdir $YEAR
+					bye
+					EOF
+	elif [ "$i" ==  "3" ]; then
+		echo "Please check your setting and retry.\\nExitting..."
+		cd -
+		exit 1
+	else
+		break
+	fi
+done
+#
+## Actual FTP process
+#ftp -n <<EOF > $FTPLOG
+#open hdakamai.upload.akamai.com
+#user $ftp_user $ftp_secret
+#cd /138785/Videos/GSS_Onboarding/$YEAR
+#put $filename
+#bye
+#EOF
+#
+## Check if error did not occured
+#if fgrep "$FTP_SUCCESS_MSG" $FTPLOG ;then
+#	echo -e "Uploading process Successful.\\n"
+#else
+#	echo "ftp Error: "$OUT
+#	echo "Please check your setting and relaunch this script.\\nExitting..."
+#	cd -
+#	exit 1
+#fi
+#
+#
+#### Upload XML and HTML to akamnet.upload.akamai.com
+## /134299/Videos/akamaiMediaPlayer/samples
+## Check if credential is valid and  directory/file exists
+#echo -e "Connecting akamnet.upload.akamai.com"
+#for i in {1..3}; do
+#	read -p "username: " ftp_username
+#	read -p "password: " ftp_secret
+#	ftp -n <<EOF > $FTPLOG
+#		 open akamnet.upload.akamai.com
+#		 user $ftp_user $ftp_secret
+#		 bye
+#		 EOF
+#
+#	if fgrep "$FTP_CREDENTIAL_ERROR" $FTPLOG; then
+#		echo "Invalid password."
+#	elif [ "$i" == "3" ]; then
+#		echo "Please check your setting and redo.\\nExitting..."
+#		cd -
+#		exit 1
+#	else
+#		break
+#	fi
+#done
+#
+## Actual FTP process
+#ftp -n <<EOF > $FTPLOG
+#open akamnet.upload.akamai.com
+#user $ftp_user $ftp_secret
+#lcd /134299/Videos/smilFiles
+#put $basename.smil
+#lcd /134299/Videos/akamaiMediaPlayer/samples
+#mput $basename.xml $basename.html
+#bye
+#EOF
+#
+## Check if error did not occured
+#if fgrep "$FTP_SUCCESS_MSG" $FTPLOG ;then
+#	echo -e "Uploading process Successful.\\n"
+#else
+#	echo "ftp Error: "$OUT
+#	echo "Please check your setting and relaunch this script.\\nExitting..."
+#	cd -
+#	exit 1
+#fi
+#
+#echo -e "Completed! Please check the following url to see the video:\\nhttps://globaledvideos.akamai.com/get_video.cgi?url=$basename.html"
+#ftp_user=""
+#ftp_secret=""
+#cd -
+#exit 0
+#

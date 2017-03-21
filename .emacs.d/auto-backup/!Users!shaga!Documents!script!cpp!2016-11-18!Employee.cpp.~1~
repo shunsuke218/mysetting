@@ -1,0 +1,53 @@
+// Implementation file for the Employee class
+
+#include "Employee.h"
+#include <string>
+#include <regex>
+using namespace std;
+
+int Employee::lastEmployeeNumberIssued=0;   // Sequential employee number
+
+// Default constructor
+Employee::Employee() {
+	employeeNumber = 0;
+	employeeName = "";
+	hireDate = "";
+}
+
+
+// Constructor
+Employee::Employee(string aName, string aDate) {
+	employeeNumber = 0;
+	employeeName = aName;
+	hireDate = aDate;
+}
+
+// Mutators
+void Employee::setEmployeeName(string n) { employeeName = n; }
+void Employee::setEmployeeNumber() { employeeNumber++; }
+void Employee::setHireDate(string date) {
+	try {
+		hireDate = InvalidHireDateEmployeeNumber(date);
+	} catch (string err) {
+		cout << "Hire date must be MM/DD.YYYY format." << endl;
+		throw;
+	}
+}
+	
+
+// Accessors
+string Employee::getEmployeeName() const { return employeeName; }
+int Employee::getEmployeeNumber() { return employeeNumber; }
+string Employee::getHireDate() const { return hireDate; }
+int Employee::getLastEmployeeNumberIssued() { return lastEmployeeNumberIssued; }
+
+// Methods
+string Employee::InvalidHireDateEmployeeNumber (string date) {
+	if (regex_match (date, regex("^[0-9]{2}/[0-9]{2}/[0-9]{4}$") ))
+		return date;
+	date += "Invalid hire date [" + date + "]: Hire date must be MM/DD/YYYY format.";
+	throw date;
+}
+
+	
+

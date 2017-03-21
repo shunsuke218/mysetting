@@ -1,0 +1,10 @@
+# coding: utf-8
+import sys
+import os
+stdin = sys.stdin
+stdout = sys.stdout
+sys.path.insert(0,'lib')
+reload(sys)
+sys.setdefaultencoding('utf-8')
+sys.stdin = stdin
+sys.stdout = stdout

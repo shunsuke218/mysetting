@@ -1,0 +1,232 @@
+#!/bin/bash
+
+####################################################################################################
+# Written by: Shunsuke Haga
+# Date: 2017/02/07
+# 
+# This script automatically collect tunnel information
+# Link: https://goo.gl/p27aJF
+####################################################################################################
+
+##############################
+# Variable Declaration
+##############################
+DC=( dca fra hkg lon sjc syd tyo )
+LOG=/tmp/tunnellog
+echo "" > "$LOG"
+rm /tmp/tunnellog* &> /dev/null
+RESULT=/tmp/tunnellog
+
+tunnelip=
+timeout=15
+timeoutflag=false
+location=()
+locationflag=false
+output=
+outputflag=false
+num=0
+usage="This program automatically gathers the tunnel down information and prompts.
+usage:
+     $(basename "$0") 1234 [-h] [-l tyo hkg] [-o output.txt] [-t 60]
+
+where:
+    [mandatory]
+    -i/--tunnel:    Set tunnel id ( 1-9999 )
+
+    [optional]
+    -h/--help/-?:   Show this help text
+    -l/--location:  Set location ( dca sjc lon fra hkg syd )
+    -o/--output:    Export output file ( alphanumeral and ._- )
+    -t/--timeout:   Set timeout to certain second ( ~999 )
+"
+
+##############################
+# Check exp exists
+##############################
+if ! type tunnelscraper.exp &> /dev/null; then
+	if ! [ -f ./tunnelscraper.exp ]; then
+		echo -e "\n[ERROR]: File expect.exp not found! Check your setting."
+		echo "$usage"
+		exit 1
+	fi
+	echo "Using local tunnelscraper.exp..."
+	tunnelscraper() {
+		"./tunnelscraper.exp" "$@"
+		}
+else
+	tunnelscraper() {
+		"tunnelscraper.exp" "$@"
+		}
+fi
+
+##############################
+# Check arguments
+##############################
+while :; do
+	case $1 in
+		-h|-\?|--help)
+			echo "$usage"
+			exit 0
+			;;
+		-i|--tunnel)
+			locationflag=false
+			timeoutflag=false
+			outputflag=false
+			;;
+		-l|--location)
+			locationflag=true
+			timeoutflag=false
+			outputflag=false
+			;;
+		-o|--output)
+			locationflag=false
+			timeoutflag=false
+			outputflag=true
+			;;
+		-t|--timeout)
+			locationflag=false
+			timeoutflag=true
+			outputflag=false
+			;;
+		-?*)
+			echo "$usage"
+			exit 0
+			;;
+		*)
+			if $locationflag; then
+				location+=("$1")
+			elif $timeoutflag; then
+				timeout="$1"
+				timeoutflag=false
+			elif $outputflag; then
+				output="$1"
+				outputflag=false
+			else
+				tunnelip="$1"
+			fi
+	esac
+	shift
+	if [ -z "$1" ];then
+	   break
+	fi
+done
+
+
+##############################
+# validate arguments
+##############################
+# If no argument, print help
+if [ -z $tunnelip ]; then
+	echo "$usage"
+	exit 1
+fi
+
+# Number validation
+re='^[1-9][0-9]{0,3}$'
+if ! [[ $tunnelip =~ $re ]] ; then
+	echo "error: No valid number was given {1-9999}" >&2
+	exit 1
+fi
+
+# If location is empty, use all $DC
+if [ -z ${location[@]} ]; then
+	location=("${DC[@]}")
+fi
+
+# Location validation
+location=($(echo "${location[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
+if diff <( printf "%s\n" "${DC[@]}" ) <( printf "%s\n" "${location[@]}" ) | grep ">" > /dev/null; then
+	echo "error: Invalid location center (Acceptable: dca, sjc, lon, fra, hkg, syd)."
+	exit 1
+fi
+
+# Timeout validation
+re='^[1-9][0-9]{0,2}$'
+if ! [ -z "$timeout" ]  && ! [[ $timeout =~ $re ]] ; then
+	echo "error: Not a valid time (1 - 999 seconds)" >&2
+	exit 1
+fi
+
+# Output validation
+re='^[a-zA-Z0-9.-_]+$'
+if ! [ -z "$output" ]  && ! [[ $output =~ $re ]] ; then
+	echo "error: Not a valid filename (alphanumeral and ._-)" >&2
+	exit 1
+fi
+
+
+##############################
+# Main process
+##############################
+# Password input
+echo -n "Enter the Netcool password for $(whoami) "
+read -se password
+echo -ne '\n'
+
+# Run ssh using expect. (Separate script)
+for datacenter in ${location[@]}; do
+	for router in a1 a2; do
+				  device="$router"."$datacenter"2.plx
+				  # Feed the expect script a device list & the collected passwords
+				  echo "Processing $device..."
+				  tunnelscraper $device $password $tunnelip $timeout $num 2>&1 & # Background ps 
+				  let "num++"
+	done
+done
+
+wait >> /dev/null 2>&1 # Wait for all exps to finish its task.
+echo -ne "All done.\n\n"
+
+num=0
+echo -ne "$(date)\\nTunnel log for $tunnelip\\n" > $LOG
+echo -ne "##################################################\n"
+# Extract all log data
+for eachlog in /tmp/tunnellog_*; do
+	# TUNEL DESCRIPTION: sh int tunnel-ip1234 des
+	tunnel_description=$( sed -n "/sh int tunnel-ip$tunnelip des/,/sh log | i tunnel-ip$tunnelip/p" $eachlog  )
+	grep "Interface not found" $eachlog &> /dev/null
+	if [ "$?" = 0 ] || [ -z "$tunnel_description" ]; then
+		continue
+	fi
+
+	echo -ne "##################################################\n" >> $LOG
+	# Print LOCATION
+	echo "LOCATION: " $( grep -E "RP/0/RSP[0-9]/CPU0:" $eachlog | cut -f 2 -d ":" | cut -f 1 -d "#" | head -1 ) >> $LOG
+
+	# TUNNEL DESCRIPTION: sh int tunnel-ip1234 des
+	echo -ne "\nTUNNEL DESCRIPTION: \n" >> $LOG
+	sed -n "/sh int tunnel-ip$tunnelip des/,/sh log | i tunnel-ip$tunnelip/p" $eachlog | sed '$ d' | tail -n +2 >> $LOG
+	
+	# CIRCUIT LOG: sh log | i tunnel-ip1234
+	echo -ne "\nCIRCUIT LOG: \n" >> $LOG
+	sed -n "/sh log/,/sh int tunnel-ip$tunnelip/p" $eachlog | sed '$ d' | tail -n +2 >> $LOG
+	
+	# TRACEROUTE: traceroute 1.2.3.4 source 5.6.7.8
+	echo -ne "\nSOURCE: \n" >> $LOG
+	grep "Tunnel source" $eachlog | cut -f 1 -d "," | grep -oE "[1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*" >> $LOG
+	echo -ne "\nDESTINATION: \n" >> $LOG
+	grep "Tunnel source" $eachlog | cut -f 2 -d "," | grep -oE "[1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*" >> $LOG
+	
+	echo -ne "\nTRACEROUTE: \n" >> $LOG
+	sed -n "/traceroute/,/exit/p" $eachlog | sed '$ d' | tail -n +2 >> $LOG
+	let "num++"
+done
+echo "##################################################" >> $LOG
+echo "Total Interface: $num" >> $LOG
+
+
+# Pretty Print
+perl -p -i -e 's/\r\n/\n/g' $LOG
+perl -p -i -e 's/\r//g' $LOG
+perl -p -i -e 's/\[K//g' $LOG
+perl -p -i -e 's/[^[:print:]]+/\n/' $LOG >& /dev/null
+
+# Print final output
+cat $LOG 
+
+# Save if saving flag is not null
+if ! [ -z "$output" ]; then
+	echo "Saving to $output..."
+	mv -i $LOG "./$output"
+fi
+password=

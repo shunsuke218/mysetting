@@ -1,0 +1,146 @@
+##################################################
+Wed Feb 15 12:12:06 EST 2017
+Tunnel log for 2584
+##################################################
+データセンタ:  TYO
+
+TUNNEL DESCRIPTION: 
+Wed Feb 15 17:11:37.085 GMT
+Interface          Status      Protocol    Description
+--------------------------------------------------------------------------------
+ti2584             up          up          mhbk_tama-2-customer:vpn-PLXTYO2002584-(bbgrt02-tm)
+
+CIRCUIT LOG: 
+Wed Feb 15 17:11:37.763 GMT
+RP/0/RSP0/CPU0:Feb  1 18:03:54.442 GMT: ifmgr[247]: %PKT_INFRA-LINEPROTO-5-UPDOWN : Line protocol on Interface tunnel-ip2584, changed state to Down 
+RP/0/RSP0/CPU0:Feb  1 18:05:16.752 GMT: ifmgr[247]: %PKT_INFRA-LINEPROTO-5-UPDOWN : Line protocol on Interface tunnel-ip2584, changed state to Up 
+RP/0/RSP0/CPU0:Feb  1 18:26:40.012 GMT: ifmgr[247]: %PKT_INFRA-LINEPROTO-5-UPDOWN : Line protocol on Interface tunnel-ip2584, changed state to Down 
+RP/0/RSP0/CPU0:Feb  1 18:27:35.938 GMT: ifmgr[247]: %PKT_INFRA-LINEPROTO-5-UPDOWN : Line protocol on Interface tunnel-ip2584, changed state to Up 
+RP/0/RSP0/CPU0:Feb 15 17:07:41.031 GMT: ifmgr[247]: %PKT_INFRA-LINEPROTO-5-UPDOWN : Line protocol on Interface tunnel-ip2584, changed state to Down 
+RP/0/RSP0/CPU0:Feb 15 17:09:05.041 GMT: ifmgr[247]: %PKT_INFRA-LINEPROTO-5-UPDOWN : Line protocol on Interface tunnel-ip2584, changed state to Up 
+
+弊社側のエンドポイント: 
+72.52.58.36
+お客様側のエンドポイント: 
+202.221.142.130
+
+TRACEROUTE: 
+Wed Feb 15 17:11:45.558 GMT
+Type escape sequence to abort.
+Tracing the route to 202.221.142.130
+ 1  72.52.56.204 0 msec  0 msec  0 msec 
+ 2  72.52.56.203 0 msec 
+    72.52.56.195 0 msec 
+    72.52.56.203 0 msec 
+ 3  203.105.72.237 26 msec  0 msec  0 msec 
+ 4  129.250.2.155 [MPLS: Label 299872 Exp 0] 0 msec 
+    129.250.2.157 0 msec  0 msec 
+ 5  129.250.3.191 1 msec 
+    129.250.3.19 1 msec  1 msec 
+ 6  210.173.175.226 2 msec  2 msec  2 msec 
+ 7  58.138.83.125 2 msec 
+    58.138.83.121 1 msec 
+    58.138.83.133 1 msec 
+ 8  58.138.80.170 2 msec 
+    58.138.80.202 2 msec 
+    58.138.80.170 2 msec 
+ 9  58.138.112.154 1 msec 
+    58.138.112.150 2 msec  1 msec 
+ 10 58.138.112.98 1 msec 
+    58.138.112.106 2 msec 
+    58.138.112.98 1 msec 
+ 11 210.138.9.162 7 msec  6 msec  6 msec 
+ 12 202.221.142.134 7 msec  *  6 msec 
+##################################################
+データセンタ:  HKG
+
+TUNNEL DESCRIPTION: 
+Wed Feb 15 17:11:40.277 GMT
+Interface          Status      Protocol    Description
+--------------------------------------------------------------------------------
+ti2584             up          up          mhbk_tama-2-customer:vpn-PLXHKG1002584-(bbgrt02-tm)
+
+
+CIRCUIT LOG: 
+Wed Feb 15 17:11:41.702 GMT
+RP/0/RSP0/CPU0:Feb 15 17:07:37.418 GMT: ifmgr[250]: %PKT_INFRA-LINEPROTO-5-UPDOWN : Line protocol on Interface tunnel-ip2584, changed state to Down 
+RP/0/RSP0/CPU0:Feb 15 17:09:04.887 GMT: ifmgr[250]: %PKT_INFRA-LINEPROTO-5-UPDOWN : Line protocol on Interface tunnel-ip2584, changed state to Up 
+
+弊社側のエンドポイント:
+209.200.138.227
+お客様側のエンドポイント:
+202.221.142.130
+
+TRACEROUTE: 
+Wed Feb 15 17:11:45.987 GMT
+Type escape sequence to abort.
+Tracing the route to 202.221.142.130
+ 1  72.52.2.188 1 msec 
+    72.52.2.180 0 msec 
+    72.52.2.188 0 msec 
+ 2  72.52.2.185 0 msec 
+    72.52.2.177 0 msec 
+    72.52.2.185 0 msec 
+ 3  203.131.250.157 0 msec  0 msec  0 msec 
+ 4  129.250.4.6 [MPLS: Label 299920 Exp 0] 1 msec  1 msec  1 msec 
+ 5  129.250.5.133 [MPLS: Label 300432 Exp 0] 42 msec  48 msec  44 msec 
+ 6  129.250.3.19 53 msec  50 msec  50 msec 
+ 7  210.173.175.226 58 msec  53 msec  51 msec 
+ 8  58.138.83.137 48 msec 
+    58.138.83.129 50 msec 
+    58.138.83.117 49 msec 
+ 9  58.138.82.190 52 msec 
+    58.138.82.174 44 msec  47 msec 
+ 10 58.138.112.150 50 msec 
+    58.138.112.146 47 msec  48 msec 
+ 11 58.138.112.106 44 msec  47 msec  43 msec 
+ 12 210.138.9.162 58 msec  61 msec  60 msec 
+ 13 202.221.142.134 55 msec  *  58 msec 
+##################################################
+Total Interface: 2
+
+
+
+--------------------------------------------------
+[shaga]
+ 
+ Issue/Task: 
+ [shaga  Feb. 15th] Tunnel Flap and BGP Down alert detected.
+ 
+Ignore Conditions: 
+ [shaga Feb. 15th] N/A
+
+Action Taken:
+ [shaga Feb. 15th] Collected info from routers. Sent initial mail and called customer. 
+
+ Next Action:
+ [shaga Feb. 15th] Check netops on due if any update. update to customer if update.
+
+--------------------------------------------------
+
+Hello ,
+ご担当者様、
+
+現在、tunnel(s) / BGPセッションは 2月15日 17:09:05.041 GMT にUPになった後、安定稼働しております。
+
+
+今後、24時間継続してモニタリングしアラートが発生した際にはご連絡致します。
+なお、もし事象が再発した場合にはより適切な調査を行う為、大変お手数ですがtracerouteの結果をお送りくださいますようお願い致します。
+
+詳細については下記の通りです。
+
+アラート１:
+
+データセンタ:
+弊社側のエンドポイント:
+お客様側のエンドポイント:
+
+トンネルのディスクリプション:
+[insert sh int tunnel-ipNNN des]
+
+ログ:
+[insert LOGS]
+
+ご質問やご不明な点、あるいはアシスタントが必要な場合は、アカマイ・セキュリティー・オペレーション・センターの窓口
+電話番号 03-4520-7530 までご連絡ください。電話もしくはメールにて24時間365日対応いたします。
+なお、日本営業時間外や状況により、英語対応となる場合がございますので予めご了承ください。

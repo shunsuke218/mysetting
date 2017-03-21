@@ -1,0 +1,19 @@
+// Implementation file for the ProductionWorker class
+#include "ProductionWorker.h"
+#include <string>
+using namespace std;
+// Default constructor
+ProductionWorker::ProductionWorker()
+{
+	Employee();
+	shift = 0;
+	payrate = 0.0;
+}
+
+// Mutators
+void ProductionWorker::setShift(int shift) {this->shift = shift; };
+void ProductionWorker::setPayrate(double payrate) {this->payrate = payrate; };
+
+// Accessors
+int ProductionWorker::getShift() const { return shift; };
+double ProductionWorker::getPayrate() const { return payrate; };

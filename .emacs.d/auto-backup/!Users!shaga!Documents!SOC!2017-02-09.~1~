@@ -1,0 +1,47 @@
+ [shaga]
+Issue/Task: 
+[shaga Feb.9th] P1 alert
+
+Ignore Conditions: 
+[shaga Feb.9th]
+www.daiwa.co.jp (0078_18034)	
+Ignore alert for HTTP Options method. Customer periodically test their origin with Excel tools. Never call and send email for HTTP Options method. 
+
+
+Action Taken:
+[shaga Feb.9th] Initial investigation/call/email is done. Escalated to specialist for analysis.
+
+Next Action:
+[shaga Feb.9th] Specialist to send analysis to customer and TYO SOC translate it.
+--------------------------------------------------
+ご担当者様
+
+いつも大変お世話になっております。
+アカマイ・セキュリティー・オペレーション・センターの芳賀です。
+
+弊社KONAシステムにてWAFの アラート通知が上がりましたので連絡致します。
+只今イベントデータ解析中ですので、結果は後ほど報告いたします。
+
+解析結果が完了するまで、お客様にてお願いする対応はございません。
+
+本イベントが終息するまでに、新たなアラート通知が発生した場合には本件にて対応致します。
+アラートの詳細は以下の通りです。
+
+Notification: Alert Notification | P1 High Warned Rate Activity | daiwa_mk
+Start Time: 02/09/2017 13:37:00 GMT
+Domain : www.daiwa.co.jp
+URL:
+www.daiwa.co.jp/PCC/HomeTrade/Account/m8301.html
+www.daiwa.co.jp/PCI/AP/OnlineTrade?aid=TMJShortcut01&MEIGARA_CODE=83090&TORIHIKI_KIND=J2111&cpy=00&sid=007628P4524RlGECUlMmI=0200096100@15Vo1zF6SO4=Q3SwAFEalI
+Policy ID: 0078_18034
+Client IP : 106.172.168.27
+Edgescape Information (country, owner):
+Takamatsu, Kagawa, Japan
+KDDI CORPORATION
+
+
+ご質問やご不明な点がある場合、あるいは緊急対応などが必要と判断された場合、アカマイ・セキュリティー・オペレーション・センターの窓口電話番号 03-4520-7530 までお電話ください。24時間365日受付いたします。状況により英語対応となる場合がありますので予めご了承ください。
+
+何卒宜しく御願い致します。
+
+Haga, Shunsuke (芳賀 俊介)

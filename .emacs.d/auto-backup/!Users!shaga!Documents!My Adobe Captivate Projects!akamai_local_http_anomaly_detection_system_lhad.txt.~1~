@@ -1,0 +1,31 @@
+Quiz
+
+
+At this point, the candidate should be familiar with how the LHAD system is used to detect Layer 7 attacks targeting clients network routed through the system. The following quiz is aimed at verifying knowledge on the subject in question:
+
+
+What is the LHAD System?
+A device located on the customer’s premises that is used to detect HTTP Based Anomalies 
+=A device located in the Akamai PLX Scrubbing Centers used to detect HTTP Based anomalies traversing the Akamai network.
+A device located on the customer’s premises that detects volumetric attacks targeting the clients network
+A device located in the Akamai PLX Scrubbing Centers that detects Layer 3/4 DDoS Attacks
+Which of the following is NOT a Rule configured for the LHAD System?
+=High Randomness 
+Low Randomness
+High Source IP Count
+High True Client IP Rate
+Which of the following is NOT an Alert Level?
+Notice
+Warn
+=High
+Critical
+What Types of Attacks are the LHAD Systems designed to Detect?
+All the attacks
+=HTTP Attacks
+SYN Floods
+ DNS Reflection Attack
+LHAD devices are on customer’s premises and therefore require the customer to investigate on their end and route over if they need our assistance
+True
+=False
+
+

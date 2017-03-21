@@ -1,0 +1,92 @@
+#!/usr/bin/expect -f
+
+# Set variables
+set hostname [lindex $argv 0]
+set username $env(USER)
+set password [lindex $argv 1]
+set tunnelip [lindex $argv 2]
+set target ""
+set origin ""
+
+# Set timeout
+set timeout [lindex $argv 3]
+
+# Log results
+log_file -a /tmp/tunnellog_[lindex $argv 4]
+
+# Announce which device we are working on and at what time
+send_user "\n"
+send_user ">>>>>  Working on $hostname @ [exec date] <<<<<\n"
+send_user "\n"
+
+# Don't check keys
+spawn ssh -o StrictHostKeyChecking=no $username\@$hostname
+
+# Allow this script to handle ssh connection issues
+expect {
+	timeout { send_user "\nTimeout Exceeded - Check Host\n"; exit 1 }
+	eof { send_user "\nSSH Connection To $hostname Failed\n"; exit 1 }
+	"*#" {}
+	"(yes/no)?" {
+        send "yes\n"
+        exp_continue
+	}
+	"*assword:" {
+		send -- "${password}\n"
+	}
+}
+
+# Commands to send
+send "sh int tunnel-ip$tunnelip des\n"
+expect "*#"
+send "sh log | i tunnel-ip$tunnelip\n"
+expect "*#"
+send "sh int tunnel-ip$tunnelip | i dest\n"
+#set origin [exec grep "Tunnel source" /tmp/tunnellog_[lindex $argv 4] | cut -f 1 -d "," | grep -oE "[1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*" ]
+#set target [exec grep "Tunnel source" /tmp/tunnellog_[lindex $argv 4] | cut -f 2 -d "," | grep -oE "[1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*" ]
+
+expect "*#"
+#set status 0
+#if {[catch {exec grep {Tunnel source} /tmp/tunnellog_[lindex $argv 4] | cut -f 1 -d {,} | grep -oE {[1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*}} results options]} {
+#    set details [dict get $options -errorcode]
+#    if {[lindex $details 0] eq "CHILDSTATUS"} {
+#        set status [lindex $details 2]
+#		set origin $results		
+#    } else {
+#        puts "unexpected error $options $results"
+#        set status 99
+#		exit
+#    }
+#}
+#if {[catch {exec grep {Tunnel source} /tmp/tunnellog_[lindex $argv 4] | cut -f 2 -d {,} | grep -oE {[1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*}} results options]} {
+#    set details [dict get $options -errorcode]
+#    if {[lindex $details 0] eq "CHILDSTATUS"} {
+#        set status [lindex $details 2]
+#		set target $results
+#    } else {
+#        puts "unexpected error $options $results"
+#        set status 99
+#		exit
+#    }
+#}
+
+
+if {[catch {exec cat /tmp/tunnellog_[lindex $argv 4]} results] == 0} {
+	set origin $results
+} else {
+	exit
+}
+if {[catch {exec grep {Tunnel source} /tmp/tunnellog_[lindex $argv 4] | cut -f 2 -d {,} | grep -oE {[1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*}} results] == 0} {
+	set target $results
+} else {
+	exit
+}
+
+
+puts "origin: $origin target: $target"
+#send "traceroute $target source $origin\n"
+#send "traceroute 203.41.78.77 source 209.200.156.225\n" 
+#expect "*#"
+send "exit\n"
+expect ":~\$"
+exit

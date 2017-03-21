@@ -1,0 +1,3 @@
+export PATH=/usr/local/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/Users/shaga/bin:/opt/local/bin:/usr/local/bin
+
+test -r /sw/bin/init.sh && . /sw/bin/init.sh

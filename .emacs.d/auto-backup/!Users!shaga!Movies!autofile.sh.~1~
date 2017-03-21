@@ -1,0 +1,18 @@
+#!/bin/sh
+
+if[ "$1" == "-h" ]; then
+	echo "Usage: `basename $0` [-a: all]"
+	exit 0
+fi
+
+filename="$1"
+extension="${filename##*.}"
+basename="${filename%.*}"
+
+cp -a template $filename
+cd $filename
+for tempfile in *
+do
+	echo "mv $tempfile $filename"
+	#mv $tempfile $filename
+done

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PLX Extractor</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+
+
+<body>
+ <h1>PLX Extractor</h1>
+ <form action="cgi-bin/post.py">
+  <div class="inline-div">
+    <p align="center">Input</p>
+    <textarea id="input" cols="15" rows="75" wrap="off" class="inline-txtarea-input"></textarea>
+  </div>
+  <div class="inline-div">
+    <p align="center">Output</p>
+    <textarea id="output" cols="15" rows="75" wrap="off" class="inline-txtarea-output"></textarea>
+  </div>
+  <br />
+  <br />
+  <div id="saveanchor"></div>
+  <div class="links"></div>
+  <select id="option">
+    <option value="ABM_FBM" selected>ABM/FBM</option>
+    <option value="MKONA">Mkona</option>
+    <option value="TUNNEL_DOWN">Tunnel Down</option>
+  </select>
+  <button type="button" id="clear">clear</button>
+  <button type="button" id="save">save</button> <br />
+  <p><input type="checkbox" id="orig_dscr"> Use original plx_Description</p>
+  <input type="submit">
+</form>
+<br />
+<p style="font-size: 12px"><a href="https://ac.akamai.com/message/24908" target="_blank">PLX Extractor</a> Created \
+by: Shunsuke Haga <a href="https://docs.google.com/a/akamai.com/document/d/10Y60jTzWEf7D_bO2lTLlz07NDLCDd16X9oh6Fic\
+dn8c/edit?usp=sharing" target="_blank">manual</a></p>
+
+
+<script>
+  var filename;
+  $( "form" ).submit(function( event ) {
+    var orig_dscr = $('#orig_dscr').is( ':checked' );
+    $.ajax({
+      method: "POST",
+      url: "/cgi-bin/post.py",
+      data: { 
+        input: $('#input').val(), 
+        option: $('#option').val(), 
+        orig_dscr: orig_dscr
+      },
+      success: function(rawjson){
+        console.log(rawjson)
+        var json = jQuery.parseJSON( rawjson );
+        $( '#output' ).val(json);
+        filename = json.summary;
+        clear();
+        if ( json.urlMkona ){
+          $(".links").append("<p class='link'>Luna Portal:  <a class='link' target='_blank' href='"+ json.urlMkona +"'>" + json.urlMkona + "</a></p>")
+        }
+        if ( json.urlRnbk ){
+          $(".links").append("<p class='link'>Runbook:  <a class='link' target='_blank' href='"+ json.urlRnbk +"'>" + json.urlRnbk + "</a></p>")          
+        }
+        if ( json.urlCC ){
+          $(".links").append("<p class='link'>Cluster Commander:  <a class='link' target='_blank' href='"+ json.urlCC +"'>" + json.urlCC + "</a></p>")          
+        }
+        if ( json.urlLndtctr ){
+          $(".links").append("<p class='link'>Ln Detector:  <a class='link' target='_blank' href='"+ json.urlLndtctr +"'>" + json.urlLndtctr + "</a></p>")          
+        }
+      }
+    })
+
+    .done(function( msg ) {
+      var obj = jQuery.parseJSON( msg );
+      $( '#output' ).val(obj.output);
+  });
+  event.preventDefault();
+  });
+
+  function clear(){
+    $( '#output' ).val('');
+    $( '.link' ).remove();
+    $( '.savelink' ).remove();
+  }
+
+
+  $( "button#clear" ).click(function() {
+    $( '#input' ).val('');
+    clear();
+  });
+
+  $( "button#save" ).click(function() {
+    var file = $( '#output' ).val();
+    if ( filename !== undefined ){
+        $( '.savelink' ).remove();
+        $('#saveanchor').append("<p class='savelink'><a class='savelink' id='download'>Download</a></p>")
+        var a = document.getElementById("download");
+        var downloadfile = new Blob([file], {"text/plain": "text/plain"});
+        a.href = URL.createObjectURL(downloadfile);
+        a.download = filename + ".txt";
+    };
+  });
+
+</script>
+
+</body>
+</html>

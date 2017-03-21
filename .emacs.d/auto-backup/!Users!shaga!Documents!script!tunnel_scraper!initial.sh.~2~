@@ -1,0 +1,7 @@
+#!/usr/bin/
+sudo chmod u+x *
+mkdir $HOME/bin
+cp * $HOME/bin/
+export PATH="$HOME/bin:$PATH" >> ~/.bashrc
+source ~/.bashrc
+tunnelscraper.sh

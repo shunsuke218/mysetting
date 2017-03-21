@@ -1,0 +1,26 @@
+#!/bin/sh
+
+if [ "$1" == "-h" ] ; then
+    echo "Usage: `basename $0` [file.mp4]"
+    exit 0
+fi
+
+if [ ! -e "$1" ] ; then
+	echo "File not found!"
+	exit 1
+fi
+
+filename="$1"
+basename="${filename%.*}"
+
+cp -a template $basename
+for tempfile in $basename/*
+do
+		extension="${tempfile##*.}"
+		sed -i '.bak' "s/template/$basename/g" $tempfile
+		mv $tempfile $basename/$basename.$extension
+done
+rm $basename/*.bak
+mv $filename $basename/
+exit 0
+
